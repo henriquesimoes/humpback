@@ -1,0 +1,6 @@
+Images processed from: data/test
+
+*** Results ***
+Total images:  7960
+Gray scale: 2089 (26.24%)
+Colored: 5871 (73.76%)
