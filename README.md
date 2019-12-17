@@ -1,8 +1,8 @@
 # Humpback Whale Identification - Kaggle Challenge
 
-This repository houses the files and codes used by [Henrique Simões][1] and [João Meidanis][2] to analyse the solutions developed by competitors in the [Kaggle competition][1] launched at Nov 30th, 2018 and closed at Feb 28th, 2019 to identify humpback whales by their tail.
+This repository houses the files and codes used by [Henrique Simões][1] and [João Meidanis][2] to analyse the solutions developed by competitors in the [Kaggle competition][5] launched at Nov 30th, 2018 and closed at Feb 28th, 2019 to identify humpback whales by their tail.
 
-This project is supported by [São Paulo Research Foundation - FAPESP][2].
+This project is supported by [São Paulo Research Foundation - FAPESP][6].
 
 Grant #2019/11386-3, São Paulo Research Foundation (FAPESP).
 
