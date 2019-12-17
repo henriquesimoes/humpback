@@ -8,13 +8,13 @@ Grant #2019/11386-3, São Paulo Research Foundation (FAPESP).
 
 Opinions, hypothesis and conclusions, or recomendations made in this material are responsability of the authors, and not necessarily reflect the FAPESP's point of view.
 
-# Repository Structure
+## Repository Structure
 
 The files are distributed across several folders which are described next.
 
-  - [data-analysis][10]: Contains the processed information about the data used by competitors to build their algorithms.
-  - [docs][11]: Ensembles all the written content produced while working on this project.
-  - [util][12]: Includes all the executables created to process data related to the project.
+- [data-analysis][10]: Contains the processed information about the data used by competitors to build their algorithms.
+- [docs][11]: Ensembles all the written content produced while working on this project.
+- [util][12]: Includes all the executables created to process data related to the project.
 
 
 
@@ -22,7 +22,7 @@ The files are distributed across several folders which are described next.
 [2]: http://lattes.cnpq.br/1313385414995585
 
 [5]: https://www.kaggle.com/c/humpback-whale-identification
-[6]: https://fapesp.br
+[6]: http://fapesp.br
 
 [10]: ./data-analysis
 [11]: ./docs
