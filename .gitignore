@@ -1,6 +1,4 @@
-# ignore image files
+# ignore dataset images files
 
-/**/*.png
-/**/*.jpg
-
-
+data/**/*.png
+data/**/*.jpg
