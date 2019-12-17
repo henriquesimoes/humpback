@@ -5,9 +5,11 @@ from tqdm import tqdm
 import numpy as np
 
 def contrast(img):
+   img = img.convert('RGB')
+
    pxs = np.asarray(img)
 
-   return pxs.std()
+   return pxs.std(axis=(0,1,2))
 
 if __name__ == '__main__':
    if len(sys.argv) < 2:
