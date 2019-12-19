@@ -12,10 +12,10 @@ Opinions, hypothesis and conclusions, or recomendations made in this material ar
 
 The files are distributed across several folders which are described next.
 
-- [data-analysis][10]: Contains the processed information about the data used by competitors to build their algorithms.
-- [docs][11]: Ensembles all the written content produced while working on this project.
-- [util][12]: Includes all the executables created to process data related to the project.
-
+- [data-analysis][10]: Processed information about the data used by competitors to build their algorithms.
+- [docs][11]: Written content produced while working on this project.
+- [util][12]: All the executables created to process data related to the project.
+- [solutions][13]: Solutions developed by the analysed candidates
 
 
 [1]: http://lattes.cnpq.br/2364440352119569
@@ -27,3 +27,4 @@ The files are distributed across several folders which are described next.
 [10]: ./data-analysis
 [11]: ./docs
 [12]: ./util
+[13]: ./solutions
