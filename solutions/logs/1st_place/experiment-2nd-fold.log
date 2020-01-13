@@ -1,0 +1,34 @@
+0
+ start_time :2020-01-12 19:18:36 
+ batch_size :5 
+loading bbox...
+loading mask...
+311
+loading bbox...
+ rate     iter   epoch  | valid   top@1    top@5    map@5  | train    top@1    top@5    map@5 | batch    top@1    top@5    map@5 |  time          
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Traceback (most recent call last):
+  File "train.py", line 310, in <module>
+    train(freeze, fold_index, model_name, min_num_class, checkPoint_start, lr, batch_size)
+  File "train.py", line 228, in train
+    for data in dataloader_train:
+  File "/usr/local/lib/python3.6/dist-packages/torch/utils/data/dataloader.py", line 819, in __next__
+    return self._process_data(data)
+  File "/usr/local/lib/python3.6/dist-packages/torch/utils/data/dataloader.py", line 846, in _process_data
+    data.reraise()
+  File "/usr/local/lib/python3.6/dist-packages/torch/_utils.py", line 369, in reraise
+    raise self.exc_type(msg)
+TypeError: Caught TypeError in DataLoader worker process 0.
+Original Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/dist-packages/torch/utils/data/_utils/worker.py", line 178, in _worker_loop
+    data = fetcher.fetch(index)
+  File "/usr/local/lib/python3.6/dist-packages/torch/utils/data/_utils/fetch.py", line 44, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/usr/local/lib/python3.6/dist-packages/torch/utils/data/_utils/fetch.py", line 44, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/solutions/1st-place/dataSet/reader.py", line 127, in __getitem__
+    anchor_image, anchor_add = self.get_image(anchor_name, self.transform_train, label)
+  File "/solutions/1st-place/dataSet/reader.py", line 107, in get_image
+    mask = np.zeros_like(image[:,:,0])
+TypeError: 'NoneType' object is not subscriptable
+
