@@ -11,6 +11,7 @@ The first training step consists in the training using only images from whales t
 1. [train.1.log][1] - First training attempt using only the original dataset, and with batch size 3;
 2. [train.2.log][2] - Training attempt using the same configuration as the first one, except from the batch size which was set to 5;
 3. [train.3.log][3] - Training that expected to use the playground images to be trained. However, by now, we've noticed it actually didn't use the playground examples at all, once the configured fold was the 1st one;
+4. [train.4.log][7] - Training in fact using playground images by using the second fold;
 
 ### Second step
 
@@ -18,6 +19,10 @@ In this step, the minimum number of examples per class used was set to zero, wit
 
 1. [train.2.1.log][4] - Second training step using the best checkpoint (#22600) from 2nd attempt in the first step;
 2. [train.2.2.log][5] - Training using the same checkpoint as the previous one but using the playground data;
+
+### Third step
+
+1. [train.2.1.1.log][6] - First training on 3rd step, using the best checkpoint (#66600) of the second step (2.1);
 
 ## Experiments
 
@@ -32,5 +37,7 @@ This way, we're now sure that the first fold didn't use any playground images, s
 [3]: ./train.3.log
 [4]: ./train.2.1.log
 [5]: ./train.2.2.log
+[6]: ./train.2.1.1.log
+[7]: ./train.4.log
 
 [20]: ./experiment-2nd-fold.log
