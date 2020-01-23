@@ -19,10 +19,13 @@ In this step, the minimum number of examples per class used was set to zero, wit
 
 1. [train.2.1.log][4] - Second training step using the best checkpoint (#22600) from 2nd attempt in the first step;
 2. [train.2.2.log][5] - Training using the same checkpoint as the previous one but using the playground data;
+3. [train.4.3.log][8] - Training using the checkpoint #11000 (0.980) from the fourth attempt on 1st step, also using the second fold;
+4. [train.4.4.log][9] - Training using checkpoint #26000 (0.992) from 4th attempt on 1st step, using the playground data (2nd fold);
 
 ### Third step
 
 1. [train.2.1.1.log][6] - First training on 3rd step, using the best checkpoint (#66600) of the second step (2.1);
+2. [train.4.4.2.log][10] - Last training step using the training tree branch 4.4 (checkpoint #70000 - 0.8130).
 
 ## Experiments
 
@@ -39,5 +42,8 @@ This way, we're now sure that the first fold didn't use any playground images, s
 [5]: ./train.2.2.log
 [6]: ./train.2.1.1.log
 [7]: ./train.4.log
+[8]: ./train.4.3.log
+[9]: ./train.4.4.log
+[10]: ./train.4.4.2.log
 
 [20]: ./experiment-2nd-fold.log
