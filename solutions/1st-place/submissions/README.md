@@ -26,15 +26,15 @@ Training steps:
     - Learning rate: 3e-5
     - Batch size: 5
     - Checkpoint: 66600 of 1st second step attempt
-    - Reached MAP@5 validation: 0.8620
+    - Reached MAP@5 validation: 0.8643
 
 Kaggle score:
-    - Public leaderboard: 0.82299
-    - Private leaderboard: 0.85070
+- Public leaderboard: 0.82299
+- Private leaderboard: 0.85070
 
 ## Second submission
 
-The idea was try to train using the playground data in order to achieve a better generalization.
+The idea was to try to train using the playground data in order to achieve a better generalization.
 
 Training steps:
 
@@ -63,5 +63,5 @@ Training steps:
     - Reached MAP@5 validation: 0.8724
 
 Kaggle score:
-    - Public leaderboard: 0.84870
-    - Private leaderboard: 0.86513
+- Public leaderboard: 0.84870
+- Private leaderboard: 0.86513
