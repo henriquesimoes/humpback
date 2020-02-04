@@ -299,12 +299,65 @@ def train(freeze=False, fold_index=1, model_name='seresnext50',min_num_class=10,
 if __name__ == '__main__':
     if 1:
         os.environ['CUDA_VISIBLE_DEVICES'] = '0,1,2,3,5'
-        freeze = False
+
         model_name = 'senet154'
-        fold_index = 1
-        min_num_class = 10
-        checkPoint_start = 0
-        lr = 3e-4
-        batch_size = 12
-        print(5005%batch_size)
+
+        ### First submission
+        ## step 1 configuration
+        # freeze = False
+        # fold_index = 1
+        # min_num_class = 10
+        # checkPoint_start = 0
+        # lr = 3e-4
+        # batch_size = 5 # [Modified]: batch_size = 12
+        #
+        ## step 2 configuration
+        # freeze = True
+        # fold_index = 1
+        # min_num_class = 0
+        # checkPoint_start = 22600 # 2nd traning attempt on first step
+        # lr = 3e-4
+        # batch_size = 5
+        #
+        ## step 3 configuration
+        # freeze = True
+        # fold_index = 1
+        # min_num_class = 0
+        # checkPoint_start = 66600 # 1st training attempt on second step
+        # lr = 3e-5
+        # batch_size = 5
+        #
+        ## result: test.2.1.1.log
+
+        ### Second submission
+        ## step 1
+        # freeze = False
+        # fold_index = 2
+        # min_num_class = 10
+        # checkPoint_start = 0
+        # lr = 3e-4
+        # batch_size = 5
+        #
+        ## step 2
+        #
+        # freeze = True
+        # fold_index = 2
+        # min_num_class = 0
+        # checkPoint_start = 26000
+        # lr = 3e-4
+        # batch_size = 5
+        #
+        ## step 3
+        #
+        # freeze = True
+        # fold_index = 2
+        # min_num_class = 0
+        # checkPoint_start = 70000
+        # lr = 3e-5
+        # batch_size = 5
+        #
+        ## result: test.4.4.2.log
+
+        # print(5005%batch_size)
+
         train(freeze, fold_index, model_name, min_num_class, checkPoint_start, lr, batch_size)
