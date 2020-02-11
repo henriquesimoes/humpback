@@ -1,5 +1,5 @@
 \documentclass[12pt,
-    brazil,			% extra idiom for hyfenization
+    brazil,			% extra idiom for hyphenation
 	english,        % main idiom of the document
 	]{article}
 \usepackage[utf8]{inputenc}
@@ -33,7 +33,7 @@ This report brings an overview analysis of the data used by competitors as way o
 
 \section{Dataset}
 
-The competition dataset contained thousands of images of humpback whales flukes, with each of them being manually labeled with an ID by researchers. The data was divided in to parts: one for training the machine learning algorithm and another for testing it. Thus, it was required to competitors to deal only with the training data in order to develop their solutions and use the test data only for submitting the results. See table \ref{tab:number-examples} for the exact number of images in each of those datasets.
+The competition dataset contained thousands of images of humpback whales flukes, with each of them being manually labeled with an ID by researchers. The data was divided in two parts: one for training the machine learning algorithm and another for testing it. Thus, it was required to competitors to deal only with the training data in order to develop their solutions and use the test data only for submitting the results. See table \ref{tab:number-examples} for the exact number of images in each of those datasets.
 
 \begin{table}[hbt]
     \centering
@@ -53,11 +53,11 @@ The competition dataset contained thousands of images of humpback whales flukes,
 
 All information collected throughout this report was obtained through data provided by the \textit{Kaggle} platform, such the image files themselves and the training data labels.
 
-\subsection{Training examples distribuition over the classes}
+\subsection{Training examples distribution over the classes}
 
-In order to have an understanding of the examples distribuition over the classes, it was used the labels available for the training data points, which contained the correspondence for each image to the class it belongs to. This way the number of times a given whale ID appered in the labeling gives directly the number of examples available for that whale. Having this information available, it was possible to obtain the number of occurrences of the number of examples per class (Table \ref{tab:occurrences-examples}).
+In order to have an understanding of the examples distribution over the classes, it was used the labels available for the training data points, which contained the correspondence of image files and the class they belong to. This way the number of times a given whale ID appeared in the labeling gives directly the number of examples available for that whale. Having this information available, it was possible to obtain the number of occurrences of the number of examples per class (see Table \ref{tab:occurrences-examples}).
 
-Even though there was a reasonable number of examples for training and testing, the training dataset didn't have the same number of examples for each whale. Probably the same occured with the testing dataset. Moreover, there were considerably more data points for some whales than others. Around 87.3\% of the whales in the training dataset had less than six photographs, and 41.4\% had only a single image for its identification (see Figure \ref{fig:frequency-examples}). Besides that, around 38.1\% of the images are pictures of unlabeled whales, collectively classified with the \textit{new\_whale} tag. 
+Even though there was a reasonable number of examples for training and testing, the training dataset didn't have the same number of examples for each whale. Probably the same occurred with the testing dataset. Moreover, there were considerably more data points for some whales than others. Around 87.3\% of the whales in the training dataset had less than six photographs, and 41.4\% had only a single image for its identification (see Figure \ref{fig:frequency-examples}). Besides that, around 38.1\% of the images are pictures of unlabeled whales, collectively classified with the \textit{new\_whale} tag. 
 
 \begin{table}[htb]
     \centering
@@ -99,7 +99,7 @@ Even though there was a reasonable number of examples for training and testing, 
 
 \subsection{Images formats and properties}
 
-One important aspect for building a neural network is knowning the shape of the data the network will be processing. Some image processing net architectures require a fixed size input image for being able to make a classification, such as fully connected nets. Therefore, it's useful to analyse the image size variation over the dataset, and other image properties, such as contrast, which can increase the need of the network to account for unimportant details if no normalization is done. For this part of the analysis all the examples available in both datasets were processed separately, in order to be able to identify possible differences that could challenge competitors.
+One important aspect for building a neural network is knowing the shape of the data the network will be processing. Some image processing net architectures require a fixed size input image for being able to make a classification, such as fully connected nets. Therefore, it's useful to analyze the image size variation over the dataset, and other image properties, such as contrast, which can increase the need of the network to account for unimportant details if no normalization is done. For this part of the analysis all the examples available in both datasets were processed separately, in order to be able to identify possible differences that could challenge competitors.
 
 \subsubsection{Images size}
 
@@ -122,7 +122,7 @@ Both training and testing dataset had a broad variety of image shapes, some of t
         1050 &  701 &	1.04\% \\
         \hline \hline
     \end{tabular}
-    \caption{Image shapes in train dataset with more than 1\% of occurrence. As it can be seen, most images had a fixed height of 1050 pixels, with a varying width size. Probably some images had a difference of one pixels in one of the dimensions due to inaccuracy during cropping.}
+    \caption{Image shapes in train dataset with more than 1\% of occurrence. As it can be seen, most images had a fixed height of 1050 pixels, with a varying width size. Probably some images had a difference of a single pixel in one of its dimensions due to inaccuracy during cropping.}
     \label{tab:image-sizes:training}
 \end{table}
 
@@ -146,7 +146,7 @@ Both training and testing dataset had a broad variety of image shapes, some of t
     \label{tab:image-sizes:testing}
 \end{table}
 
-The remaining examples had dimensions varying according with the distribution shown in Figure \ref{fig:image-sizes:training} and Figure \ref{fig:image-sizes:testing}. It's notable that image width was more standardized than the height. Roughly 70\% of the images had between 970 and 1150 pixels in this dimension in both training and testing set. On the other hand, the height was more distributed, ranging mostly from  200 to 900 pixels. This image ratio makes sense, once the whales' tail usually covered the image width almost entirely, having the height varying mostly because of cropping and tail angle before diving.
+The remaining examples had dimensions varying according with the distribution shown in Figure \ref{fig:image-sizes:training} and Figure \ref{fig:image-sizes:testing}. It's notable that image width was more standardized than height. Roughly 70\% of the images had between 970 and 1150 pixels in this dimension in both training and testing set. On the other hand, the height was more distributed, ranging mostly from  200 to 900 pixels. This image ratio makes sense, once the whales' tail usually covered the image width almost entirely, having the height varying mostly because of cropping and tail angle before diving.
 
 \begin{figure}
     \centering
@@ -184,7 +184,7 @@ Another aspect relevant for classifying images when there are few examples per c
 
 The technique used for detecting the image coloring was the usage of the \textit{Pillow} Python library~\cite{pillow2019docs} to open the image and convert it to RGB format. If the image is already in this format, nothing will be done by the function. Otherwise, i.e. the image is in gray scale, all the RGB pixels values are set to the same intensity, preserving the original image content. Once with all images in RGB format, the image will be in gray scale if, and only if, every pixel has the same intensity across all its color channels.
 
-In the analysed dataset, most images were colored, but nearly three tenth of the images were in gray scale (see Table \ref{tab:color}).
+In the analyzed dataset, most images were colored, but nearly three tenth of the images were in gray scale (see Table \ref{tab:color}).
 
 \begin{table}[htb]
     \centering
@@ -216,9 +216,9 @@ where $X$ is the image represented as a tensor, with the first coordinate repres
     \bar{X} = \frac{1}{3rc} \sum_{i=1}^{r} \sum_{j=1}^{c} \sum_{k=1}^{3} X_{i,j,k}.
 \end{equation}
 
-This information is important to be analysed, once it may be irrelevant to the task the network is trying to perform, however the network has to discover it by itself. This is not a problem when there's a high number of examples available, but for the data available for competitors it was not the case.
+This information is important to be analyzed, once it may be irrelevant to the task the network is trying to perform, however the network has to discover it by itself. This is not a problem when there's a high number of examples available, but for the data available for competitors it was not the case.
 
-In order to analyse it, the contrast was calculated for each example available in each dataset using the \textit{Numpy} Python library's~\cite{numpy2019docs} built-in algorithm for calculating standard deviation over tensors. Once gray scale images and colored images were present in both dataset, as shown in subsection \ref{sec:image-coloring}, all images were first converted to RGB color format, as described previously. Note this doesn't change the standard deviation value over gray scale images, once the standard deviation across a single color dimension image (i.e. with 8-bit pixels values, black and white 'L' format) is given by
+In order to analyze it, the contrast was calculated for each example available in each dataset using the \textit{Numpy} Python library's~\cite{numpy2019docs} built-in algorithm for calculating standard deviation over tensors. Since gray scale images and colored images were present in both dataset, as shown in subsection \ref{sec:image-coloring}, all images were first converted to RGB color format, as described previously. Note this doesn't change the standard deviation value over gray scale images, since standard deviation across a single color dimension image (i.e. with 8-bit pixels values, black and white 'L' format) is given by
 \begin{alignat}{2}
     \sigma  &= \sqrt{\frac{1}{rc} \sum_{i=1}^{r} \sum_{j=1}^{c} \left(X_{i,j} - \bar{X}\right)} \\
             &= \sqrt{\frac{1}{3rc} \sum_{i=1}^{r} \sum_{j=1}^{c} 3 \cdot \left(X_{i,j} - \bar{X}\right)} \\
@@ -250,7 +250,7 @@ The results obtained for the images contrast is shown in Figures \ref{fig:contra
 
 \subsection{Bad quality images}
 
-Within all the available images, some were really unusual, what could cause issues for participants to deal with. Malek Badreddine~\cite{badreddine2019bad}, who was a participant in the competition, found some examples of problematic images examples in the training dataset. These are shown in Figures \ref{fig:whale:0a5216ef5}, \ref{fig:whale:0c0bf8fb8}, \ref{fig:whale:0ce588f3d}, \ref{fig:whale:0d0a1d2fb}, \ref{fig:whale:0d7bd80d3}, \ref{fig:whale:0d25e3354}, \ref{fig:whale:0d605d56a}, \ref{fig:whale:0d37648f9}, \ref{fig:whale:0d757866b}, \ref{fig:whale:0db59bbec}, which are all classified as new whales. Another different example is the one shown in Figure \ref{fig:whale:0e6abdd05}, which is actually a whale drawing with a specified ID. In this case, at least, there were other ten pictures of the same whale available in the training set, what probably helped dealing with it. Interestingly, one of these ten images were also problematic, and ilustrates the issue with poor photo angle (see Figure \ref{fig:whale:d6dce5f26}). % Check if there's a better way to reference all those images in a clearer way.
+Within all the available images, some were really unusual, what could cause issues for participants to deal with. Malek Badreddine~\cite{badreddine2019bad}, who was a participant in the competition, found some examples of problematic images examples in the training dataset. These are shown in Figures \ref{fig:whale:0a5216ef5}, \ref{fig:whale:0c0bf8fb8}, \ref{fig:whale:0ce588f3d}, \ref{fig:whale:0d0a1d2fb}, \ref{fig:whale:0d7bd80d3}, \ref{fig:whale:0d25e3354}, \ref{fig:whale:0d605d56a}, \ref{fig:whale:0d37648f9}, \ref{fig:whale:0d757866b}, \ref{fig:whale:0db59bbec}, which are all classified as new whales. Another different example is the one shown in Figure \ref{fig:whale:0e6abdd05}, which is actually a whale drawing with a specified ID. In this case, at least, there were other ten pictures of the same whale available in the training set, what probably helped dealing with it. Interestingly, one of these ten images were also problematic, and illustrates the issue with poor photo angle (see Figure \ref{fig:whale:d6dce5f26}). % Check if there's a better way to reference all those images in a clearer way.
 
 \begin{figure}
     \centering
