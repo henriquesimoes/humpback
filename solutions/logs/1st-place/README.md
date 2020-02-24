@@ -2,16 +2,16 @@
 
 ## Training steps
 
-All the training log has been kept in this folder, even if they haven't been used in further trainings attempts.
+All the training log has been kept in this folder, even if they haven't been used in further training attempts.
 
 ### First step
 
-The first training step consists in the training using only images from whales that had more than 10 examples in the training dataset, with the whole net unfreezed.
+The first training step consists in the training using only images of whales that had more than 10 examples in the training dataset, with the whole net unfrozen.
 
-1. [train.1.log][1] - First training attempt using only the original dataset, and with batch size 3;
+1. [train.1.log][1] - First training attempt using only the original dataset, with batch size 3;
 2. [train.2.log][2] - Training attempt using the same configuration as the first one, except from the batch size which was set to 5;
 3. [train.3.log][3] - Training that expected to use the playground images to be trained. However, by now, we've noticed it actually didn't use the playground examples at all, once the configured fold was the 1st one;
-4. [train.4.log][7] - Training in fact using playground images by using the second fold;
+4. [train.4.log][7] - Training using playground images by using the second fold;
 
 ### Second step
 
