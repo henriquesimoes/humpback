@@ -1,7 +1,7 @@
 import numpy as np
 import glob
 import random
-import sys, os
+import sys, os, argparse
 from PIL import Image
 
 def earhian(image):
@@ -47,28 +47,29 @@ def mean_valued(image):
   return image
 
 if __name__ == "__main__":
-  if len(sys.argv) < 3:
-    print("Usage: python3 {} images_dir output_dir".format(__file__))
-    exit(0)
+  ap = argparse.ArgumentParser()
+  ap.add_argument("-d", "--imagedir", required=False, default="../../data/train")
+  ap.add_argument("-o", "--output", required=False, default="{}-result".format(sys.argv[0][:-3]))
 
-  path = sys.argv[1]
-  output = sys.argv[2]
+  args = vars(ap.parse_args())
 
-  if not os.path.exists(output):
-    os.mkdir(output)
+  path = args["imagedir"]
+  output = args["output"]
 
+  os.makedirs(output, exist_ok=True)
 
   filename = os.path.join(path, "00a3dd76f.jpg")
+  x0, y0, x1, y1 = (32, 104, 1048, 464)
 
   print("Opening image {}".format(filename))
-  image = Image.open(filename).resize((512, 256))
-  image_np = np.array(image)
+  image = Image.open(filename)
+  image_np = np.array(Image.fromarray(np.array(image)[y0:y1, x0:x1]).resize((512, 256)))
   
-  image = Image.fromarray(random_valued(image_np.copy()))
-  image.save(os.path.join(output, 'random-' + os.path.basename(filename)))
-
   image = Image.fromarray(earhian(image_np.copy()))
   image.save(os.path.join(output, 'earhian-' + os.path.basename(filename)))
+
+  image = Image.fromarray(random_valued(image_np.copy()))
+  image.save(os.path.join(output, 'random-' + os.path.basename(filename)))
   
   image = Image.fromarray(mean_valued(image_np.copy()))
   image.save(os.path.join(output, "mean-" + os.path.basename(filename)))
