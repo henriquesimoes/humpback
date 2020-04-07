@@ -18,6 +18,7 @@ Training procedure logs for each type of training involving ResNet-101.
 
 - [256x512](./seresnet101.256x512.log) - Model trained using images with 256x512 size without pseudo labels. For this training, a batch size of 64 was used, since all GPUs were available for usage.
 - [256x512 - pseudo labels](./seresnet101.pseudo.256x512.log) - Model trained as the same item but with pseudo labels.
+- [512x512](./seresnet101.512x512.log) - Model trained using 512x512 images without pseudo labels. Batch size was set to 32, since more memory were needed due to the larger image size.
 
 ## Experiments
 
