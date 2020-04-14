@@ -21,5 +21,9 @@ Training procedure logs for each type of training involving ResNet-101.
 - [512x512](./seresnet101.512x512.log) - Model trained using 512x512 images without pseudo labels. Batch size was set to 32, since more memory were needed due to the larger image size.
 - [512x512 - pseudo labels](./seresnet101.pseudo.512x512.log) - Model trained with 512x512 images with pseudo labels (batch size equals 32).
 
+### SE-ResNeXt-101
+
+- [256x512](./seresnext101.256x512.log) - Model trained using 256x512 images without pseudo labels. Batch size was set to 64 for this instance.
+
 ## Experiments
 
