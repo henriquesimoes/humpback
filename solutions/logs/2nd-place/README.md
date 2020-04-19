@@ -1,4 +1,4 @@
-#Experiments and training steps
+# Experiments and training steps
 
 This is the list of training steps and experiments done for analyzing the second place solution.
 
@@ -24,6 +24,7 @@ Training procedure logs for each type of training involving ResNet-101.
 ### SE-ResNeXt-101
 
 - [256x512](./seresnext101.256x512.log) - Model trained using 256x512 images without pseudo labels. Batch size was set to 64 for this instance.
+- [512x512 - pseudo labels](./seresnext101.pseudo.512x512.log) - Model trained using 512x512 images with pseudo labels. Batch size was set to 32 for this training.
 
 ## Experiments
 
