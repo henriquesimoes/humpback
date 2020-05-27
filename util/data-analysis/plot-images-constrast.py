@@ -1,7 +1,11 @@
+import os, glob
+import argparse
+
+from tqdm import tqdm
+
 from PIL import Image
 from matplotlib import pyplot as plt
-import sys, os, glob
-from tqdm import tqdm
+import pandas as pd
 import numpy as np
 
 def contrast(img):
@@ -11,29 +15,40 @@ def contrast(img):
 
    return pxs.std(axis=(0,1,2))
 
-if __name__ == '__main__':
-   if len(sys.argv) < 2:
-      print("Usage: python3 {} folder [filename]".format(__file__))
-      sys.exit(0)
+def get_config():
+   ap = argparse.ArgumentParser()
 
-   folder = sys.argv[1]
+   ap.add_argument("--folder", required=True, help="Input image folder")
+   ap.add_argument("--plot_output", default="plot.png", help="Output plot filename")
+   ap.add_argument("--raw_output", default="raw.csv", help="Raw data filename")
 
-   if not os.path.isdir(folder):
-      print("{} is not a dir...".format(folder))
-      sys.exit(1)
+   return ap.parse_args()
 
-   out_filename = sys.argv[2] if len(sys.argv) == 3 else 'plot.png'
+def save_raw(filenames, contrasts, output):
+   df = pd.DataFrame({'Image': filenames, 'Contrast': contrasts}).set_index('Image')
+
+   df.describe()
+
+   df.to_csv(output)
+
+def main():
+   config = get_config()
 
    x = []
+   images = []
 
    print("Calculating images contrast...")
 
-   for filename in tqdm(glob.glob(folder + '/*.*'), ascii=True, desc="Images processed"):
+   for filename in tqdm(glob.glob(config.folder + '/*.*'), ascii=True, desc="Images processed"):
       figure = Image.open(filename)
 
+      images.append(os.path.basename(filename))
       x.append(contrast(figure))
 
       figure.close()
+
+   print("Saving contrast raw data at {}...".format(config.raw_output))
+   save_raw(images, x, config.raw_output)
 
    print("Making plot... ", end="")
 
@@ -43,6 +58,9 @@ if __name__ == '__main__':
 
    print("done.")
 
-   print("Saving plot at {}".format(out_filename))
+   print("Saving plot at {}".format(config.plot_output))
 
-   plt.savefig(out_filename, bbox_inches='tight')
+   plt.savefig(config.plot_output, bbox_inches='tight')
+
+if __name__ == '__main__':
+   main()
