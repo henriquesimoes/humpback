@@ -85,11 +85,19 @@ window.onload = function() {
 	options: {
 	    scales: {
 		yAxes: [{
+		    scaleLabel: {
+			labelString: "Height",
+			display: true}
+		    ,
 		    ticks: {
 			min: 0
 		    }
 		}],
 		xAxes: [{
+		    scaleLabel: {
+			labelString: "Width",
+			display: true}
+		    ,
 		    ticks: {
 			min: 0
 		    }
