@@ -1,0 +1,5 @@
+Dataset,Colored,Frequency
+train,True,17091
+train,False,8270
+test,True,5871
+test,False,2089
