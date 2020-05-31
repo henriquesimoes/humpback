@@ -1,4 +1,9 @@
 # ignore dataset images files
 
-data/**/*.png
-data/**/*.jpg
+data/
+
+# ignore utilitary generated images
+util/**/*.png
+util/**/*.jpg
+
+sketch-tool/

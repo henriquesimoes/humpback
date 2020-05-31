@@ -24,7 +24,7 @@ original = np.array(Image.fromarray(original).resize((512, 256)))
 image = original.copy()
 
 seq = iaa.Sequential([
-  iaa.PerspectiveTransform(scale=(0.15, 0.15), keep_size=False)
+  iaa.PerspectiveTransform(scale=(0.01, 0.1))
 ])
 
 image = seq.augment_image(image)
