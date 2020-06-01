@@ -5,6 +5,7 @@
     <meta charset="utf-8"/>
     <title>Humpback</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script src="https://unpkg.com/papaparse@latest/papaparse.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="main.js"></script>
   </head>
@@ -12,6 +13,13 @@
   <body>
 
     <h1>Humpback Charts</h1>
+
+    <div>
+      <input id="dummyCheckbox" type="checkbox" checked>
+      <label for="dummyCheckbox">Use dummy data</label>
+      <p>Note that using the real data might take a while for loading for the first time.</p>
+      <p>Moreover, a localhost needs to be configured in this folder. For more details on how to configure it, take a look at <a href="README.md">README file</a>.</p>
+    </div>
 
     <h2>Image Color</h2>
     
