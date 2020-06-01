@@ -128,8 +128,6 @@ function processSizes(csv) {
 		for (row of parsed.data) {
 			let freq = parseInt(row.Frequency);
 			if (!freq) continue;
-
-			if (freq > 100) continue; 
 		
 			maxFreq = maxFreq < freq ? freq : maxFreq;
 
