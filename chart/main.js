@@ -240,7 +240,7 @@ async function loadData(callback) {
 		loaded: false,
 	};
 
-	window.data = window.dummy;
+	window.data = Object.assign({}, window.dummy);
 
 	for (type in data) {
 		let responses = [];
