@@ -16,6 +16,7 @@ The files are distributed across several folders which are described next.
 - [docs][11]: Written content produced while working on this project.
 - [util][12]: All the executables created to process data related to the project.
 - [solutions][13]: Solutions developed by the analysed candidates
+- [chart][14]: Charts created for analyzing the data
 
 
 [1]: http://lattes.cnpq.br/2364440352119569
@@ -28,3 +29,4 @@ The files are distributed across several folders which are described next.
 [11]: ./docs
 [12]: ./util
 [13]: ./solutions
+[14]: ./chart
