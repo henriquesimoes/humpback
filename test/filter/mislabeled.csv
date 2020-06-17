@@ -1,0 +1,11 @@
+Group,Id,Images,Description
+group_0000,,f93a2f4ef.jpg 721a359d6.jpg,
+group_0001,,035159746.jpg 7956c4e99.jpg,same whale (officially confirmed)
+group_0002,,b812a5dd2.jpg 038ffb4ad.jpg,different whales (officially confirmed)
+group_0003,w_85d9229,,different whales from the same class
+group_0004,w_2f94559,,problematic class
+group_0005,ae5b52ae0.w_3a2686e.jpg,mislabeled
+group_0006,53293c1ea.w_6cda039.jpg,mislabeled
+group_0007,a3075f7a3.w_6cda039.jpg,mislabeled
+group_0008,b142d0dd4.w_6cda039.jpg,mislabeled
+group_0009,84cf18c7e.w_6e85f95.jpg,mislabeled
