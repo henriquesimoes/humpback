@@ -4,7 +4,7 @@ Image,Id,Status
 091f2dc00.jpg,w_492d9c5,new
 fdfb3c46f.jpg,w_88e4537,new
 e30b35423.jpg,w_003bae6,new
-a2187a170.jpg,w_0e7ec27,hard
+a2187a170.jpg,w_0e7ec27,not_new
 769550e74.jpg,w_3879fa0,new
 f7f3eea45.jpg,w_5c4c166,not_new
 ff33d9236.jpg,w_4661aac,new
@@ -42,7 +42,7 @@ e5692b3d5.jpg,w_7ffc63c,not_new
 333550dad.jpg,w_700ebb4,new
 08845a4b2.jpg,w_e966f36,new
 d7e38b193.jpg,w_22e82fa,not_new
-b4b83e4db.jpg,w_2cabd62,hard
+b4b83e4db.jpg,w_2cabd62,not_new
 f146f21da.jpg,w_f812227,not_new
 4b1315993.jpg,w_2d0cfc1,not_new
 d3639b3e5.jpg,w_a190a88,new
@@ -111,11 +111,11 @@ b30700a63.jpg,w_52b60a6,not_new
 f32f0e82f.jpg,w_6279534,new
 5cdcbddef.jpg,w_89f521e,new
 4e6b14de8.jpg,w_67a9841,not_new
-97bb7c38e.jpg,w_d5d111d,hard
+97bb7c38e.jpg,w_d5d111d,new
 c56f97c9a.jpg,w_5f31117,new
 837881d3f.jpg,w_fccccec,not_new
 6536b8895.jpg,w_007fefa,new
-d86d4d0ba.jpg,w_e1f57e7,hard
+d86d4d0ba.jpg,w_e1f57e7,new
 31c5b7f20.jpg,w_80f481f,not_new
 fe63bf806.jpg,w_22cdc5f,not_new
 02e548fa4.jpg,w_5a8902d,not_new
@@ -164,7 +164,7 @@ c3bbff5ff.jpg,w_0135f5f,new
 e38e7e48e.jpg,w_72f3685,new
 d6eae56fe.jpg,w_09de1a5,new
 86497d0ab.jpg,w_520731e,not_new
-59b4167ff.jpg,w_ad88c85,hard
+59b4167ff.jpg,w_ad88c85,new
 d102de015.jpg,w_fbf7d73,not_new
 7cac9608c.jpg,w_463f219,not_new
 5caf4d7e0.jpg,w_a190a88,new
@@ -199,14 +199,14 @@ d870f0e67.jpg,w_2df85e7,new
 4ed631be2.jpg,w_3283995,not_new
 b5ac7b7a4.jpg,w_835a1eb,new
 cf21581c7.jpg,w_6822dbc,not_new
-2dbdc9bdd.jpg,w_9ce3725,hard
+2dbdc9bdd.jpg,w_9ce3725,new
 6da62fc4e.jpg,w_6823268,new
 99a95026a.jpg,w_8d4c9f7,new
 0f77c3fc1.jpg,w_26c0ffd,not_new
 48f9e6286.jpg,w_c16cb2c,new
 cf4438886.jpg,w_faad3f8,not_new
 6555bf506.jpg,w_e4a9205,not_new
-cbfb37300.jpg,w_857cb95,hard
+cbfb37300.jpg,w_857cb95,new
 e561f3e73.jpg,w_dc651ad,new
 2223fbf22.jpg,w_a2f8488,new
 731a0ba90.jpg,w_1d830c2,not_new
@@ -243,7 +243,7 @@ d3a727826.jpg,w_753d66c,not_new
 3b0f872a6.jpg,w_76065ea,new
 ad5da6644.jpg,w_a9304b9,new
 24310205b.jpg,w_55b77ce,new
-d4cb9d6e4.jpg,w_3879fa0,hard
+d4cb9d6e4.jpg,w_3879fa0,new
 d4176de3f.jpg,w_dea40e2,new
 42cc827e7.jpg,w_20950a9,new
 a255b1c53.jpg,w_698fcbe,not_new
@@ -262,7 +262,7 @@ d105fb350.jpg,w_5d1b1a7,new
 c0099d04f.jpg,w_b54f70f,new
 c2e26b812.jpg,w_2365d55,not_new
 367bb9fa7.jpg,w_1ecca2d,new
-d34b500ed.jpg,w_502e72f,hard
+d34b500ed.jpg,w_502e72f,new
 88ecba1cf.jpg,w_3a63e33,new
 94d694054.jpg,w_f94039d,not_new
 29462f6d6.jpg,w_729290b,not_new
@@ -303,10 +303,10 @@ a8cee56af.jpg,w_28218e1,new
 81ff079fa.jpg,w_25f1a4e,new
 0264bd4b5.jpg,w_1995d15,new
 78edaa5aa.jpg,w_20930e7,not_new
-dd3ad7c90.jpg,w_a9304b9,hard
+dd3ad7c90.jpg,w_a9304b9,new
 758c83de0.jpg,w_06ffb30,new
 c0c480eb8.jpg,w_8cfabed,new
-006506edf.jpg,w_7c27fbd,hard
+006506edf.jpg,w_7c27fbd,not_new
 5390152f0.jpg,w_1e283bb,new
 a6caf4a89.jpg,w_c2397a4,new
 a7d0099ef.jpg,w_97074d8,new
@@ -314,7 +314,7 @@ a7d0099ef.jpg,w_97074d8,new
 55085b399.jpg,w_749dffd,not_new
 ce6750708.jpg,w_972e51e,new
 9d7ddb959.jpg,w_b3cfa1d,not_new
-7afbbce34.jpg,w_bdb0a25,hard
+7afbbce34.jpg,w_bdb0a25,new
 f4bcadaa2.jpg,w_8cfabed,new
 f55f8ffab.jpg,w_242fb46,new
 3626c328e.jpg,w_29e87c9,not_new
@@ -348,7 +348,7 @@ e02815a4f.jpg,w_2f1488c,not_new
 c86f5b246.jpg,w_72f3685,new
 963e79d31.jpg,w_1029215,not_new
 b68873204.jpg,w_ad343a6,new
-5f759afee.jpg,w_a190a88,hard
+5f759afee.jpg,w_a190a88,new
 9fbc3eb0c.jpg,w_9aa9809,not_new
 e8d9d575d.jpg,w_57aeea3,new
 f8a3c1402.jpg,w_5871dfd,new
