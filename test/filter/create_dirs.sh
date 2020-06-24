@@ -5,7 +5,6 @@ python3 create_dirs_by_id.py \
   --data ../../data/train \
   --duplicates duplicates/possible_duplicates.csv \
   --not-new not-new/possible_not_new.csv \
-  --ignore checked/checked.csv \
   --append-id=True \
   --merge-one-shot=True
 
