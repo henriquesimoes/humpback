@@ -12,7 +12,7 @@ def get_config():
   ap.add_argument("--duplicates", default=None, help="Duplicates CSV file")
   ap.add_argument("--append-id", type=bool, dest="append_id", default=False, help="Append original id to filenames")
   ap.add_argument("--output", default="output", help="Output folder")
-  ap.add_argument("--not-new", dest="not_new", required=True, help="Not new whale CSV file")
+  ap.add_argument("--not-new", dest="not_new", default=None, help="Not new whale CSV file")
   ap.add_argument("--ignore", default=None, help="Classes to ignore CSV file")
   ap.add_argument("--merge-one-shot", type=bool, default=False, dest="merge_one_shot", help="Aggregate one shot classes into a single folder")
 
@@ -40,6 +40,9 @@ def merge_duplicates(label_df, duplicate_df):
   return result
 
 def merge_not_new(id_dict, not_new_df):
+  if not_new_df is None:
+    return id_dict
+
   for image, row in not_new_df.iterrows():
     id_dict[image] = row['Id']
   
@@ -76,7 +79,7 @@ def main():
 
   duplicate_df = pd.read_csv(config.duplicates) if config.duplicates is not None else None
   label_df = pd.read_csv(config.labels).set_index('Image')
-  not_new_df = pd.read_csv(config.not_new).set_index('Image')
+  not_new_df = pd.read_csv(config.not_new).set_index('Image') if config.not_new is not None else None
 
   id_dict = merge_duplicates(label_df, duplicate_df)
   id_dict = merge_not_new(id_dict, not_new_df)
