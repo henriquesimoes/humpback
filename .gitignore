@@ -7,3 +7,6 @@ util/**/*.png
 util/**/*.jpg
 
 sketch-tool/
+
+# ignore python cache
+**/__pycache__
