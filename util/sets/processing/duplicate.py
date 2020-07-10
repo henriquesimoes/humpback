@@ -6,8 +6,8 @@ import pandas as pd
 
 class DuplicateProcessing():
   def __init__(self, images=None, classes=None):
-    self.images_df = pd.read_csv(images) if images is not None else None
-    self.classes_df = pd.read_csv(classes) if classes is not None else None
+    self.df_images = pd.read_csv(images) if images is not None else None
+    self.df_classes = pd.read_csv(classes) if classes is not None else None
 
   def apply(self, df):
     df = self._fix_images(df)
@@ -16,10 +16,10 @@ class DuplicateProcessing():
     return df
 
   def _fix_images(self, df):
-    if self.images_df is None:
+    if self.df_images is None:
       return df
 
-    for idx, row in self.images_df.iterrows():
+    for idx, row in self.df_images.iterrows():
       id = df.loc[row['Remove']]['Id']
 
       if df.loc[row['Keep']]['Id'] is not 'new_whale':
@@ -31,10 +31,10 @@ class DuplicateProcessing():
     return df
 
   def _fix_classes(self, df):
-    if self.classes_df is not None:
-      filter_df = self.classes_df[self.classes_df['Veredict'] == True]
+    if self.df_classes is not None:
+      df_filter = self.df_classes[self.df_classes['Veredict'] == True]
 
-      for idx, row in filter_df.iterrows():
+      for idx, row in df_filter.iterrows():
         classes = row['Duplicates'].split()
         representant = classes[0]
 
@@ -49,7 +49,7 @@ def test_duplicate_images():
   other = ['other.jpg']
   keep = ['keep.jpg']
   remove = ['remove.jpg']
-  duplicate.images_df = pd.DataFrame({'Keep': keep, 'Remove': remove})
+  duplicate.dfimages = pd.DataFrame({'Keep': keep, 'Remove': remove})
 
   df = pd.DataFrame({'Image' : keep + other + remove, 'Id': ['new_whale'] + list('bc')})
   df = df.set_index('Image')
@@ -73,7 +73,7 @@ def test_duplicate_classes():
     'Veredict': [True, False, True]
   }
 
-  duplicate.classes_df = pd.DataFrame(duplicate_dict)
+  duplicate.df_classes = pd.DataFrame(duplicate_dict)
 
   df = pd.DataFrame({
     'Image': list('abcdefghijklmnopqrstu'),

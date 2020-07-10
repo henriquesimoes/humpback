@@ -15,13 +15,13 @@ class IgnoreProcessing():
       frames.append(pd.read_csv(file))
 
     if len(frames) > 0:
-      self.filter_df = pd.concat(frames).set_index('Image')
+      self.df_filter = pd.concat(frames).set_index('Image')
     else:
-      self.filter_df = None
+      self.df_filter = None
 
   def apply(self, df):
-    if self.filter_df is not None:
-      df = df.drop(self.filter_df.index, errors='ignore')
+    if self.df_filter is not None:
+      df = df.drop(self.df_filter.index, errors='ignore')
 
     return df
 
@@ -33,7 +33,7 @@ if __name__ == "__main__":
 
   ignore = IgnoreProcessing()
 
-  ignore.filter_df = pd.DataFrame({'Image': remove}).set_index('Image')
+  ignore.df_filter = pd.DataFrame({'Image': remove}).set_index('Image')
 
   assert len(df) == 4
 
