@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import os
 import pandas as pd
 import argparse
 
@@ -19,6 +20,9 @@ def get_config():
   ap.add_argument("--not-new", type=str, dest="not_new", default=None, help="candidate images to be not new with the veridict column (CSV file)")
   ap.add_argument("--mislabeled", type=str, default=None, help="mislabeled images with the correct label (CSV file)")
   ap.add_argument("--new-groups", type=str, default=None, help="images to be assigned with a new id (CSV file)")
+
+  ap.add_argument("--tests", type=int, default=5, help="set total number of tests to be created")
+  ap.add_argument("--test_percentage", type=float, dest="test_p", default=.2, help="set test dataset proportion")
 
   ap.add_argument("--output", type=str, default="sets", help="set output folder")
 
@@ -47,9 +51,22 @@ def get_dataframe(config):
 def main():
   config = get_config()
 
-  df, hard_df = get_dataframe(config)
+  df, df_hard = get_dataframe(config)
 
-  for 
+  builder = DatasetBuilder(df_standard=df, df_hard=df_hard, test_percentage=config.test_p)
+
+  outdir = os.path.join(config.output, "test#{}")
+
+  for i in range(config.tests):
+    folder = outdir.format(i + 1)
+    df_train, df_test = builder.build()
+
+    os.makedirs(folder, exist_ok=True)
+    df_train.to_csv(os.path.join(folder, "train.csv"))
+    df_test.to_csv(os.path.join(folder, "test.csv"))
+
+  print('{} tests created on {}...'.format(config.tests, config.output))
+
 
 if __name__ == "__main__":
   main()
