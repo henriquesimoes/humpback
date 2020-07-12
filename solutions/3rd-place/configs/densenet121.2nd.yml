@@ -17,7 +17,8 @@ model:
 
 train:
   dir: './train_logs/densenet121.2nd'
-  batch_size: 32
+  # batch_size: 32
+  batch_size: 96
   log_step: 2
   save_checkpoint_epoch: 2
   num_epochs: 500
