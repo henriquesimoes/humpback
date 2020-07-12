@@ -14,7 +14,5 @@ class DatasetBuilder():
     df_test = self.df.sample(frac=self.test_p)
     df_train = self.df[~self.df.index.isin(df_test.index)]
 
-    df_test = pd.concat([df_test, self.df_hard])
-
     return df_train, df_test
 

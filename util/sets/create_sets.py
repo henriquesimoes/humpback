@@ -41,10 +41,17 @@ def get_dataframe(config):
   df = duplicate.apply(df)
   df = ignore.apply(df)
 
+  print('number of classes:', len(df[df['Id'] != 'new_whale']['Id'].unique()))
+
   df_standard = hard.apply(df)
   df_hard = df[~df.index.isin(df_standard.index)]
 
   assert len(df_hard) + len(df_standard) == len(df)
+
+  print('standard examples:', len(df_standard))
+  print('hard examples:', len(df_hard))
+  print('total examples:', len(df))
+  print('new whales:', len(df[df['Id'] == 'new_whale']), end='\n\n')
 
   return df_standard, df_hard
 
@@ -57,15 +64,22 @@ def main():
 
   outdir = os.path.join(config.output, "test#{}")
 
+  df_hard.to_csv(os.path.join(config.output, "hard.csv"))
+
   for i in range(config.tests):
     folder = outdir.format(i + 1)
     df_train, df_test = builder.build()
+
+    print(f'Stats test #{i + 1}:')
+    print(f'\ttrain dataset: {len(df_train)} ({len(df_train) / (len(df_train) + len(df_test))})')
+    print(f'\ttest dataset: {len(df_test)} ({len(df_test) / (len(df_train) + len(df_test))})')
+    print()
 
     os.makedirs(folder, exist_ok=True)
     df_train.to_csv(os.path.join(folder, "train.csv"))
     df_test.to_csv(os.path.join(folder, "test.csv"))
 
-  print('{} tests created on {}...'.format(config.tests, config.output))
+  print('{} tests created on `{}` folder...'.format(config.tests, config.output))
 
 
 if __name__ == "__main__":
