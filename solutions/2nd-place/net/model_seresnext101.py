@@ -1,6 +1,6 @@
-from imagenet_pretrain_model.senet import *
+from .imagenet_pretrain_model.senet import *
 # from utils import *
-from MagrinLinear import *
+from .MagrinLinear import *
 BatchNorm2d = nn.BatchNorm2d
 
 ###########################################################################################3

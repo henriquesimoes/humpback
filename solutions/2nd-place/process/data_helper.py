@@ -2,10 +2,10 @@ from include import *
 import pandas as pd
 from process.augmentation import *
 
-PJ_DIR = r'/data1/shentao/Projects/Kaggle_Whale2019_2nd_place_solution'
-train_df = pd.read_csv('/data1/shentao/DATA/competitions/whale/train.csv')
-TRN_IMGS_DIR = '/data1/shentao/DATA/competitions/whale/train/'
-TST_IMGS_DIR = '/data1/shentao/DATA/competitions/whale/test/'
+PJ_DIR = r'/solutions/2nd-place/'
+train_df = pd.read_csv('/dataset/train.csv')
+TRN_IMGS_DIR = '/dataset/train/'
+TST_IMGS_DIR = '/dataset/test/'
 LIST_DIR = PJ_DIR + r'/image_list'
 
 def load_label_dict(label_list_path):

@@ -1,4 +1,5 @@
-# Ignore Python cache
+# Ignore Python cache and bytecodes
 
 **/__pycache__/
+**/*.pyc
 

@@ -470,7 +470,7 @@ if __name__ == '__main__':
     parser.add_argument('--softmax_w', type=float, default=0.1)
     parser.add_argument('--triplet_w', type=float, default=1.0)
 
-    parser.add_argument('--is_pseudo', type=bool, default=True)
+    parser.add_argument('--is_pseudo', type=bool, default=False) # [Modified]: default=True
 
     # parser.add_argument('--mode', type=str, default='train', choices=['train', 'test'])
     # parser.add_argument('--pretrained_model', type=str, default=None)
