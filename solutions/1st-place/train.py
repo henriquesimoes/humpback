@@ -9,8 +9,6 @@ import time
 from utils import *
 from torch.nn.parallel.data_parallel import data_parallel
 
-
-
 def train_collate(batch):
 
     batch_size = len(batch)
@@ -42,7 +40,8 @@ def valid_collate(batch):
     images = torch.stack(images, 0)
     labels = torch.from_numpy(np.array(labels))
     return images, labels, names
-def transform_train(image, mask, label):
+
+def transform_train(image, mask, label, num_classes=5004):
     add_ = 0
     image = cv2.resize(image, (512, 256))
     mask = cv2.resize(mask, (512, 256))
@@ -57,7 +56,7 @@ def transform_train(image, mask, label):
         if random.random() < 0.5:
             image = np.fliplr(image)
             if not label == 'new_whale':
-                add_ += 5004
+                add_ += num_classes
         image, mask = image[:,:,:3], image[:,:, 3]
     if random.random() < 0.5:
         image, mask = random_angle_rotate(image, mask, angles=(-25, 25))
@@ -129,7 +128,7 @@ def eval(model, dataLoader_valid):
             feature, local_feat, results = data_parallel(model, images)
             model.getLoss(feature[::2], local_feat[::2], results[::2], labels)
             results = torch.sigmoid(results)
-            results_zeros = (results[::2, :5004] + results[1::2, 5004:])/2
+            results_zeros = (results[::2, :model.num_classes // 2] + results[1::2, model.num_classes // 2:])/2
             all_results.append(results_zeros)
             all_labels.append(labels)
             b = len(labels)
@@ -142,7 +141,7 @@ def eval(model, dataLoader_valid):
             ts = np.linspace(0.1, 0.9, 9)
             for t in ts:
                 results_t = torch.cat([all_results, torch.ones_like(all_results[:, :1]).float().cuda() * t], 1)
-                all_labels[all_labels == 5004 * 2] = 5004
+                all_labels[all_labels == model.num_classes] = model.num_classes // 2
                 top1_, top5_ = accuracy(results_t, all_labels)
                 map5_ = mapk(all_labels, results_t, k=5)
                 map5s.append(map5_)
@@ -157,9 +156,8 @@ def eval(model, dataLoader_valid):
         valid_loss /= index_valid
         return valid_loss, top1, top5, map5, best_t
 
-def train(freeze=False, fold_index=1, model_name='seresnext50',min_num_class=10, checkPoint_start=0, lr=3e-4, batch_size=36):
-    num_classes = 5004 * 2
-    model = model_whale(num_classes=num_classes, inchannels=4, model_name=model_name).cuda()
+def train(freeze=False, fold_index=1, model_name='seresnext50', num_classes=5004, min_num_class=10, checkPoint_start=0, lr=3e-4, batch_size=36):
+    model = model_whale(num_classes=num_classes * 2, inchannels=4, model_name=model_name).cuda()
     i = 0
     iter_smooth = 50
     iter_valid = 200
@@ -358,6 +356,14 @@ if __name__ == '__main__':
         #
         ## result: test.4.4.2.log
 
+        freeze = False
+        fold_index = 1
+        min_num_class = 10
+        checkPoint_start = 0
+        lr = 3e-4
+        batch_size = 1
+        num_classes = 4887
+
         # print(5005%batch_size)
 
-        train(freeze, fold_index, model_name, min_num_class, checkPoint_start, lr, batch_size)
+        train(freeze, fold_index, model_name, num_classes, min_num_class, checkPoint_start, lr, batch_size)

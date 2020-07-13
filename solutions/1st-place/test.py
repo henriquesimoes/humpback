@@ -51,15 +51,15 @@ def transform(image, mask):
 
 
 
-def test(checkPoint_start=0, fold_index=1, model_name='senet154'):
+def test(checkPoint_start=0, fold_index=1, model_name='senet154', num_classes=5004):
     names_test = os.listdir('./input/test')
     batch_size = 16
     dst_test = WhaleTestDataset(names_test, mode='test', transform=transform)
     dataloader_test = DataLoader(dst_test, batch_size=batch_size, num_workers=8, collate_fn=train_collate)
     label_id = dst_test.labels_dict
     id_label = {v:k for k, v in label_id.items()}
-    id_label[5004] = 'new_whale'
-    model = model_whale(num_classes=5004 * 2, inchannels=4, model_name=model_name).cuda()
+    id_label[num_classes] = 'new_whale'
+    model = model_whale(num_classes=num_classes * 2, inchannels=4, model_name=model_name).cuda()
     resultDir = './result/{}_{}'.format(model_name, fold_index)
     checkPoint = os.path.join(resultDir, 'checkpoint')
 
@@ -79,7 +79,7 @@ def test(checkPoint_start=0, fold_index=1, model_name='senet154'):
             images = images.cuda()
             _, _, outs = model(images)
             outs = torch.sigmoid(outs)
-            outs_zero = (outs[::2, :5004] + outs[1::2, 5004:])/2
+            outs_zero = (outs[::2, :num_classes] + outs[1::2, num_classes:])/2
             outs = outs_zero
             for out, name in zip(outs, names):
                 out = torch.cat([out, torch.ones(1).cuda()*best_t], 0)

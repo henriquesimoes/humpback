@@ -6,13 +6,12 @@ from models.triplet_loss import *
 from models.utils import *
 import torch.nn.utils.weight_norm as weightNorm
 
-
-
 class model_whale(nn.Module):
     def __init__(self, num_classes=5005, inchannels=3, model_name='resnet34'):
         super().__init__()
         planes = 512
         self.model_name = model_name
+        self.num_classes = num_classes
 
         if model_name == 'xception':
             self.basemodel = xception(True)
@@ -149,16 +148,12 @@ class model_whale(nn.Module):
             for param in self.basemodel.cell_16.parameters(): param.requires_grad = True
             for param in self.basemodel.cell_17.parameters(): param.requires_grad = True
 
-
-
     def getLoss(self, global_feat, local_feat, results,labels):
-        triple_loss = global_loss(TripletLoss(margin=0.3), global_feat, labels)[0] + \
-                      local_loss(TripletLoss(margin=0.3), local_feat, labels)[0]
-        loss_ = sigmoid_loss(results, labels, topk=30)
+        triple_loss = global_loss(TripletLoss(margin=0.3), global_feat, labels, num_classes=self.num_classes // 2)[0] + \
+                      local_loss(TripletLoss(margin=0.3), local_feat, labels, num_classes=self.num_classes // 2)[0]
+        loss_ = sigmoid_loss(results, labels, topk=30, num_classes=self.num_classes // 2)
 
         self.loss = triple_loss + loss_
-
-
 
     def load_pretrain(self, pretrain_file, skip=[]):
         pretrain_state_dict = torch.load(pretrain_file)
@@ -173,7 +168,3 @@ class model_whale(nn.Module):
                 print(key)
 
         self.load_state_dict(state_dict)
-
-
-
-

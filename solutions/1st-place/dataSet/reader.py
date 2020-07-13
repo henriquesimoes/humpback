@@ -8,7 +8,7 @@ import math
 import cv2
 import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader
-BASE_SIZE = 256
+
 def do_length_decode(rle, H=192, W=384, fill_value=255):
     mask = np.zeros((H,W), np.uint8)
     if type(rle).__name__ == 'float': return mask
@@ -72,11 +72,12 @@ class WhaleDataset(Dataset):
     def load_labels(self):
         label = pd.read_csv('./input/label.csv')
         labelName = label['name'].tolist()
+        num_classes = len(label[label['name'] != 'new_whale'])
         dict_label = {}
         id = 0
         for name in labelName:
             if name == 'new_whale':
-                dict_label[name] = 5004 * 2
+                dict_label[name] = num_classes * 2
                 continue
             dict_label[name] = id
             id += 1
@@ -166,11 +167,12 @@ class WhaleTestDataset(Dataset):
     def load_labels(self):
         label = pd.read_csv('./input/label.csv')
         labelName = label['name'].tolist()
+        num_classes = len(label[label['name'] != 'new_whale'])
         dict_label = {}
         id = 0
         for name in labelName:
             if name == 'new_whale':
-                dict_label[name] = 5004 * 2
+                dict_label[name] = num_classes * 2
                 continue
             dict_label[name] = id
             id += 1
@@ -206,7 +208,3 @@ class WhaleTestDataset(Dataset):
             label = self.labels_dict[self.labels[index]]
             image = self.get_image(name, self.transform)
             return image, label, name
-
-
-
-

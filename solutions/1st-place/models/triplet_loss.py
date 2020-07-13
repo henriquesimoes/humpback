@@ -35,7 +35,7 @@ def euclidean_dist(x, y):
     return dist
 
 
-def hard_example_mining(dist_mat, labels, return_inds=False):
+def hard_example_mining(dist_mat, labels, return_inds=False, num_classes=5004):
     """For each anchor, find the hardest positive and negative sample.
     Args:
       dist_mat: pytorch Variable, pair wise distance between samples, shape [N, N]
@@ -57,7 +57,7 @@ def hard_example_mining(dist_mat, labels, return_inds=False):
     N = dist_mat.size(0)
 
     # shape [N, N]
-    new_whale_indexs = (labels == 5004 * 2).nonzero()
+    new_whale_indexs = (labels == num_classes * 2).nonzero()
     is_pos = labels.expand(N, N).eq(labels.expand(N, N).t())
     is_neg = labels.expand(N, N).ne(labels.expand(N, N).t())
     for i in new_whale_indexs:
@@ -282,7 +282,7 @@ def batch_local_dist(x, y):
 
 
 
-def global_loss(tri_loss, global_feat, labels, normalize_feature=False):
+def global_loss(tri_loss, global_feat, labels, normalize_feature=False, num_classes=5004):
     """
     Args:
       tri_loss: a `TripletLoss` object
@@ -311,7 +311,7 @@ def global_loss(tri_loss, global_feat, labels, normalize_feature=False):
     # shape [N, N]
     dist_mat = euclidean_dist(global_feat, global_feat)
     dist_ap, dist_an = hard_example_mining(
-        dist_mat, labels, return_inds=False)
+        dist_mat, labels, return_inds=False, num_classes=num_classes)
     loss = tri_loss(dist_ap, dist_an)
     return loss, dist_ap, dist_an, dist_mat
 
@@ -322,7 +322,8 @@ def local_loss(
         labels=None,
         p_inds=None,
         n_inds=None,
-        normalize_feature=False):
+        normalize_feature=False,
+        num_classes=5004):
     """
     Args:
       tri_loss: a `TripletLoss` object
@@ -355,7 +356,7 @@ def local_loss(
         local_feat = normalize(local_feat, axis=-1)
     if p_inds is None or n_inds is None:
         dist_mat = local_dist(local_feat, local_feat)
-        dist_ap, dist_an = hard_example_mining(dist_mat, labels, return_inds=False)
+        dist_ap, dist_an = hard_example_mining(dist_mat, labels, return_inds=False, num_classes=num_classes)
         loss = tri_loss(dist_ap, dist_an)
         return loss, dist_ap, dist_an, dist_mat
     else:
