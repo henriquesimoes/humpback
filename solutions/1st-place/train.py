@@ -199,12 +199,13 @@ def train(freeze=False, fold_index=1, model_name='seresnext50', num_classes=5004
     batch_loss = 0.0
     train_loss_sum = 0
     train_top1_sum = 0
+    train_top5_sum = 0
     train_map5_sum = 0
     sum = 0
     skips = []
     if not checkPoint_start == 0:
         log.write('  start from{}, l_rate ={} \n'.format(checkPoint_start, lr))
-        log.write('freeze={}, batch_size={}, min_num_class={} \n'.format(freeze,batch_size, min_num_class))
+        log.write('freeze={}, batch_size={}, min_num_class={}, num_classes={} \n'.format(freeze,batch_size, min_num_class, num_classes))
         model.load_pretrain(os.path.join(checkPoint, '%08d_model.pth' % (checkPoint_start)),skip=skips)
         ckp = torch.load(os.path.join(checkPoint, '%08d_optimizer.pth' % (checkPoint_start)))
         optimizer.load_state_dict(ckp['optimizer'])
@@ -212,11 +213,11 @@ def train(freeze=False, fold_index=1, model_name='seresnext50', num_classes=5004
         i = checkPoint_start
         epoch = ckp['epoch']
     log.write(
-            ' rate     iter   epoch  | valid   top@1    top@5    map@5  | '
-            'train    top@1    top@5    map@5 |'
-            ' batch    top@1    top@5    map@5 |  time          \n')
-    log.write(
-            '---------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n')
+            ' lr     iter   epoch  | '
+            'valid_loss    top@1    top@5    map@5  threshold | '
+            'train_loss    top@1    top@5    map@5 | '
+            'batch_loss    top@1    top@5    map@5 |  time          \n')
+    log.write('-' * 170 + '\n')
     start = timer()
 
     start_epoch = epoch
@@ -231,12 +232,14 @@ def train(freeze=False, fold_index=1, model_name='seresnext50', num_classes=5004
                 print('\r', end='', flush=True)
 
                 log.write(
-                    '%0.5f %5.2f k %5.2f  |'
-                    ' %0.3f    %0.3f    %0.3f    %0.4f    %0.4f | %0.3f    %0.3f    %0.3f | %0.3f     %0.3f    %0.3f | %s \n' % ( \
+                    '%0.5f %5.2f k %5.2f  | '
+                    '%0.3f    %3.3f    %3.3f    %0.4f    %0.4f | '
+                    '%0.3f    %3.3f    %3.3f    %0.4f   | '
+                    '%0.3f    %3.3f    %3.3f    %0.4f   | %s \n' % ( \
                         lr, i / 1000, epoch,
                         valid_loss, top1, top5, map5, best_t,
-                        train_loss, top1_train, map5_train,
-                        batch_loss, top1_batch, map5_batch,
+                        train_loss, top1_train, top5_train, map5_train,
+                        batch_loss, top1_batch, top5_batch, map5_batch,
                         time_to_str((timer() - start) / 60)))
                 time.sleep(0.01)
 
@@ -265,39 +268,43 @@ def train(freeze=False, fold_index=1, model_name='seresnext50', num_classes=5004
             torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=5.0, norm_type=2)
             optimizer.step()
             results = torch.cat([torch.sigmoid(results), torch.ones_like(results[:, :1]).float().cuda() * 0.5], 1)
-            top1_batch = accuracy(results, labels, topk=(1,))[0]
+            top1_batch, top5_batch = accuracy(results, labels, topk=(1,5))
             map5_batch = mapk(labels, results, k=5)
 
             batch_loss = batch_loss.data.cpu().numpy()
             sum += 1
             train_loss_sum += batch_loss
             train_top1_sum += top1_batch
+            train_top5_sum += top5_batch
             train_map5_sum += map5_batch
             if (i + 1) % iter_smooth == 0:
                 train_loss = train_loss_sum/sum
                 top1_train = train_top1_sum/sum
+                top5_train = train_top5_sum/sum
                 map5_train = train_map5_sum/sum
                 train_loss_sum = 0
                 train_top1_sum = 0
+                train_top5_sum = 0
                 train_map5_sum = 0
                 sum = 0
 
-            print('\r%0.5f %5.2f k %5.2f  | %0.3f    %0.3f    %0.3f    %0.4f    %0.4f | %0.3f    %0.3f    %0.3f | %0.3f     %0.3f    %0.3f | %s  %d %d' % ( \
-                    lr, i / 1000, epoch,
-                    valid_loss, top1, top5,map5,best_t,
-                    train_loss, top1_train, map5_train,
-                    batch_loss, top1_batch, map5_batch,
-                    time_to_str((timer() - start) / 60), checkPoint_start, i)
+            print('\r%0.5f %5.2f k %5.2f  | '
+                    '%0.3f    %3.3f    %3.3f    %0.4f    %0.4f | '
+                    '%0.3f    %3.3f    %3.3f    %0.4f   | '
+                    '%0.3f    %3.3f    %3.3f    %0.4f   | %s %d %d \n' % ( \
+                        lr, i / 1000, epoch,
+                        valid_loss, top1, top5, map5, best_t,
+                        train_loss, top1_train, top5_train, map5_train,
+                        batch_loss, top1_batch, top5_batch, map5_batch,
+                        time_to_str((timer() - start) / 60), checkPoint_start, i)
                 , end='', flush=True)
             i += 1
-           
+
         pass
 
 
 if __name__ == '__main__':
     if 1:
-        os.environ['CUDA_VISIBLE_DEVICES'] = '0,1,2,3,5'
-
         model_name = 'senet154'
 
         ### First submission
