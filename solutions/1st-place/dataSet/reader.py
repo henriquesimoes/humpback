@@ -70,7 +70,7 @@ class WhaleDataset(Dataset):
         return bbox_dict
 
     def load_labels(self):
-        label = pd.read_csv('./input/label.csv')
+        label = pd.read_csv('./input/new_label.csv')
         labelName = label['name'].tolist()
         num_classes = len(label[label['name'] != 'new_whale'])
         dict_label = {}
@@ -165,7 +165,7 @@ class WhaleTestDataset(Dataset):
         return image
 
     def load_labels(self):
-        label = pd.read_csv('./input/label.csv')
+        label = pd.read_csv('./input/new_label.csv')
         labelName = label['name'].tolist()
         num_classes = len(label[label['name'] != 'new_whale'])
         dict_label = {}
