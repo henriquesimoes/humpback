@@ -1,0 +1,34 @@
+number of classes: 4887
+standard examples: 19967
+	classes: 4353
+	known whales: 13953
+	new whales: 6014
+hard examples: 5328
+	classes: 1441
+	known whales: 1869
+	new whales: 3459
+total examples: 25295
+	classes: 4887
+	known whales: 15822
+	new whales: 9473
+Stats test #1:
+	train dataset: 15974 (0.80002003305454)
+		classes: 3965
+		known whales: 11161
+		new whales: 4813
+	test dataset: 3993 (0.19997996694546)
+		classes: 1747
+		known whales: 2792
+		new whales: 1201
+
+Stats test #2:
+	train dataset: 15974 (0.80002003305454)
+		classes: 3927
+		known whales: 11139
+		new whales: 4835
+	test dataset: 3993 (0.19997996694546)
+		classes: 1805
+		known whales: 2814
+		new whales: 1179
+
+2 tests created on `sets` folder...
