@@ -28,6 +28,11 @@ def get_config():
 
   return ap.parse_args()
 
+def stats(df, start='\t', end='\n'):
+  print(f'{start}classes:', len(df[df['Id'] != 'new_whale']['Id'].unique()))
+  print(f'{start}known whales:', len(df[df['Id'] != 'new_whale']))
+  print(f'{start}new whales:', len(df[df['Id'] == 'new_whale']), end=end)
+
 def get_dataframe(config):
   df = pd.read_csv(config.labels).set_index('Image')
   hard_filters = config.hard.split(',') if config.hard else []
@@ -49,9 +54,11 @@ def get_dataframe(config):
   assert len(df_hard) + len(df_standard) == len(df)
 
   print('standard examples:', len(df_standard))
+  stats(df_standard)
   print('hard examples:', len(df_hard))
+  stats(df_hard)
   print('total examples:', len(df))
-  print('new whales:', len(df[df['Id'] == 'new_whale']), end='\n\n')
+  stats(df)
 
   return df_standard, df_hard
 
@@ -72,8 +79,10 @@ def main():
 
     print(f'Stats test #{i + 1}:')
     print(f'\ttrain dataset: {len(df_train)} ({len(df_train) / (len(df_train) + len(df_test))})')
+    stats(df_train, start='\t\t')
+
     print(f'\ttest dataset: {len(df_test)} ({len(df_test) / (len(df_train) + len(df_test))})')
-    print()
+    stats(df_test, start='\t\t', end='\n\n')
 
     os.makedirs(folder, exist_ok=True)
     df_train.to_csv(os.path.join(folder, "train.csv"))

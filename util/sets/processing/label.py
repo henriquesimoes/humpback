@@ -25,9 +25,7 @@ class LabelProcessing():
       indexes = replace.index.intersection(df.index)
       df.loc[indexes, 'Id'] = replace.loc[indexes, 'Correct']
 
-      # TODO: check whether new ids will be generated or the new_whale class will
-      # be used instead
-
+      # use new_whale instead of generating new id
       indexes = generate.index.intersection(df.index)
       df.loc[indexes, 'Id'] = 'new_whale'
 
@@ -62,8 +60,6 @@ def test_mislabeled():
   for image, correct in zip(*mislabeled.values()):
     if correct is 'new_id':
       assert df.loc[image]['Id'] is 'new_whale'
-      # assert df.loc[image]['Id'] != 'new_id'
-      # assert df.loc[image]['Id'] not in original
     else:
       assert df.loc[image]['Id'] == correct
 
