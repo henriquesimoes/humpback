@@ -22,12 +22,13 @@ def do_length_decode(rle, H=192, W=384, fill_value=255):
     return mask
 
 class WhaleDataset(Dataset):
-    def __init__(self, names, labels=None, mode='train', transform_train=None,  min_num_classes=0):
+    def __init__(self, names, labels=None, mode='train', transform_train=None,  min_num_classes=0, num_classes=5004):
         super(WhaleDataset, self).__init__()
         self.pairs = 2
         self.names = names
         self.labels = labels
         self.mode = mode
+        self.num_classes = num_classes
         self.transform_train = transform_train
         self.labels_dict = self.load_labels()
         self.bbox_dict = self.load_bbox()
@@ -72,12 +73,11 @@ class WhaleDataset(Dataset):
     def load_labels(self):
         label = pd.read_csv('./input/new_label.csv')
         labelName = label['name'].tolist()
-        num_classes = len(label[label['name'] != 'new_whale'])
         dict_label = {}
         id = 0
         for name in labelName:
             if name == 'new_whale':
-                dict_label[name] = num_classes * 2
+                dict_label[name] = self.num_classes * 2
                 continue
             dict_label[name] = id
             id += 1
@@ -108,7 +108,7 @@ class WhaleDataset(Dataset):
             mask = np.zeros_like(image[:,:,0])
         image = image[int(y0):int(y1), int(x0):int(x1)]
         mask = mask[int(y0):int(y1), int(x0):int(x1)]
-        image, add_ = transform(image, mask, label)
+        image, add_ = transform(image, mask, label, num_classes=self.num_classes)
         return image, add_
 
     def __getitem__(self, index):
@@ -167,12 +167,11 @@ class WhaleTestDataset(Dataset):
     def load_labels(self):
         label = pd.read_csv('./input/new_label.csv')
         labelName = label['name'].tolist()
-        num_classes = len(label[label['name'] != 'new_whale'])
         dict_label = {}
         id = 0
         for name in labelName:
             if name == 'new_whale':
-                dict_label[name] = num_classes * 2
+                dict_label[name] = self.num_classes * 2
                 continue
             dict_label[name] = id
             id += 1

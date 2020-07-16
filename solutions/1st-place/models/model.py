@@ -151,7 +151,7 @@ class model_whale(nn.Module):
     def getLoss(self, global_feat, local_feat, results,labels):
         triple_loss = global_loss(TripletLoss(margin=0.3), global_feat, labels, num_classes=self.num_classes // 2)[0] + \
                       local_loss(TripletLoss(margin=0.3), local_feat, labels, num_classes=self.num_classes // 2)[0]
-        loss_ = sigmoid_loss(results, labels, topk=30, num_classes=self.num_classes // 2)
+        loss_ = sigmoid_loss(results, labels, topk=30)
 
         self.loss = triple_loss + loss_
 
