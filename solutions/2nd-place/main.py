@@ -6,7 +6,7 @@ from process.data import *
 from process.triplet_sampler import *
 from loss.loss import  softmax_loss, TripletLoss, focal_OHEM
 
-whale_id_num = 5004
+whale_id_num = 4887
 class_num = whale_id_num * 2
 
 def get_model(model, config):

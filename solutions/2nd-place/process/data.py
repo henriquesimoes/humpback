@@ -2,6 +2,7 @@ from process.data_helper import *
 
 TRAIN_DF  = []
 TEST_DF   = []
+NUM_CLASSES = 4887
 
 class WhaleDataset(Dataset):
     def __init__(self, mode, fold_index='<NIL>', image_size=(128,256),
@@ -98,7 +99,7 @@ class WhaleDataset(Dataset):
                 return None,label,None
 
             if index >= len(self.train_list):
-                label += 5004
+                label += NUM_CLASSES
 
             return None,label,None
 
@@ -161,7 +162,7 @@ class WhaleDataset(Dataset):
             elif index >= len(self.train_list):
                 seq = iaa.Sequential([iaa.Fliplr(1.0)])
                 image = seq.augment_image(image)
-                label += 5004
+                label += NUM_CLASSES
 
         elif self.mode == 'val':
             image = aug_image(image, is_infer=True,augment=self.augment)
@@ -171,7 +172,7 @@ class WhaleDataset(Dataset):
                 image = seq.augment_image(image)
 
                 if label != -1:
-                    label += 5004
+                    label += NUM_CLASSES
 
         image = np.transpose(image, (2, 0, 1))
         image = image.astype(np.float32)

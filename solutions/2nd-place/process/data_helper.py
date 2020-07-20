@@ -8,6 +8,8 @@ TRN_IMGS_DIR = '/dataset/train/'
 TST_IMGS_DIR = '/dataset/test/'
 LIST_DIR = PJ_DIR + r'/image_list'
 
+NUM_CLASSES = 4887
+
 def load_label_dict(label_list_path):
     f = open(label_list_path, 'r')
     lines = f.readlines()
@@ -131,7 +133,7 @@ def load_CLASS_NAME():
         index = int(line[1])
 
         if index == -1:
-            index = 5004
+            index = NUM_CLASSES
 
         label_dict[index] = id
         id_dict[id] = index
