@@ -136,11 +136,12 @@ class WhaleDataset(Dataset):
 
 
 class WhaleTestDataset(Dataset):
-    def __init__(self, names, labels=None, mode='test',transform=None):
+    def __init__(self, names, labels=None, mode='test',transform=None, num_classes=5004):
         super(WhaleTestDataset, self).__init__()
         self.names = names
         self.labels = labels
         self.mode = mode
+        self.num_classes = num_classes
         self.bbox_dict = self.load_bbox()
         self.labels_dict = self.load_labels()
         self.rle_masks = self.load_mask()
