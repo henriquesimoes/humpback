@@ -363,14 +363,86 @@ if __name__ == '__main__':
         #
         ## result: test.4.4.2.log
 
-        freeze = False
-        fold_index = 1
-        min_num_class = 10
-        checkPoint_start = 0
-        lr = 3e-4
-        batch_size = 1
-        num_classes = 4887
 
-        # print(5005%batch_size)
+        #### Our tests
+        num_classes = 4887
+        #
+        ### Test #1 - 1st attempt
+        #
+        ## step 1
+        # freeze = False
+        # fold_index = 6
+        # min_num_class = 10
+        # checkPoint_start = 0
+        # lr = 3e-4
+        # batch_size = 2
+        #
+        ## step 2
+        # freeze = True
+        # fold_index = 6
+        # min_num_class = 0
+        # checkPoint_start = 22200
+        # lr = 3e-4
+        # batch_size = 3
+        #
+        ## step 3
+        # freeze = True
+        # fold_index = 6
+        # min_num_class = 0
+        # checkPoint_start = 56600
+        # lr = 3e-5
+        # batch_size = 3
+        #
+        ### Test #1 - 2nd attempt
+        #
+        ## step 1
+        # freeze = False
+        # fold_index = 6
+        # min_num_class = 10
+        # checkPoint_start = 0
+        # lr = 3e-4
+        # batch_size = 2
+        #
+        ## step 2
+        #
+        # freeze = True
+        # fold_index = 6
+        # min_num_class = 0
+        # checkPoint_start = 46200
+        # lr = 3e-4
+        # batch_size = 3
+        #
+        ## step 3
+        #
+        # not done
+        #
+        ### Test #2
+        #
+        ## step 1
+        #
+        # freeze = False
+        # fold_index = 7
+        # min_num_class = 10
+        # checkPoint_start = 0
+        # lr = 3e-4
+        # batch_size = 2
+        #
+        ## step 2
+        #
+        # freeze = True
+        # fold_index = 7
+        # min_num_class = 0
+        # checkPoint_start = 55800
+        # lr = 3e-4
+        # batch_size = 3
+        #
+        ## step 3
+        # freeze = True
+        # fold_index = 7
+        # min_num_class = 0
+        # checkPoint_start = 106200
+        # lr = 3e-5
+        # batch_size = 3
+        #
 
         train(freeze, fold_index, model_name, num_classes, min_num_class, checkPoint_start, lr, batch_size)
