@@ -93,37 +93,35 @@ def softmax_loss(results, labels):
     loss = F.cross_entropy(results, labels, reduce=True)
     return loss
 
-def focal_loss(input, target, OHEM_percent=None):
+def focal_loss(input, target, OHEM_n=None):
     gamma = 2
     assert target.size() == input.size()
-    class_num = input.shape[1]
 
     max_val = (-input).clamp(min=0)
     loss = input - input * target + max_val + ((-max_val).exp() + (-input - max_val).exp()).log()
     invprobs = F.logsigmoid(-input * (target * 2 - 1))
     loss = (invprobs * gamma).exp() * loss
 
-    if OHEM_percent is None:
+    if OHEM_n is None:
         return loss.mean()
     else:
-        OHEM, _ = loss.topk(k=int(class_num * OHEM_percent), dim=1, largest=True, sorted=True)
+        OHEM, _ = loss.topk(k=OHEM_n, dim=1, largest=True, sorted=True)
         return OHEM.mean()
 
-def bce_loss(input, target, OHEM_percent=None):
-    class_num = input.shape[1]
-    if OHEM_percent is None:
+def bce_loss(input, target, OHEM_n=None):
+    if OHEM_n is None:
         loss = F.binary_cross_entropy_with_logits(input, target, reduce=True)
         return loss
     else:
         loss = F.binary_cross_entropy_with_logits(input, target, reduce=False)
-        value, index= loss.topk(int(class_num * OHEM_percent), dim=1, largest=True, sorted=True)
+        value, index= loss.topk(OHEM_n, dim=1, largest=True, sorted=True)
         return value.mean()
 
 def focal_OHEM(results, labels, labels_onehot, OHEM_percent=100):
     batch_size, class_num = results.shape
     labels = labels.view(-1)
-    loss0 = bce_loss(results, labels_onehot, OHEM_percent)
-    loss1 = focal_loss(results, labels_onehot, OHEM_percent)
+    loss0 = bce_loss(results, labels_onehot, int(OHEM_percent * class_num))
+    loss1 = focal_loss(results, labels_onehot, int(OHEM_percent * class_num))
     indexs_ = (labels != class_num).nonzero().view(-1)
     if len(indexs_) == 0:
         return loss0 + loss1

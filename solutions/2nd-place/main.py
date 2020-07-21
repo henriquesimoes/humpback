@@ -118,10 +118,10 @@ def run_train(config):
 
     ## setup  -----------------------------------------------------------------------------
     if config.is_pseudo:
-        config.model_name = config.model + '_fold' + str(config.fold_index) + '_pseudo'\
+        config.model_name = config.model + '_test' + str(config.fold_index) + '_pseudo'\
                             '_' + str(config.image_h) + '_' + str(config.image_w)
     else:
-        config.model_name = config.model + '_fold' + str(config.fold_index) + \
+        config.model_name = config.model + '_test' + str(config.fold_index) + \
                             '_'+str(config.image_h)+ '_'+str(config.image_w)
 
     out_dir = os.path.join('./models/', config.model_name)
@@ -139,11 +139,11 @@ def run_train(config):
     else:
         initial_checkpoint = None
 
-    train_dataset = WhaleDataset('train', fold_index=config.fold_index, image_size=image_size,is_pseudo=config.is_pseudo)
+    train_dataset = WhaleDataset('train', test_index=config.fold_index, image_size=image_size,is_pseudo=config.is_pseudo)
 
-    train_list = WhaleDataset('train_list', fold_index=config.fold_index, image_size=image_size, is_pseudo=config.is_pseudo)
+    train_list = WhaleDataset('train_list', test_index=config.fold_index, image_size=image_size, is_pseudo=config.is_pseudo)
 
-    valid_dataset = WhaleDataset('val', fold_index=config.fold_index, image_size=image_size, augment=[0.0], is_flip=False)
+    valid_dataset = WhaleDataset('val', test_index=config.fold_index, image_size=image_size, augment=[0.0], is_flip=False)
 
     valid_loader  = DataLoader(valid_dataset,
                                shuffle = False,
@@ -152,7 +152,7 @@ def run_train(config):
                                num_workers = 16,
                                pin_memory  = True)
 
-    valid_dataset_flip = WhaleDataset('val', fold_index=config.fold_index, image_size=image_size, augment=[0.0], is_flip=True)
+    valid_dataset_flip = WhaleDataset('val', test_index=config.fold_index, image_size=image_size, augment=[0.0], is_flip=True)
 
     valid_loader_flip  = DataLoader(valid_dataset_flip,
                                     shuffle = False,
@@ -373,7 +373,7 @@ def run_infer(config):
     net = net.cuda()
     net.eval()
 
-    valid_dataset = WhaleDataset('val', fold_index=0,
+    valid_dataset = WhaleDataset('val', test_index=config.fold_index,
                                  image_size=image_size,
                                  augment=[0.0],
                                  is_flip=False)
@@ -385,7 +385,7 @@ def run_infer(config):
                                num_workers = 8,
                                pin_memory  = True)
 
-    valid_dataset_flip = WhaleDataset('val', fold_index=0, image_size=image_size,
+    valid_dataset_flip = WhaleDataset('val', test_index=config.fold_index, image_size=image_size,
                                       augment=[0.0],
                                       is_flip=True)
 
@@ -455,7 +455,7 @@ def main(config):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--fold_index', type=int, default = 0)
+    parser.add_argument('--fold_index', type=int, default=1)
     parser.add_argument('--model', type=str, default='resnet101')
     parser.add_argument('--batch_size', type=int, default=128)
 

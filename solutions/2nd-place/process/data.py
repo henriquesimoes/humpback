@@ -34,7 +34,7 @@ class WhaleDataset(Dataset):
     def set_mode(self, mode, test_index):
         self.mode = mode
         self.fold_index = test_index
-        print('fold index set: ', fold_index)
+        print('test index set: ', self.fold_index)
 
         if self.mode == 'train' or self.mode == 'train_list':
             self.train_list = load_train_list(train_image_list_path=f'{LIST_DIR}/test{self.fold_index}.train.txt')
