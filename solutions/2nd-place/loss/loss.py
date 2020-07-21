@@ -96,6 +96,7 @@ def softmax_loss(results, labels):
 def focal_loss(input, target, OHEM_percent=None):
     gamma = 2
     assert target.size() == input.size()
+    class_num = input.shape[1]
 
     max_val = (-input).clamp(min=0)
     loss = input - input * target + max_val + ((-max_val).exp() + (-input - max_val).exp()).log()
@@ -105,16 +106,17 @@ def focal_loss(input, target, OHEM_percent=None):
     if OHEM_percent is None:
         return loss.mean()
     else:
-        OHEM, _ = loss.topk(k=int(10008 * OHEM_percent), dim=1, largest=True, sorted=True)
+        OHEM, _ = loss.topk(k=int(class_num * OHEM_percent), dim=1, largest=True, sorted=True)
         return OHEM.mean()
 
 def bce_loss(input, target, OHEM_percent=None):
+    class_num = input.shape[1]
     if OHEM_percent is None:
         loss = F.binary_cross_entropy_with_logits(input, target, reduce=True)
         return loss
     else:
         loss = F.binary_cross_entropy_with_logits(input, target, reduce=False)
-        value, index= loss.topk(int(10008 * OHEM_percent), dim=1, largest=True, sorted=True)
+        value, index= loss.topk(int(class_num * OHEM_percent), dim=1, largest=True, sorted=True)
         return value.mean()
 
 def focal_OHEM(results, labels, labels_onehot, OHEM_percent=100):

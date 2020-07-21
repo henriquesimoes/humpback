@@ -2,10 +2,9 @@ from process.data_helper import *
 
 TRAIN_DF  = []
 TEST_DF   = []
-NUM_CLASSES = 4887
 
 class WhaleDataset(Dataset):
-    def __init__(self, mode, fold_index='<NIL>', image_size=(128,256),
+    def __init__(self, mode, test_index='<NIL>', image_size=(128,256),
                  augment = None,
                  is_pseudo = False,
                  is_flip = False):
@@ -22,24 +21,25 @@ class WhaleDataset(Dataset):
 
         self.bbox_dict = load_bbox_dict()
         self.label_dict = load_label_dict(os.path.join(LIST_DIR, r'label_list.txt'))
-        self.class_num = len(self.label_dict)
-        print(self.class_num)
+        self.class_num = len(self.label_dict) - 1
+
+        print('number of classes:', self.class_num)
 
         self.train_image_path = TRN_IMGS_DIR
         self.test_image_path = TST_IMGS_DIR
         self.image_size = image_size
         self.fold_index = None
-        self.set_mode(mode, fold_index)
+        self.set_mode(mode, test_index)
 
-    def set_mode(self, mode, fold_index):
+    def set_mode(self, mode, test_index):
         self.mode = mode
-        self.fold_index = fold_index
+        self.fold_index = test_index
         print('fold index set: ', fold_index)
 
         if self.mode == 'train' or self.mode == 'train_list':
-            self.train_list = load_train_list()
-            val_list =  read_txt(LIST_DIR + '/val'+str(self.fold_index)+'.txt')
-            print(LIST_DIR + '/val'+str(self.fold_index)+'.txt')
+            self.train_list = load_train_list(train_image_list_path=f'{LIST_DIR}/test{self.fold_index}.train.txt')
+            val_list =  read_txt(f'{LIST_DIR}/test{self.fold_index}.val.txt')
+            print(f'{LIST_DIR}/test{self.fold_index}.val.txt')
             val_set = set([tmp for tmp,_ in val_list])
             self.train_list = [tmp for tmp in self.train_list if tmp[0] not in val_set]
             self.train_list += self.pseudo_list
@@ -48,8 +48,8 @@ class WhaleDataset(Dataset):
             print('set dataset mode: train')
 
         elif self.mode == 'val':
-            self.val_list = read_txt(LIST_DIR + '/val'+str(self.fold_index)+'.txt')
-            print(LIST_DIR + '/val'+str(self.fold_index)+'.txt')
+            self.val_list = read_txt(f'{LIST_DIR}/test{self.fold_index}.val.txt')
+            print(f'{LIST_DIR}/test{self.fold_index}.val.txt')
             self.num_data = len(self.val_list)
             print('set dataset mode: val')
 
@@ -99,7 +99,7 @@ class WhaleDataset(Dataset):
                 return None,label,None
 
             if index >= len(self.train_list):
-                label += NUM_CLASSES
+                label += self.class_num
 
             return None,label,None
 
@@ -162,7 +162,7 @@ class WhaleDataset(Dataset):
             elif index >= len(self.train_list):
                 seq = iaa.Sequential([iaa.Fliplr(1.0)])
                 image = seq.augment_image(image)
-                label += NUM_CLASSES
+                label += self.class_num
 
         elif self.mode == 'val':
             image = aug_image(image, is_infer=True,augment=self.augment)
@@ -172,7 +172,7 @@ class WhaleDataset(Dataset):
                 image = seq.augment_image(image)
 
                 if label != -1:
-                    label += NUM_CLASSES
+                    label += self.class_num
 
         image = np.transpose(image, (2, 0, 1))
         image = image.astype(np.float32)
@@ -181,7 +181,7 @@ class WhaleDataset(Dataset):
 
         NW = 0
         if label == -1:
-            label = 10008
+            label = self.class_num * 2
             NW = 1
 
         return torch.FloatTensor(image), label, NW
@@ -216,15 +216,3 @@ def run_check_train_data():
 if __name__ == '__main__':
     print( '%s: calling main function ... ' % os.path.basename(__file__))
     run_check_train_data()
-
-
-
-
-
-
-
-
-
-
-
-
