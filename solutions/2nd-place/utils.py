@@ -33,8 +33,13 @@ def metric(prob, label, thres = 0.5):
     shape = prob.shape
     prob_tmp = np.ones([shape[0], shape[1] + 1]) * thres
     prob_tmp[:, :shape[1]] = prob
-    precision , top5 = top_n_np(prob_tmp, label)
-    return  precision, top5
+
+    prob_tmp = torch.FloatTensor(prob_tmp)
+    label = torch.FloatTensor(label)
+
+    precision, mapk(prob_tmp, label)
+    top1, top5 = accuracy(prob_tmp, label, topk=(1, 5))
+    return  precision, (top1, top5)
 
 def top_n_np(preds, labels):
     n = 5
@@ -52,6 +57,45 @@ def top_n_np(preds, labels):
     for i in range(n):
         top5.append(np.sum(labels == predicted[:, i])/ (1.0*len(labels)))
     return re, top5
+
+def accuracy(output, target, topk=(1, 5)):
+    """Computes the precision@k for the specified values of k"""
+    maxk = max(topk)
+    batch_size = target.size(0)
+
+    _, pred = output.topk(maxk, 1, True, True)
+    pred = pred.t()
+    correct = pred.eq(target.view(1, -1).expand_as(pred))
+
+    res = []
+    for k in topk:
+        correct_k = correct[:k].view(-1).float().sum(0, keepdim=True)
+        res.append(correct_k.mul_(100.0 / batch_size))
+    return res
+
+def apk(actual, predicted, k=10):
+    actual = [int(actual)]
+    if len(predicted)>k:
+        predicted = predicted[:k]
+
+    score = 0.0
+    num_hits = 0.0
+
+    for i,p in enumerate(predicted):
+        if p in actual and p not in predicted[:i]:
+            num_hits += 1.0
+            score += num_hits / (i+1.0)
+
+    if not actual:
+        return 0.0
+
+    return score / min(len(actual), k)
+
+def mapk(actual, predicted, k=10):
+    _, predicted = predicted.topk(k, 1, True, True)
+    actual = actual.data.cpu().numpy()
+    predicted = predicted.data.cpu().numpy()
+    return np.mean([apk(a,p,k) for a,p in zip(actual, predicted)])
 
 
 def prob_to_csv_top5(prob, key_id, name):

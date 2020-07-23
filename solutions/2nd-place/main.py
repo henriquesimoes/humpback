@@ -1,6 +1,7 @@
 import os
-# os.environ["CUDA_VISIBLE_DEVICES"] = "4,5,6,7"
 import argparse
+import datetime
+
 from utils import *
 from process.data import *
 from process.triplet_sampler import *
@@ -76,18 +77,18 @@ def do_valid(net, valid_loader, hard_ratio, is_flip = False):
     threshold = np.arange(0.0, 1.0, 0.02)
     max_p = 0.0
     max_thres = 0.0
-    top5_final = [0,0,0,0,0]
+    top_final = (0, 0)
 
     for thres in threshold:
         precision, top = metric(prob, label, thres=thres)
         if precision > max_p:
             max_p = precision
             max_thres = thres
-            top5_final = top
+            top_final = top
 
-    print(max_p, max_thres)
-    valid_loss = np.array([loss, top5_final[0], top5_final[4], max_p])
-    return valid_loss
+    print(f'maximum MAP@5={max_p} reached with new-whale threshold={max_thres}')
+    valid_loss = np.array([loss, top_final[0], top_final[1], max_p])
+    return valid_loss, max_thres
 
 def run_train(config):
     base_lr = 30e-5
@@ -125,14 +126,8 @@ def run_train(config):
                             '_'+str(config.image_h)+ '_'+str(config.image_w)
 
     out_dir = os.path.join('./models/', config.model_name)
-    if not os.path.exists(out_dir):
-        os.makedirs(out_dir)
-    if not os.path.exists(os.path.join(out_dir,'checkpoint')):
-        os.makedirs(os.path.join(out_dir,'checkpoint'))
-    if not os.path.exists(os.path.join(out_dir,'train')):
-        os.makedirs(os.path.join(out_dir,'train'))
-    if not os.path.exists(os.path.join(out_dir,'backup')):
-        os.makedirs(os.path.join(out_dir,'backup'))
+
+    os.makedirs(os.path.join(out_dir,'checkpoint'), exist_ok=True)
 
     if config.pretrained_model is not None:
         initial_checkpoint = os.path.join(out_dir, 'checkpoint', config.pretrained_model)
@@ -172,11 +167,9 @@ def run_train(config):
     net = net.cuda()
 
     log = open(out_dir+'/log.train.txt', mode='a')
+    log.write('Training start time: {}\n'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
     log.write('\t__file__     = %s\n' % __file__)
     log.write('\tout_dir      = %s\n' % out_dir)
-    log.write('\n')
-    log.write('\t<additional comments>\n')
-    log.write('\t  ... xxx baseline  ... \n')
     log.write('\n')
 
     ##-----------------------------------------------------------------------------------------------------------
@@ -194,8 +187,7 @@ def run_train(config):
         net.load_state_dict(torch.load(initial_checkpoint, map_location=lambda storage, loc: storage))
         print('\tinitial_checkpoint = %s\n' % initial_checkpoint)
 
-    log.write('%s\n'%(type(net)))
-    log.write('\n')
+    log.write('%s\n\n'%(net))
 
     optimizer = torch.optim.Adam(filter(lambda p: p.requires_grad, net.parameters()),
                                  lr=base_lr,
@@ -203,12 +195,13 @@ def run_train(config):
                                  eps=1e-08,
                                  weight_decay=0.0002)
 
-    iter_smooth = 20
+    iter_smooth = 50
     start_iter = 0
 
     log.write('\n')
     valid_loss   = np.zeros(6,np.float32)
     batch_loss   = np.zeros(6,np.float32)
+    valid_thres  = 0
 
     i    = 0
     start = timer()
@@ -235,6 +228,9 @@ def run_train(config):
                                   drop_last=False,
                                   num_workers=16,
                                   pin_memory=True)
+        header = '  lr    iter    epoch   |  val_loss  Top@1   Top@5   MAP@5  threshold  | train_loss  Top@1   Top@5   MAP@5   | batch_loss  Top@1   Top@5   MAP@5   |     Time'
+        print(header)
+        log.write(header + '\n')
 
         for input, truth_ , truth_NW_binary in train_loader:
             truth = torch.FloatTensor(len(truth_),class_num+1)
@@ -292,56 +288,59 @@ def run_train(config):
             sum_train_loss += batch_loss
             sum += 1
 
-            if iter%iter_smooth == 0:
-                sum_train_loss = np.zeros(6,np.float32)
+            if iter % iter_smooth == 0:
+                sum_train_loss = sum_train_loss / sum
                 sum = 0
 
+            stats = '%0.7f %5.1f %6.1f | %0.3f  %3.3f  %3.3f  %0.3f  %0.2f  |  %0.3f  %3.3f  %3.3f  %0.3f | %0.3f  %3.3f  %3.3f  %0.3f  | %s' % (\
+                             rate, iter, epoch,
+                             valid_loss[0], valid_loss[1], valid_loss[2], valid_loss[3], valid_thres,
+                             sum_train_loss[0], sum_train_loss[1], sum_train_loss[2], sum_train_loss[3],
+                             batch_loss[0], batch_loss[1], batch_loss[2], batch_loss[3],
+                             time_to_str((timer() - start),'min'))
+
             if i % 10 == 0:
-                print(config.model_name + ' %0.7f %5.1f %6.1f | %0.3f  %0.3f  %0.3f  (%0.3f)%s  | %0.3f  %0.3f  %0.3f  (%0.3f)  | %s' % (\
-                             rate, iter, epoch,
-                             valid_loss[0], valid_loss[1], valid_loss[2], valid_loss[3],' ',
-                             batch_loss[0], batch_loss[1], batch_loss[2], batch_loss[3],
-                             time_to_str((timer() - start),'min')))
+                print(stats)
+            if i % 200 == 0:
+                log.write(stats + '\n')
 
-            if i % 100 == 0:
-                log.write('%0.7f %5.1f %6.1f | %0.3f  %0.3f  %0.3f  (%0.3f)%s  | %0.3f  %0.3f  %0.3f  (%0.3f)  | %s' % (\
-                             rate, iter, epoch,
-                             valid_loss[0], valid_loss[1], valid_loss[2], valid_loss[3],' ',
-                             batch_loss[0], batch_loss[1], batch_loss[2], batch_loss[3],
-                             time_to_str((timer() - start),'min')))
+            i = i + 1
 
-                log.write('\n')
-            i=i+1
-
-            if (epoch+1) > 40 and (i % 50 == 0):
+            if iter > start_iter and (i % 50 == 0):
                 net.eval()
-                valid_loss = do_valid(net, valid_loader, hard_ratio, is_flip=False)
-                valid_loss_flip = do_valid(net, valid_loader_flip, hard_ratio, is_flip=True)
-                valid_loss = (valid_loss + valid_loss_flip) / 2.0
+                valid_loss, valid_thres = do_valid(net, valid_loader, hard_ratio, is_flip=False)
+                valid_loss_flip, valid_thres_flip = do_valid(net, valid_loader_flip, hard_ratio, is_flip=True)
+                valid_loss, valid_thres = (valid_loss + valid_loss_flip) / 2.0, (valid_thres + valid_thres_flip) / 2.0
                 net.train()
 
                 if max_valid < valid_loss[3]:
                     max_valid = valid_loss[3]
-                    print('save max valid!!!!!! : ' + str(max_valid))
-                    log.write('save max valid!!!!!! : ' + str(max_valid))
-                    log.write('\n')
+                    saving_msg = f'New maximum MAP@5 reached on {iter}th iteration (epoch {epoch}): {max_valid}... saving on disk.'
+                    print(saving_msg)
+                    log.write(saving_msg + '\n')
+
                     torch.save(net.state_dict(), out_dir + '/checkpoint/max_valid_model.pth')
 
-        if (epoch+1) % config.iter_save_interval ==0 and epoch>0:
+        if (epoch+1) % config.iter_save_interval == 0 and epoch>0:
             torch.save(net.state_dict(), out_dir + '/checkpoint/%08d_model.pth' % (epoch))
 
         net.eval()
-        valid_loss = do_valid(net, valid_loader, hard_ratio, is_flip=False)
-        valid_loss_flip = do_valid(net, valid_loader_flip, hard_ratio, is_flip=True)
-        valid_loss = (valid_loss + valid_loss_flip) / 2.0
+        valid_loss, valid_thres = do_valid(net, valid_loader, hard_ratio, is_flip=False)
+        valid_loss_flip, valid_thres_flip = do_valid(net, valid_loader_flip, hard_ratio, is_flip=True)
+        valid_loss, valid_thres = (valid_loss + valid_loss_flip) / 2.0, (valid_thres + valid_thres_flip) / 2.0
         net.train()
 
         if max_valid < valid_loss[3]:
             max_valid = valid_loss[3]
-            print('save max valid!!!!!! : ' + str(max_valid))
-            log.write('save max valid!!!!!! : ' + str(max_valid))
-            log.write('\n')
+            saving_msg = f'New maximum MAP@5 reached on {iter}th iteration (epoch {epoch}): {max_valid}... saving on disk.'
+
+            print(saving_msg)
+            log.write(saving_msg + '\n')
+
             torch.save(net.state_dict(), out_dir + '/checkpoint/max_valid_model.pth')
+
+    log.write('\nTraining end time: {}\n'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
+    log.close()
 
 def run_infer(config):
     batch_size = config.batch_size
@@ -397,11 +396,12 @@ def run_infer(config):
                                    pin_memory=True)
 
 
-    valid_loss = do_valid(net, valid_loader,  hard_ratio= 1 * 1e-2, is_flip=False)
-    print(' %0.5f  %0.5f  %0.5f  (%0.5f)' % ( valid_loss[0], valid_loss[1], valid_loss[2], valid_loss[3]))
+    print('          loss    Top@1    Top@5    MAP@5   threshold')
+    valid_loss, thres = do_valid(net, valid_loader,  hard_ratio= 1 * 1e-2, is_flip=False)
+    print('original: %0.5f  %0.5f  %0.5f  %0.5f  %0.2f' % ( valid_loss[0], valid_loss[1], valid_loss[2], valid_loss[3], thres))
 
-    valid_loss = do_valid(net, valid_loader_flip,  hard_ratio= 1 * 1e-2, is_flip=True)
-    print(' %0.5f  %0.5f  %0.5f  (%0.5f)' % (valid_loss[0], valid_loss[1], valid_loss[2], valid_loss[3]))
+    valid_loss, thres = do_valid(net, valid_loader_flip,  hard_ratio= 1 * 1e-2, is_flip=True)
+    print('flipped:  %0.5f  %0.5f  %0.5f  %0.5f  %0.2f' % (valid_loss[0], valid_loss[1], valid_loss[2], valid_loss[3], thres))
 
     # 2TTA
     augments = [[0.0],[1.0]]
@@ -455,6 +455,7 @@ def main(config):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
+
     parser.add_argument('--fold_index', type=int, default=1)
     parser.add_argument('--model', type=str, default='resnet101')
     parser.add_argument('--batch_size', type=int, default=128)
@@ -472,9 +473,6 @@ if __name__ == '__main__':
 
     parser.add_argument('--is_pseudo', type=bool, default=False) # [Modified]: default=True
 
-    # parser.add_argument('--mode', type=str, default='train', choices=['train', 'test'])
-    # parser.add_argument('--pretrained_model', type=str, default=None)
-    #
     parser.add_argument('--mode', type=str, default='train', choices=['train', 'val','val_fold','test_classifier','test','test_fold'])
     parser.add_argument('--pretrained_model', type=str, default=None)
 
@@ -484,6 +482,3 @@ if __name__ == '__main__':
     config = parser.parse_args()
     print(config)
     main(config)
-
-
-
