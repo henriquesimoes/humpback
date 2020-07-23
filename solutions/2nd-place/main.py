@@ -1,6 +1,5 @@
 import os
 import argparse
-import datetime
 
 from utils import *
 from process.data import *
@@ -86,7 +85,7 @@ def do_valid(net, valid_loader, hard_ratio, is_flip = False):
             max_thres = thres
             top_final = top
 
-    print(f'maximum MAP@5={max_p} reached with new-whale threshold={max_thres}')
+    print('maximum MAP@5={:.5f} reached with new-whale threshold={:0.2f}'.format(max_p, max_thres))
     valid_loss = np.array([loss, top_final[0], top_final[1], max_p])
     return valid_loss, max_thres
 
@@ -167,7 +166,7 @@ def run_train(config):
     net = net.cuda()
 
     log = open(out_dir+'/log.train.txt', mode='a')
-    log.write('Training start time: {}\n'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
+    log.write('Training start time: {}\n'.format(datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
     log.write('\t__file__     = %s\n' % __file__)
     log.write('\tout_dir      = %s\n' % out_dir)
     log.write('\n')
@@ -176,8 +175,8 @@ def run_train(config):
     log.write('** dataset setting **\n')
     assert(len(train_dataset)>=batch_size)
     log.write('batch_size = %d\n'%(batch_size))
-    log.write('train_dataset : \n%s\n'%(train_dataset))
-    log.write('valid_dataset : \n%s\n'%(valid_dataset))
+    log.write('train_dataset : %d\n'%(len(train_dataset)))
+    log.write('valid_dataset : %d\n'%(len(valid_dataset)))
     log.write('\n')
 
     ## net ----------------------------------------
@@ -201,14 +200,15 @@ def run_train(config):
     log.write('\n')
     valid_loss   = np.zeros(6,np.float32)
     batch_loss   = np.zeros(6,np.float32)
-    valid_thres  = 0
+    train_loss   = np.zeros(6,np.float32)
+    valid_thres  = 0.5
 
     i    = 0
     start = timer()
     max_valid = 0
 
     for epoch in range(config.train_epoch):
-        sum_train_loss = np.zeros(6,np.float32)
+        sum_train_loss = np.zeros(6, np.float32)
         sum = 0
         optimizer.zero_grad()
 
@@ -228,7 +228,8 @@ def run_train(config):
                                   drop_last=False,
                                   num_workers=16,
                                   pin_memory=True)
-        header = '  lr    iter    epoch   |  val_loss  Top@1   Top@5   MAP@5  threshold  | train_loss  Top@1   Top@5   MAP@5   | batch_loss  Top@1   Top@5   MAP@5   |     Time'
+        header = '  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time\n' + \
+                '-' * 170
         print(header)
         log.write(header + '\n')
 
@@ -263,39 +264,34 @@ def run_train(config):
             loss = loss_focal + loss_softmax + loss_triplet
 
             prob = torch.sigmoid(logit)
-            prob_NoNew = prob[indexs_NoNew]
-            prob_New = prob[indexs_New]
-            truth__NoNew = truth_[indexs_NoNew]
-            truth__New = truth_[indexs_New]
 
-            prob_New = prob_New.data.cpu().numpy()
-            truth__New = truth__New.data.cpu().numpy()
-            prob_NoNew = prob_NoNew.data.cpu().numpy()
-            truth__NoNew = truth__NoNew.data.cpu().numpy()
+            prob = prob.data.cpu().numpy()
+            truth_ = truth_.data.cpu().numpy()
 
-            precision_New, top_New = metric(prob_New, truth__New, thres=0.5)
-            precision_NoNew, top_NoNew = metric(prob_NoNew, truth__NoNew, thres=0.5)
+            precision, top = metric(prob, truth_, thres=valid_thres)
+            top1, top5 = top
 
             loss.backward()
             optimizer.step()
             optimizer.zero_grad()
 
-            batch_loss[:4] = np.array((loss_focal.data.cpu().numpy()+ loss_triplet.data.cpu().numpy(),
-                                       loss_softmax.data.cpu().numpy(),
-                                       precision_New,
-                                       precision_NoNew)).reshape([4])
+            batch_loss[:4] = np.array((loss.data.cpu().numpy(),
+                                       top1,
+                                       top5,
+                                       precision)).reshape([4])
 
             sum_train_loss += batch_loss
             sum += 1
 
             if iter % iter_smooth == 0:
-                sum_train_loss = sum_train_loss / sum
+                train_loss = sum_train_loss / sum
+                sum_train_loss = np.zeros(6, np.float32)
                 sum = 0
 
-            stats = '%0.7f %5.1f %6.1f | %0.3f  %3.3f  %3.3f  %0.3f  %0.2f  |  %0.3f  %3.3f  %3.3f  %0.3f | %0.3f  %3.3f  %3.3f  %0.3f  | %s' % (\
-                             rate, iter, epoch,
+            stats = '%0.7f  %5.2f k  %3d | %5.3f  %7.3f  %7.3f   %0.3f   %0.2f  | %5.3f  %7.3f  %7.3f   %0.3f   | %5.3f   %7.3f  %7.3f   %0.3f   | %s' % (\
+                             rate, iter / 1000.0, epoch,
                              valid_loss[0], valid_loss[1], valid_loss[2], valid_loss[3], valid_thres,
-                             sum_train_loss[0], sum_train_loss[1], sum_train_loss[2], sum_train_loss[3],
+                             train_loss[0], train_loss[1], train_loss[2], train_loss[3],
                              batch_loss[0], batch_loss[1], batch_loss[2], batch_loss[3],
                              time_to_str((timer() - start),'min'))
 
@@ -306,14 +302,14 @@ def run_train(config):
 
             i = i + 1
 
-            if iter > start_iter and (i % 50 == 0):
+            if iter > start_iter and (i % 200 == 0):
                 net.eval()
                 valid_loss, valid_thres = do_valid(net, valid_loader, hard_ratio, is_flip=False)
                 valid_loss_flip, valid_thres_flip = do_valid(net, valid_loader_flip, hard_ratio, is_flip=True)
                 valid_loss, valid_thres = (valid_loss + valid_loss_flip) / 2.0, (valid_thres + valid_thres_flip) / 2.0
                 net.train()
 
-                if max_valid < valid_loss[3]:
+                if max_valid < valid_loss[3] and (epoch + 1) > 40:
                     max_valid = valid_loss[3]
                     saving_msg = f'New maximum MAP@5 reached on {iter}th iteration (epoch {epoch}): {max_valid}... saving on disk.'
                     print(saving_msg)
@@ -339,7 +335,7 @@ def run_train(config):
 
             torch.save(net.state_dict(), out_dir + '/checkpoint/max_valid_model.pth')
 
-    log.write('\nTraining end time: {}\n'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
+    log.write('\nTraining end time: {}\n'.format(datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
     log.close()
 
 def run_infer(config):

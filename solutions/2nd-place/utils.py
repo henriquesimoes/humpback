@@ -35,9 +35,9 @@ def metric(prob, label, thres = 0.5):
     prob_tmp[:, :shape[1]] = prob
 
     prob_tmp = torch.FloatTensor(prob_tmp)
-    label = torch.FloatTensor(label)
+    label = torch.LongTensor(label)
 
-    precision, mapk(prob_tmp, label)
+    precision = mapk(label, prob_tmp, k=5)
     top1, top5 = accuracy(prob_tmp, label, topk=(1, 5))
     return  precision, (top1, top5)
 
