@@ -98,22 +98,25 @@ def write_models(blend, file_name, is_top1 = False):
 if __name__ == '__main__':
 
     model_pred = {
-        r'./models/resnet101_fold0_256_512/checkpoint/max_valid_model': 10,
-        r'./models/seresnet101_fold0_256_512/checkpoint/max_valid_model': 10,
-        r'./models/seresnext101_fold0_256_512/checkpoint/max_valid_model': 10,
+        # r'./models/resnet101_test1_256_512/checkpoint/max_valid_model': 10,
+        r'./models/resnet101_test2_256_512/checkpoint/max_valid_model': 10,
 
-        r'./models/resnet101_fold0_512_512/checkpoint/max_valid_model': 10,
-        r'./models/seresnet101_fold0_512_512/checkpoint/max_valid_model': 10,
+        # r'./models/resnet101_fold0_256_512/checkpoint/max_valid_model': 10,
+        # r'./models/resnet101_fold0_256_512/checkpoint/max_valid_model': 10,
+        # r'./models/seresnext101_fold0_256_512/checkpoint/max_valid_model': 10,
 
-        r'./models/resnet101_fold0_pseudo_256_512/checkpoint/max_valid_model':20,
-        r'./models/seresnet101_fold0_pseudo_256_512/checkpoint/max_valid_model':20,
+        # r'./models/resnet101_fold0_512_512/checkpoint/max_valid_model': 10,
+        # r'./models/seresnet101_fold0_512_512/checkpoint/max_valid_model': 10,
 
-        r'./models/resnet101_fold0_pseudo_512_512/checkpoint/max_valid_model': 20,
-        r'./models/seresnet101_fold0_pseudo_512_512/checkpoint/max_valid_model': 20,
-        r'./models/seresnext101_fold0_pseudo_512_512/checkpoint/max_valid_model': 20,
+        # r'./models/resnet101_fold0_pseudo_256_512/checkpoint/max_valid_model':20,
+        # r'./models/seresnet101_fold0_pseudo_256_512/checkpoint/max_valid_model':20,
+
+        # r'./models/resnet101_fold0_pseudo_512_512/checkpoint/max_valid_model': 20,
+        # r'./models/seresnet101_fold0_pseudo_512_512/checkpoint/max_valid_model': 20,
+        # r'./models/seresnext101_fold0_pseudo_512_512/checkpoint/max_valid_model': 20,
     }
 
     thres =  0.185
     avg = read_models(model_pred, thres)
-    avg, missing_ids = clalibrate_distribution(blend=avg)
-    csv_name = write_models(avg, 'final_submission_id_4081_NW_2123', is_top1=False)
+    # avg, missing_ids = clalibrate_distribution(blend=avg)
+    csv_name = write_models(avg, 'result', is_top1=False)
