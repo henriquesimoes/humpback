@@ -344,10 +344,10 @@ def run_infer(config):
 
     ## setup  -----------------------------------------------------------------------------
     if config.is_pseudo:
-        config.model_name = config.model + '_fold' + str(config.fold_index) + '_pseudo'\
+        config.model_name = config.model + '_test' + str(config.fold_index) + '_pseudo'\
                             '_' + str(config.image_h) + '_' + str(config.image_w)
     else:
-        config.model_name = config.model + '_fold' + str(config.fold_index) + \
+        config.model_name = config.model + '_test' + str(config.fold_index) + \
                             '_'+str(config.image_h)+ '_'+str(config.image_w)
 
     out_dir = os.path.join('./models/', config.model_name)
@@ -364,6 +364,7 @@ def run_infer(config):
     if initial_checkpoint is not None:
         print(initial_checkpoint)
         net.load_state_dict(torch.load(initial_checkpoint, map_location=lambda storage, loc: storage))
+
 
     net = net.cuda()
     net.eval()
@@ -391,7 +392,6 @@ def run_infer(config):
                                    num_workers=8,
                                    pin_memory=True)
 
-
     print('          loss    Top@1    Top@5    MAP@5   threshold')
     valid_loss, thres = do_valid(net, valid_loader,  hard_ratio= 1 * 1e-2, is_flip=False)
     print('original: %0.5f  %0.5f  %0.5f  %0.5f  %0.2f' % ( valid_loss[0], valid_loss[1], valid_loss[2], valid_loss[3], thres))
@@ -401,11 +401,14 @@ def run_infer(config):
 
     # 2TTA
     augments = [[0.0],[1.0]]
-    print(augments)
+    print('TTAs:\n', augments)
+
+    log = open(os.path.join(out_dir, 'inference.log'), 'w')
+    log.write('Inference start time: {}\n'.format(datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
 
     for index in range(len(augments)):
         print(augments[index])
-        infer_dataset = WhaleDataset('test', fold_index=0, image_size = image_size,augment=augments[index])
+        infer_dataset = WhaleDataset('test', test_index=config.fold_index, image_size = image_size,augment=augments[index])
         infer_loader  = DataLoader(infer_dataset,
                                    shuffle=False,
                                    batch_size  = batch_size,
@@ -440,6 +443,9 @@ def run_infer(config):
         save_path = os.path.join(save_path, '2TTA_' + str(index))
         print(save_path+'.csv')
         prob_to_csv_top5(probs, test_ids, save_path)
+
+    log.write('Inference end time: {}\n'.format(datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
+    log.close()
 
 def main(config):
     if config.mode == 'train':
