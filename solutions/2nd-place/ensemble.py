@@ -98,8 +98,11 @@ def write_models(blend, file_name, is_top1 = False):
 if __name__ == '__main__':
 
     model_pred = {
-        # r'./models/resnet101_test1_256_512/checkpoint/max_valid_model': 10,
-        r'./models/resnet101_test2_256_512/checkpoint/max_valid_model': 10,
+        # r'./models/resnet101_test1_256_512/checkpoint/test_standard': 10,
+        # r'./models/resnet101_test1_256_512/checkpoint/test_standard': 10,
+
+        # r'./models/resnet101_test2_256_512/checkpoint/test_hard': 10,
+        # r'./models/resnet101_test2_256_512/checkpoint/test_hard': 10,
 
         # r'./models/resnet101_fold0_256_512/checkpoint/max_valid_model': 10,
         # r'./models/resnet101_fold0_256_512/checkpoint/max_valid_model': 10,
