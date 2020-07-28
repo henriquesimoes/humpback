@@ -7,7 +7,8 @@ from models import *
 from dataSet import *
 import os
 import shutil
-os.environ['CUDA_VISIBLE_DEVICES'] = '0'
+import datetime
+# os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 num_TTA = 2
 
 
@@ -63,8 +64,8 @@ def test(checkPoint_start=0, fold_index=1, model_name='senet154', num_classes=50
     resultDir = './result/{}_{}'.format(model_name, fold_index)
     checkPoint = os.path.join(resultDir, 'checkpoint')
 
-    npy_dir = resultDir + '/out_{}'.format(checkPoint_start)
-    os.makedirs(npy_dir, exist_ok=True)
+    # npy_dir = resultDir + '/out_{}'.format(checkPoint_start)
+    # os.makedirs(npy_dir, exist_ok=True)
     if not checkPoint_start == 0:
         model.load_pretrain(os.path.join(checkPoint, '%08d_model.pth' % (checkPoint_start)),skip=[])
         ckp = torch.load(os.path.join(checkPoint, '%08d_optimizer.pth' % (checkPoint_start)))
@@ -72,6 +73,10 @@ def test(checkPoint_start=0, fold_index=1, model_name='senet154', num_classes=50
         print('best_t:', best_t)
     labelstrs = []
     allnames = []
+
+    log = open(os.path.join(resultDir, 'inference.log'), mode='w')
+    log.write('Inference start time: {} \n'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
+
     with torch.no_grad():
         model.eval()
         for data in tqdm(dataloader_test):
@@ -84,7 +89,7 @@ def test(checkPoint_start=0, fold_index=1, model_name='senet154', num_classes=50
             for out, name in zip(outs, names):
                 out = torch.cat([out, torch.ones(1).cuda()*best_t], 0)
                 out = out.data.cpu().numpy()
-                np.save(os.path.join(npy_dir, '{}.npy'.format(name)), out)
+                # np.save(os.path.join(npy_dir, '{}.npy'.format(name)), out)
                 top5 = out.argsort()[-5:][::-1]
                 str_top5 = ''
                 for t in top5:
@@ -92,19 +97,35 @@ def test(checkPoint_start=0, fold_index=1, model_name='senet154', num_classes=50
                 str_top5 = str_top5[:-1]
                 allnames.append(name)
                 labelstrs.append(str_top5)
+
     pd.DataFrame({'Image': allnames,'Id': labelstrs}).to_csv('test_{}_sub_fold{}.csv'.format(model_name, fold_index), index=None)
+
+    log.write('Inference end time: {} \n'.format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
+    log.close()
 
 if __name__ == '__main__':
 
     model_name = 'senet154'
 
-    ### First submission
+    ### Kaggle
+    # num_classes = 5004
+    ## First submission
     # checkPoint_start = 67200
     # fold_index = 1
     #
-    ### Second submission
+    ## Second submission
     # checkPoint_start = 71000
     # fold_index = 2
+    #
+    ### Our tests
+    # num_classes = 4887
+    ## Test #1 inference
+    # checkPoint_start = 57200
+    # fold_index = 6
+    #
+    ## Test #2 inference
+    # checkPoint_start = 106600
+    # fold_index = 7
 
-    test(checkPoint_start, fold_index, model_name)
+    test(checkPoint_start, fold_index, model_name, num_classes)
 
