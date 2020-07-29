@@ -37,12 +37,14 @@ def main():
   report.set_info(solution=config.solution, description=config.description)
 
   report.add_metric('MAP@5', metrics.mapk(actual, pred, k=5))
-  top1, top3, top5 = metrics.precisionk(actual, pred, topk=(1, 3, 5))
-  report.add_metric('Top@1', top1)
-  report.add_metric('Top@3', top3)
-  report.add_metric('Top@5', top5)
 
-  report.finish(config.output)
+  ks = (1, 3, 5)
+  tops = metrics.precisionk(actual, pred, topk=ks)
+
+  for k, top in zip(ks, tops):
+    report.add_metric(f'Top@{k}', top)
+
+  report.finish(config.output, save=True)
 
 if __name__ == "__main__":
   main()

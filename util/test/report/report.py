@@ -22,9 +22,12 @@ class Report():
   def __str__(self):
     out = "# Test Report\n\n"
     out += "## Configuration\n\n"
-    out += " - Dataset: " + self.dataset + "\n"
-    out += " - Solution: " + str(self.solution) + "\n"
-    out += " - Description: " + self.description + "\n"
+    if self.dataset:
+      out += " - Dataset: " + self.dataset + "\n"
+    if self.solution:
+      out += " - Solution: " + str(self.solution) + "\n"
+    if self.description:
+      out += " - Description: " + self.description + "\n"
     out += " - Date: " + self.date.strftime('%Y-%m-%d %H:%M:%S') + "\n\n"
     out += "## Test results: \n\n"
 
@@ -50,9 +53,9 @@ class ReportManager:
   def add_metric(self, name, result):
     self.report.add_result({'metric': name, 'result': result})
 
-  def finish(self, path):
+  def finish(self, path, save=True):
     self.display()
-    self.save(path)
+    if save: self.save(path)
     self._reset()
 
   def save(self, path):
