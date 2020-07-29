@@ -6,12 +6,10 @@ import os
 import math
 import argparse
 import pprint
-import tqdm
 from collections import defaultdict
 
 import torch
 import torch.nn.functional as F
-from tensorboardX import SummaryWriter
 
 from datasets import get_dataloader
 from transforms import get_transform
@@ -21,23 +19,23 @@ from schedulers import get_scheduler
 import utils
 import utils.config
 import utils.checkpoint
-
+import utils.log
 
 def evaluate_single_epoch(config, task, dataloader, epoch,
-                          writer, postfix_dict):
+                          writer):
     task.get_model().eval()
     cal_metric_once = config.eval.cal_metric_once
 
+    log_dict = {'mode': 'eval'}
     with torch.no_grad():
         batch_size = config.eval.batch_size
         total_size = len(dataloader.dataset)
         total_step = math.ceil(total_size / batch_size)
 
-        tbar = tqdm.tqdm(enumerate(dataloader), total=total_step)
         loss_list = []
         metric_list_dict = defaultdict(list)
         data_list_dict = defaultdict(list)
-        for i, data in tbar:
+        for i, data in enumerate(dataloader):
             images = data['image'].cuda()
             labels = data['label'].cuda()
 
@@ -58,50 +56,30 @@ def evaluate_single_epoch(config, task, dataloader, epoch,
                 for key, value in metric_dict.items():
                     metric_list_dict[key].append(value)
 
-            f_epoch = epoch + i / total_step
-            desc = '{:5s}'.format('dev')
-            desc += ', {:.2f} epoch'.format(f_epoch)
-            tbar.set_description(desc)
-            tbar.set_postfix(**postfix_dict)
-
-            if i % config.train.log_step == 0:
-                log_step = int(f_epoch * 10000)
-                if writer is not None:
-                    annotated_images = task.annotate_to_images(images, labels, predicts)
-                    for idx, annotated_image in enumerate(annotated_images):
-                        writer.add_image('dev/image_{}'.format(idx), annotated_image, log_step)
-
-        log_dict = {}
         log_dict['loss'] = sum(loss_list) / len(loss_list)
 
         if cal_metric_once:
             metric_dict = task.metrics(**data_list_dict)
-            for key, value in metric_dict.items():
-                log_dict[key] = value
+            log_dict.update(metric_dict)
         else:
             for key, values in metric_list_dict.items():
                 log_dict[key] = sum(values) / len(values)
 
-        for key, value in log_dict.items():
-            if writer is not None:
-                writer.add_scalar('dev/{}'.format(key), value, epoch)
-            if key in ['loss', 'score']:
-                postfix_dict['dev/{}'.format(key)] = value
+        writer.step(log_dict)
 
         return log_dict['score']
 
 
 def train_single_epoch(config, task, dataloader, optimizer,
-                       epoch, writer, postfix_dict):
+                       epoch, writer):
     task.get_model().train()
 
     batch_size = config.train.batch_size
     total_size = len(dataloader.dataset)
     total_step = total_size // batch_size
 
-    log_dict = {}
-    tbar = tqdm.tqdm(enumerate(dataloader), total=total_step)
-    for i, data in tbar:
+    log_dict = {'mode': 'train'}
+    for i, data in enumerate(dataloader):
         images = data['image'].cuda()
         labels = data['label'].cuda()
         outputs = task.forward(images=images, labels=labels)
@@ -130,38 +108,26 @@ def train_single_epoch(config, task, dataloader, optimizer,
         f_epoch = epoch + i / total_step
 
         log_dict['lr'] = optimizer.param_groups[0]['lr']
-        for key in ['lr', 'loss', 'score']:
-            value = log_dict[key]
-            postfix_dict['train/{}'.format(key)] = value
 
-        desc = '{:5s}'.format('train')
-        desc += ', {:.2f} epoch'.format(f_epoch)
-        tbar.set_description(desc)
-        tbar.set_postfix(**postfix_dict)
+        log_dict['epoch'] = f_epoch
+        log_dict['iter'] = epoch * total_size + i
 
-        if i % config.train.log_step == 0:
-            log_step = int(f_epoch * 10000)
-            if writer is not None:
-                for key, value in log_dict.items():
-                    writer.add_scalar('train/{}'.format(key), value, log_step)
-                annotated_images = task.annotate_to_images(images, labels, predicts)
-                for idx, annotated_image in enumerate(annotated_images):
-                    writer.add_image('train/image_{}'.format(idx), annotated_image, log_step)
-
+        writer.step(log_dict)
 
 def train(config, task, dataloaders, optimizer, scheduler, writer, start_epoch):
     scores = []
     best_score = 0.0
     best_score_mavg = 0.0
-    postfix_dict = {}
+
+    writer.start()
     for epoch in range(start_epoch, config.train.num_epochs):
         # train phase
         train_single_epoch(config, task, dataloaders['train'],
-                           optimizer, epoch, writer, postfix_dict)
+                           optimizer, epoch, writer)
 
         # val phase
         score = evaluate_single_epoch(config, task, dataloaders['dev'],
-                                      epoch, writer, postfix_dict)
+                                      epoch, writer)
         scores.append(score)
 
         if config.scheduler.name == 'reduce_lr_on_plateau':
@@ -175,21 +141,24 @@ def train(config, task, dataloaders, optimizer, scheduler, writer, start_epoch):
 
         scores = scores[-20:]
         score_mavg = sum(scores) / len(scores)
-        writer.add_scalar('dev/score_mavg', score_mavg, epoch)
+        writer.write(f'Mean average on {epoch} of the last 20 points: {score_mavg}')
         if score > best_score:
             best_score = score
+            writer.write(f'New best MAP@5 found on epoch {epoch}: {best_score}')
             utils.checkpoint.save_checkpoint(config, task.get_model(), optimizer,
                                              epoch, keep=10, name='best.score')
             utils.checkpoint.copy_last_n_checkpoints(config, 10, 'best.score.{:04d}.pth')
+
         if score_mavg > best_score_mavg:
             best_score_mavg = score_mavg
+            writer.write(f'New best average MAP@5 found on epoch {epoch}: {best_score_mavg}')
             utils.checkpoint.save_checkpoint(config, task.get_model(), optimizer,
                                              epoch, keep=10, name='best.score_mavg')
             utils.checkpoint.copy_last_n_checkpoints(config, 10, 'best.score_mavg.{:04d}.pth')
+
     return {'score': best_score, 'score_mavg': best_score_mavg}
 
-
-def run(config):
+def run(config, writer):
     train_dir = config.train.dir
 
     task = get_task(config)
@@ -203,7 +172,7 @@ def run(config):
     else:
         last_epoch, step = -1, -1
 
-    print('from checkpoint: {} last epoch:{}'.format(checkpoint, last_epoch))
+    writer.write('Training from checkpoint: {}, last epoch:{}'.format(checkpoint, last_epoch))
     scheduler = get_scheduler(config, optimizer, last_epoch)
 
     preprocess_opt = task.get_preprocess_opt()
@@ -212,10 +181,10 @@ def run(config):
                                                       **preprocess_opt))
                    for split in ['train', 'dev']}
 
-    writer = SummaryWriter(config.train.dir)
-    train(config, task, dataloaders, optimizer, scheduler,
+    score = train(config, task, dataloaders, optimizer, scheduler,
           writer, last_epoch+1)
 
+    writer.write('Best score: {:0.5f}\nBest average score: {:.5f}\n'.format(score['score'], score['score_mavg']))
 
 def parse_args():
     description = 'Train humpback whale identification'
@@ -225,22 +194,26 @@ def parse_args():
                         default=None, type=str)
     return parser.parse_args()
 
-
 def main():
     import warnings
     warnings.filterwarnings("ignore")
 
-    print('Train humpback whale identification')
     args = parse_args()
     if args.config_file is None:
       raise Exception('no configuration file')
 
     config = utils.config.load(args.config_file)
-    pprint.PrettyPrinter(indent=2).pprint(config)
     utils.prepare_train_directories(config)
-    run(config)
-    print('success!')
 
+    writer = utils.log.Writer(config.train.dir, log_step=config.train.log_step)
+
+    writer.write('Train humpback whale identification')
+    writer.write('Configuration: ')
+    writer.write(pprint.PrettyPrinter(indent=2).pformat(config))
+
+    run(config, writer)
+
+    writer.close()
 
 if __name__ == '__main__':
     main()

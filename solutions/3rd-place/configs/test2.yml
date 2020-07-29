@@ -21,7 +21,7 @@ model:
 train:
   dir: './train_logs/test2'
   batch_size: 32
-  log_step: 2
+  log_step: 200
   save_checkpoint_epoch: 2
   num_epochs: 100
 

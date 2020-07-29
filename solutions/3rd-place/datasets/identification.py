@@ -18,7 +18,7 @@ class IdentificationDataset(Dataset):
                  transform=None,
                  landmark_ver='5',
                  train_csv='train.csv',
-                 sample_csv='sample_submission.csv'
+                 sample_csv='sample_submission.csv',
                  **_):
         self.split = split
         self.transform = transform

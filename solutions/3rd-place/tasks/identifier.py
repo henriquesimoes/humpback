@@ -155,10 +155,11 @@ class Identifier(object):
 
         if self.model.training:
             _, top5 = torch.topk(features, 5)
+            top1, top5 = self._topk(labels, top5, topk=(1,5))
             labels = labels.cpu().numpy()
             top5 = top5.cpu().numpy()
             map5 = self._mapk(labels, top5)
-            return {'score': map5, 'map5': map5}
+            return {'score': map5, 'map5': map5, 'top1': top1, 'top5': top5}
 
         if isinstance(features, torch.Tensor):
             features = features.cpu().numpy()
@@ -209,10 +210,11 @@ class Identifier(object):
             for l, scores, indices in zip(labels, m, predict_sorted):
                 top5_labels, top5_scores = get_top5(scores, indices, labels, threshold)
                 top5s.append(np.array(top5_labels))
-            map5_list.append((threshold, self._mapk(labels, top5s)))
+            map5_list.append((threshold, self._mapk(labels, top5s), self._topk(labels, top5s, topk=(1,5))))
         map5_list = list(sorted(map5_list, key=lambda x: x[1], reverse=True))
         best_thres = map5_list[0][0]
         best_score = map5_list[0][1]
+        best_top1, best_top5 = map5_list[0][2]
 
         if find_best_threshold:
             score_dict = {'map5_{:.02f}'.format(t):v
@@ -220,6 +222,8 @@ class Identifier(object):
         else:
             score_dict = {'score': best_score,
                           'map5': best_score,
+                          'top1': best_top1,
+                          'top5': best_top5,
                           'thres': best_thres}
         return score_dict
 
@@ -233,6 +237,20 @@ class Identifier(object):
         num_outputs = config.model.params.num_outputs
         self.model = ArcNet(config)
         return self.model
+
+    def _topk(self, actual, pred, topk=(1, 5)):
+        """Computes the precision@k for the specified values of k"""
+        batch_size = actual.size(0)
+
+        pred = pred.t()
+        correct = pred.eq(actual.view(1, -1).expand_as(pred))
+
+        res = []
+        for k in topk:
+            correct_k = correct[:k].any(axis=1).view(-1).float().sum(0, keepdim=True)
+            res.append(correct_k.mul_(100.0 / batch_size))
+
+        return res
 
     def _apk(self, actual, predicted, k=5):
         """
@@ -250,7 +268,7 @@ class Identifier(object):
                 num_hits += 1.0
                 score += num_hits / (i + 1.0)
 
-        if not actual:
+        if actual is None or len(actual) == 0:
             return 0.0
 
         ret = score / min(len(actual), k)
