@@ -18,12 +18,14 @@ class IdentificationDataset(Dataset):
                  transform=None,
                  landmark_ver='5',
                  train_csv='train.csv',
+                 sample_csv='sample_submission.csv'
                  **_):
         self.split = split
         self.transform = transform
         self.dataset_dir = dataset_dir
         self.landmark_ver = landmark_ver
-        self.train_csv = 'train.csv'
+        self.train_csv = train_csv
+        self.sample_csv = sample_csv
 
         if split == 'test':
             self.images_dir = os.path.join(dataset_dir, 'test')
@@ -41,7 +43,7 @@ class IdentificationDataset(Dataset):
         if self.split == 'test':
             landmark_path = os.path.join(self.dataset_dir, 'landmark.test.{}.csv'.format(self.landmark_ver))
             print(landmark_path)
-            image_ids_path = os.path.join(self.dataset_dir, 'sample_submission.csv')
+            image_ids_path = os.path.join(self.dataset_dir, self.sample_csv)
             df_landmarks = pd.read_csv(landmark_path)
             df_landmarks = df_landmarks.rename(columns={'filename': 'Image'})
             df = pd.read_csv(image_ids_path)

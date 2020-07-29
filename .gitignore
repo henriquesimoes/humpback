@@ -1,6 +1,6 @@
 # ignore dataset images files
 
-data/
+/data/
 
 # ignore utilitary generated images
 util/**/*.png
