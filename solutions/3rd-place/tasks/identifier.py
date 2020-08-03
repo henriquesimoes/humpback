@@ -154,11 +154,11 @@ class Identifier(object):
         assert labels is not None
 
         if self.model.training:
-            _, top5 = torch.topk(features, 5)
-            top1, top5 = self._topk(labels, top5, topk=(1,5))
-            labels = labels.cpu().numpy()
-            top5 = top5.cpu().numpy()
-            map5 = self._mapk(labels, top5)
+            _, pred = torch.topk(features, 5)
+            labels, pred = labels.cpu(), pred.cpu()
+            top1, top5 = self._topk(labels.cpu(), pred.cpu(), topk=(1,5))
+            labels, pred = labels.numpy(), pred.numpy()
+            map5 = self._mapk(labels, pred)
             return {'score': map5, 'map5': map5, 'top1': top1, 'top5': top5}
 
         if isinstance(features, torch.Tensor):
@@ -210,7 +210,7 @@ class Identifier(object):
             for l, scores, indices in zip(labels, m, predict_sorted):
                 top5_labels, top5_scores = get_top5(scores, indices, labels, threshold)
                 top5s.append(np.array(top5_labels))
-            map5_list.append((threshold, self._mapk(labels, top5s), self._topk(labels, top5s, topk=(1,5))))
+            map5_list.append((threshold, self._mapk(labels, top5s), self._topk(torch.LongTensor(labels), torch.LongTensor(top5s), topk=(1,5))))
         map5_list = list(sorted(map5_list, key=lambda x: x[1], reverse=True))
         best_thres = map5_list[0][0]
         best_score = map5_list[0][1]
@@ -247,8 +247,8 @@ class Identifier(object):
 
         res = []
         for k in topk:
-            correct_k = correct[:k].any(axis=1).view(-1).float().sum(0, keepdim=True)
-            res.append(correct_k.mul_(100.0 / batch_size))
+            correct_k = correct[:k].any(dim=0).view(-1).float().sum(0, keepdim=True)
+            res.append(correct_k.mul_(100.0 / batch_size).item())
 
         return res
 
