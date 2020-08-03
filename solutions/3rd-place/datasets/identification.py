@@ -48,6 +48,8 @@ class IdentificationDataset(Dataset):
             df_landmarks = df_landmarks.rename(columns={'filename': 'Image'})
             df = pd.read_csv(image_ids_path)
 
+            df_landmarks = df_landmarks.loc[df_landmarks['Image'].isin(df['Image'])]
+
             assert len(df_landmarks) == len(df)
             df_examples = df.join(df_landmarks.set_index('Image'), on='Image')
             df_examples = df_examples.astype(type_dict)
@@ -58,6 +60,8 @@ class IdentificationDataset(Dataset):
             df_landmarks = pd.read_csv(landmark_path)
             df_landmarks = df_landmarks.rename(columns={'filename': 'Image'})
             df = pd.read_csv(image_ids_path)
+
+            df_landmarks = df_landmarks.loc[df_landmarks['Image'].isin(df['Image'])]
 
             assert len(df_landmarks) == len(df)
             df_examples = df.join(df_landmarks.set_index('Image'), on='Image')
@@ -104,6 +108,8 @@ class IdentificationDataset(Dataset):
             len_dev = int(len(df[df['split'] == 'dev']) * 0.276)
             for key in new_whales[:len_dev]:
                 df.loc[df['Image'] == key, 'split'] = 'dev'
+
+            df_landmarks = df_landmarks.loc[df_landmarks['Image'].isin(df['Image'])]
 
             # join with landmark
             assert len(df_landmarks) == len(df)
