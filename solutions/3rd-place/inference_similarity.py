@@ -7,7 +7,9 @@ import math
 import argparse
 import pprint
 import tqdm
+import time
 from collections import defaultdict
+from datetime import datetime
 
 import numpy as np
 import pandas as pd
@@ -19,6 +21,12 @@ from tasks import get_task
 import utils.config
 import utils.checkpoint
 
+def time_to_str(delta):
+    ms = int((delta - int(delta)) * 1e3)
+    secs = int(delta) % 60
+    min = int(delta) // 60
+    hour = min // 60
+    return '{} h {} min {} s {} ms'.format(hour, min % 60, secs, ms)
 
 def get_center(vectors):
     avg = np.mean(vectors, axis=0)
@@ -138,22 +146,34 @@ def run(config, tta_flip, tta_landmark, checkpoint_name, output_path):
 
     print('from checkpoint: {} last epoch:{}'.format(checkpoint, last_epoch))
     preprocess_opt = task.get_preprocess_opt()
-    config.data.params.train_csv = 'train.csv'
 
     landmark_folds = range(6) if tta_landmark else [5]
+
+    writer = open(os.path.join(train_dir, 'inference.log'), mode='w')
+    writer.write('Inference start time: {}\n'.format(datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
+    writer.write('from checkpoint: {} last epoch:{}\n'.format(checkpoint, last_epoch))
+    writer.write('Configuration:\n')
+    writer.write(pprint.PrettyPrinter(indent=2).pformat(config) + '\n')
 
     ###########################################################################
     # train features
     # non-flip
     # default 
+    writer.write('Inferencing known whales to compose the features...\n')
     ret_dict = defaultdict(list)
+    
+    writer.write('non-aligned: '); t = time.time()
     id_dict = inference_single_setting(config, task, preprocess_opt,
                                        'known_whale', flip=False, align=False, landmark_folds=landmark_folds, ret_dict=ret_dict)
-    
+    writer.write(time_to_str(time.time() - t) + '\n')
+
     # align
+    writer.write('aligned: '); t = time.time()
     id_dict = inference_single_setting(config, task, preprocess_opt,
                                        'known_whale', flip=False, align=True, landmark_folds=landmark_folds, ret_dict=ret_dict)
+    writer.write(time_to_str(time.time() - t) + '\n\n')
 
+    writer.write('Computing feature centers... '); t = time.time()
     id_features_dict = defaultdict(list)
     for key, features in ret_dict.items():
         id_features_dict[id_dict[key]].extend(features)
@@ -161,18 +181,26 @@ def run(config, tta_flip, tta_landmark, checkpoint_name, output_path):
 
     id_list_ori = list(sorted(features_dict_ori.keys()))
     features_ori = np.stack([features_dict_ori[Id] for Id in id_list_ori], axis=0)
+    writer.write(time_to_str(time.time() - t) + '\n\n')
 
     # flip
     # default 
     if tta_flip:
+        writer.write('Inferencing flipped known whales to compose the features...\n')
         ret_dict = defaultdict(list)
+
+        writer.write('non-aligned: '); t = time.time()
         id_dict = inference_single_setting(config, task, preprocess_opt,
                                            'known_whale', flip=True, align=False, landmark_folds=landmark_folds, ret_dict=ret_dict)
+        writer.write(time_to_str(time.time() - t) + '\n')
         
         # align
+        writer.write('aligned: '); t = time.time()
         id_dict = inference_single_setting(config, task, preprocess_opt,
                                            'known_whale', flip=True, align=True, landmark_folds=landmark_folds, ret_dict=ret_dict)
+        writer.write(time_to_str(time.time() - t) + '\n\n')
 
+        writer.write('Computing flipped feature centers... '); t = time.time()
         id_features_dict = defaultdict(list)
         for key, features in ret_dict.items():
             id_features_dict[id_dict[key]].extend(features)
@@ -180,6 +208,7 @@ def run(config, tta_flip, tta_landmark, checkpoint_name, output_path):
 
         id_list_flip = list(sorted(features_dict_flip.keys()))
         features_flip = np.stack([features_dict_flip[Id] for Id in id_list_flip], axis=0)
+        writer.write(time_to_str(time.time() - t) + '\n\n')
 
         assert id_list_ori == id_list_flip
     id_list = id_list_ori
@@ -188,42 +217,67 @@ def run(config, tta_flip, tta_landmark, checkpoint_name, output_path):
     # test features
     # non-flip
     # default 
+    writer.write('Inferencing test example features...\n')
     ret_dict = defaultdict(list)
+
+    writer.write('non-aligned: '); t = time.time()
     id_dict = inference_single_setting(config, task, preprocess_opt,
                                        'test', flip=False, align=False, landmark_folds=landmark_folds, ret_dict=ret_dict)
+    writer.write(time_to_str(time.time() - t) + '\n')
 
+    writer.write('aligned: '); t = time.time()
     id_dict = inference_single_setting(config, task, preprocess_opt,
                                        'test', flip=False, align=True, landmark_folds=landmark_folds, ret_dict=ret_dict)
+    writer.write(time_to_str(time.time() - t) + '\n\n')
 
+    writer.write('Computing feature centers... '); t = time.time()
     features_dict = {key:get_image_center(features) for key, features in ret_dict.items()}
     test_key_list_ori = list(sorted(id_dict.keys()))
     test_features_ori = np.stack([features_dict[key] for key in test_key_list_ori], axis=0)
+    writer.write(time_to_str(time.time() - t) + '\n\n')
 
     # flip
     # default 
     if tta_flip:
+        writer.write('Inferencing test example features...\n')
         ret_dict = defaultdict(list)
+
+        writer.write('non-aligned: '); t = time.time()
         id_dict = inference_single_setting(config, task, preprocess_opt,
                                            'test', flip=True, align=False, landmark_folds=landmark_folds, ret_dict=ret_dict)
+        writer.write(time_to_str(time.time() - t) + '\n')
 
+        writer.write('aligned: '); t = time.time()
         id_dict = inference_single_setting(config, task, preprocess_opt,
                                            'test', flip=True, align=True, landmark_folds=landmark_folds, ret_dict=ret_dict)
+        writer.write(time_to_str(time.time() - t) + '\n\n')
 
+        writer.write('Computing flipped feature centers... '); t = time.time()
         features_dict = {key:get_image_center(features) for key, features in ret_dict.items()}
         test_key_list_flip = list(sorted(id_dict.keys()))
         test_features_flip = np.stack([features_dict[key] for key in test_key_list_flip], axis=0)
+        writer.write(time_to_str(time.time() - t) + '\n\n')
 
         assert test_key_list_flip == test_key_list_ori
     key_list = test_key_list_ori
 
     # calculate distance
+    writer.write('Calculating the test-vs-classes distance matrix... '); t = time.time()
     m_ori = np.matmul(test_features_ori, features_ori.transpose())
+    writer.write(time_to_str(time.time() - t) + '\n\n')
+
     if tta_flip:
+        writer.write('Calculating the test-vs-classes distance matrix for flipped images... '); t = time.time()
         m_flip = np.matmul(test_features_flip, features_flip.transpose())
+        writer.write(time_to_str(time.time() - t) + '\n')
+
+        writer.write('Averaging it with the non-flipped-images matrix... '); t = time.time()
         m = np.mean(np.stack([m_ori, m_flip],axis=0), axis=0)
+        writer.write(time_to_str(time.time() - t) + '\n\n')
     else:
         m = m_ori
 
+    writer.write("Writing result matrix on {}... ".format(output_path)); t = time.time()
     records = []
     for i, scores in enumerate(m):
         records.append(tuple([key_list[i]] + ['{:08f}'.format(v) for v in scores]))
@@ -233,7 +287,9 @@ def run(config, tta_flip, tta_landmark, checkpoint_name, output_path):
 
     df_distance = pd.DataFrame.from_records(records, columns=columns)
     df_distance.to_csv(output_path, index=False)
+    writer.write(time_to_str(time.time() - t) + '\n\n')
 
+    writer.write('Inference end time: {}\n'.format(datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
 
 def parse_args():
     description = 'inference similarities of whales'

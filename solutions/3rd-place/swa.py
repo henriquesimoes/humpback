@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+from datetime import datetime
 import os
 import argparse
 import pprint
@@ -50,6 +51,13 @@ def run(config, num_checkpoint, epoch_end, output_filename):
     print('checkpoints:')
     print('\n'.join(checkpoints))
 
+    writer = open(os.path.join(config.train.dir, 'swa.log'), mode='w')
+    writer.write("SWA start time: {}\n".format(datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
+    writer.write("Configuration:\n")
+    writer.write(pprint.PrettyPrinter(indent=2).pformat(config) + '\n')
+    writer.write("Averaging the following checkpoints:\n")
+    writer.write('\n'.join(checkpoints) + '\n')
+
     utils.checkpoint.load_checkpoint(model, None, checkpoints[0])
     for i, checkpoint in enumerate(checkpoints[1:]):
         model2 = get_task(config).get_model()
@@ -64,7 +72,8 @@ def run(config, num_checkpoint, epoch_end, output_filename):
     utils.checkpoint.save_checkpoint(config, model, None, 0, 0,
                                      name=output_name,
                                      weights_dict={'state_dict': model.state_dict()})
-
+    writer.write("SWA end time: {}\n".format(datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
+    writer.close()
 
 def parse_args():
     parser = argparse.ArgumentParser(description='hpa')

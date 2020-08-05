@@ -66,9 +66,9 @@ def ensemble(input_paths):
     return df
 
 
-def run(input_path, output_path, threshold):
+def run(input_path, output_path, threshold, sample_path='data/sample_submission.csv'):
     df_input = ensemble(input_path.split(','))
-    df_submission = pd.read_csv('data/sample_submission.csv', index_col='Image')
+    df_submission = pd.read_csv(sample_path, index_col='Image')
     df_submission['Id'] = ''
 
     m = df_input.values
@@ -86,6 +86,10 @@ def run(input_path, output_path, threshold):
 def parse_args():
     description = 'Make submission'
     parser = argparse.ArgumentParser(description=description)
+
+    parser.add_argument('--sample_path', dest='sample_path',
+                        help='sample submission file path',
+                        default='data/sample_submission.csv', type=str)
     parser.add_argument('--input_path', dest='input_path',
                         help='input path',
                         default='input.csv', type=str)
@@ -106,7 +110,7 @@ def main():
     dirname = os.path.dirname(args.output_path)
     if dirname:
         os.makedirs(dirname, exist_ok=True)
-    run(args.input_path, args.output_path, args.threshold)
+    run(args.input_path, args.output_path, args.threshold, sample_path=args.sample_path)
 
 
 if __name__ == '__main__':
