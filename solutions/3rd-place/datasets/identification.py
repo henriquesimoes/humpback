@@ -41,7 +41,7 @@ class IdentificationDataset(Dataset):
         type_keys = ['x','y','w','h','xl','yl','xn','yn','xr','yr','xd','yd']
         type_dict = {key:float for key in type_keys}
         if self.split == 'test':
-            landmark_path = os.path.join(self.dataset_dir, 'landmark.test.{}.csv'.format(self.landmark_ver))
+            landmark_path = os.path.join(self.dataset_dir, 'landmark.train.{}.csv'.format(self.landmark_ver))
             print(landmark_path)
             image_ids_path = os.path.join(self.dataset_dir, self.sample_csv)
             df_landmarks = pd.read_csv(landmark_path)
