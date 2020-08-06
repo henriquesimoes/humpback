@@ -67,11 +67,14 @@ def run(config, num_checkpoint, epoch_end, output_filename):
     with torch.no_grad():
         swa.bn_update(dataloader, model)
 
-    output_name = '{}.{}.{:03d}'.format(output_filename, num_checkpoint, last_epoch)
+    output_name = output_filename
+    # output_name = '{}.{}.{:03d}'.format(output_filename, num_checkpoint, last_epoch)
     print('save {}'.format(output_name))
     utils.checkpoint.save_checkpoint(config, model, None, 0, 0,
                                      name=output_name,
                                      weights_dict={'state_dict': model.state_dict()})
+
+    writer.write("Averaged {} checkpoints, ending on {}th epoch\n".format(num_checkpoint, last_epoch))
     writer.write("SWA end time: {}\n".format(datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
     writer.close()
 
