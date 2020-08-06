@@ -1,0 +1,40 @@
+SWA start time: 2020-08-05 18:18:24
+Configuration:
+{ 'data': { 'dir': 'data',
+            'name': 'IdentificationDataset',
+            'params': { 'sample_csv': 'test1.sample.csv',
+                        'train_csv': 'test1.train.csv'}},
+  'eval': {'batch_size': 32, 'cal_metric_once': True},
+  'loss': {'name': 'cross_entropy', 'params': {}},
+  'model': { 'name': 'densenet121',
+             'params': { 'drop_rate': 0.5,
+                         'feature_size': 10,
+                         'num_outputs': 9776,
+                         'pretrained': True}},
+  'optimizer': { 'name': 'adam',
+                 'params': {'lr': 0.0005, 'weight_decay': 0.0005}},
+  'scheduler': { 'name': 'multi_step',
+                 'params': {'gamma': 0.5, 'milestones': [30, 40]}},
+  'task': {'name': 'Identifier', 'params': {}},
+  'train': { 'batch_size': 32,
+             'dir': './train_logs/test1',
+             'log_step': 200,
+             'num_epochs': 100,
+             'num_grad_acc': None,
+             'save_checkpoint_epoch': 2},
+  'transform': { 'name': 'align_transform',
+                 'num_preprocessor': 4,
+                 'params': {'align': True, 'align_p': 0.5, 'size': 320}}}
+Averaging the following checkpoints:
+./train_logs/test1/checkpoint/best.score_mavg.0000.pth
+./train_logs/test1/checkpoint/best.score_mavg.0001.pth
+./train_logs/test1/checkpoint/best.score_mavg.0002.pth
+./train_logs/test1/checkpoint/best.score_mavg.0003.pth
+./train_logs/test1/checkpoint/best.score_mavg.0004.pth
+./train_logs/test1/checkpoint/best.score_mavg.0005.pth
+./train_logs/test1/checkpoint/best.score_mavg.0006.pth
+./train_logs/test1/checkpoint/best.score_mavg.0007.pth
+./train_logs/test1/checkpoint/best.score_mavg.0008.pth
+./train_logs/test1/checkpoint/best.score_mavg.0009.pth
+Averaged 10 checkpoints, ending on 98th epoch
+SWA end time: 2020-08-05 18:22:34
