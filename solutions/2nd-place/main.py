@@ -117,13 +117,6 @@ def run_train(config):
     NUM_INSTANCE = 4
 
     ## setup  -----------------------------------------------------------------------------
-    if config.is_pseudo:
-        config.model_name = config.model + '_test' + str(config.fold_index) + '_pseudo'\
-                            '_' + str(config.image_h) + '_' + str(config.image_w)
-    else:
-        config.model_name = config.model + '_test' + str(config.fold_index) + \
-                            '_'+str(config.image_h)+ '_'+str(config.image_w)
-
     out_dir = os.path.join('./models/', config.model_name)
 
     os.makedirs(os.path.join(out_dir,'checkpoint'), exist_ok=True)
@@ -343,13 +336,6 @@ def run_infer(config):
     image_size = (config.image_h, config.image_w)
 
     ## setup  -----------------------------------------------------------------------------
-    if config.is_pseudo:
-        config.model_name = config.model + '_test' + str(config.fold_index) + '_pseudo'\
-                            '_' + str(config.image_h) + '_' + str(config.image_w)
-    else:
-        config.model_name = config.model + '_test' + str(config.fold_index) + \
-                            '_'+str(config.image_h)+ '_'+str(config.image_w)
-
     out_dir = os.path.join('./models/', config.model_name)
 
     net = get_model(config.model, config)
@@ -457,6 +443,9 @@ def main(config):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
+
+    parser.add_argument('--name', type=str, dest='model_name', required=True,
+                        help="Model name (used to store training data)")
 
     parser.add_argument('--fold_index', type=int, default=1)
     parser.add_argument('--model', type=str, default='resnet101')
