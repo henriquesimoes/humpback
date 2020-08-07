@@ -10,3 +10,6 @@ sketch-tool/
 
 # ignore python cache
 **/__pycache__
+
+# ignore jupyper notebook checkpoints
+.ipynb_checkpoints/

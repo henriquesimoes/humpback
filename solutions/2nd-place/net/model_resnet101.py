@@ -1,9 +1,11 @@
+import torchvision.models as tvm
+
 from net.imagenet_pretrain_model.senet import *
-# from utils import *
 from net.MagrinLinear import *
+from process import *
+
 BatchNorm2d = nn.BatchNorm2d
 
-import torchvision.models as tvm
 ###########################################################################################3
 class BinaryHead(nn.Module):
 
@@ -65,14 +67,7 @@ class Net(nn.Module):
         self.binary_head = BinaryHead(num_class, emb_size=emb_size, s = self.s2)
 
     def forward(self, x, label = None, is_infer = None):
-        mean = [0.485, 0.456, 0.406]  # rgb
-        std = [0.229, 0.224, 0.225]
-
-        x = torch.cat([
-            (x[:, [0]] - mean[0]) / std[0],
-            (x[:, [1]] - mean[1]) / std[1],
-            (x[:, [2]] - mean[2]) / std[2],
-        ], 1)
+        x = imagenet_norm(x)
 
         x = self.basemodel.layer0(x)
         x = self.basemodel.layer1(x)
