@@ -2,7 +2,7 @@ import torchvision.models as tvm
 
 from net.imagenet_pretrain_model.senet import *
 from net.MagrinLinear import *
-from process import *
+from process.contrast import *
 
 BatchNorm2d = nn.BatchNorm2d
 
@@ -67,7 +67,7 @@ class Net(nn.Module):
         self.binary_head = BinaryHead(num_class, emb_size=emb_size, s = self.s2)
 
     def forward(self, x, label = None, is_infer = None):
-        x = imagenet_norm(x)
+        x = local_contrast_norm(x, kernel_size=9, scale=1, lmbda=1)
 
         x = self.basemodel.layer0(x)
         x = self.basemodel.layer1(x)

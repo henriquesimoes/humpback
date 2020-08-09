@@ -62,6 +62,9 @@ def local_contrast_norm(x, kernel_size=9, scale=1, lmbda=0, eps=1e-8):
 
   kernel = torch.ones((1, channels, kernel_size, kernel_size), dtype=torch.float32) / (channels * kernel_size * kernel_size)
 
+  if x.is_cuda:
+      kernel = kernel.cuda()
+
   mean = F.conv2d(x, weight=kernel, padding=padding)
   x = x - mean
 
