@@ -19,4 +19,8 @@ def get_config():
   parser.add_argument("--description", type=str, default=None, help="solution description")
   parser.add_argument("--report-output", type=str, dest="output", default="report.txt", help="report output file")
 
+  parser.add_argument("--known-whale-only", type=bool, dest="known_only",
+                      nargs='?', const=True, default=False,
+                      help="use only known whales on evaluation")
+
   return parser.parse_args()

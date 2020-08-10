@@ -19,6 +19,9 @@ class Report():
   def add_result(self, result):
     self.results.append(result)
 
+  def set_known_only(self, known_only):
+    self.known_only = known_only
+
   def __str__(self):
     out = "# Test Report\n\n"
     out += "## Configuration\n\n"
@@ -28,6 +31,8 @@ class Report():
       out += " - Solution: " + str(self.solution) + "\n"
     if self.description:
       out += " - Description: " + self.description + "\n"
+    if self.known_only:
+      out += " - Only known whales\n"
     out += " - Date: " + self.date.strftime('%Y-%m-%d %H:%M:%S') + "\n\n"
     out += "## Test results: \n\n"
 
@@ -46,9 +51,10 @@ class ReportManager:
   def _reset(self):
     self.report = Report(self.dataset)
 
-  def set_info(self, solution, description = ''):
+  def set_info(self, solution, description = '', known_only=False):
     self.report.set_solution(solution)
     self.report.set_description(description)
+    self.report.set_known_only(known_only)
   
   def add_metric(self, name, result):
     self.report.add_result({'metric': name, 'result': result})

@@ -27,14 +27,26 @@ def main():
 
   dfs, classes = load_data(config)
 
+  for name in dfs.keys():
+    dfs[name] = dfs[name].sort_index()
+  
+  assert (dfs['test'].index == dfs['prediction'].index).all()
+
   dfs['test'] = preprocess.update_new_whales(df_train=dfs['train'], df_test=dfs['test'])
+
+  assert (dfs['test'].index == dfs['prediction'].index).all()
+
+  if config.known_only:
+    dfs['test'], dfs['prediction'] = preprocess.remove_new_whales(df_test=dfs['test'], df_pred=dfs['prediction'])
+
+    assert (dfs['test'].index == dfs['prediction'].index).all()
 
   converter = preprocess.Converter(classes)
   pred, actual = converter.to_numpy(dfs['prediction'], dfs['test'])
 
   report = ReportManager(config.name)
 
-  report.set_info(solution=config.solution, description=config.description)
+  report.set_info(solution=config.solution, description=config.description, known_only=config.known_only)
 
   report.add_metric('MAP@5', metrics.mapk(actual, pred, k=5))
 

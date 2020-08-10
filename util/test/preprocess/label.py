@@ -36,6 +36,15 @@ def update_new_whales(df_train, df_test):
 
   return df_test
 
+def remove_new_whales(df_test, df_pred):
+  nw_indices = df_test.loc[df_test['Id'] == 'new_whale'].index
+
+  df_test = df_test.loc[~df_test.index.isin(nw_indices)]
+  df_pred = df_pred.loc[~df_pred.index.isin(nw_indices)]
+
+  return df_test, df_pred
+
+
 if __name__ == "__main__":
   df_test = pd.DataFrame({'Image': list('abcd'), 'Id': list('abbz')}).set_index('Image')
   df_train = pd.DataFrame({'Image': list('efgh'), 'Id': list('cabb')}).set_index('Image')
