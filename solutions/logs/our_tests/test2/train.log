@@ -1,0 +1,1429 @@
+Training start time: 2020-08-14 13:43:01
+	__file__     = main.py
+	out_dir      = ./models/lcn_biased_test2
+
+** dataset setting **
+batch_size = 32
+train_dataset : 31192
+valid_dataset : 378
+
+** net setting **
+DataParallel(
+  (module): Net(
+    (basemodel): ResNet(
+      (conv1): Conv2d(3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
+      (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (relu): ReLU(inplace=True)
+      (maxpool): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+      (layer1): Sequential(
+        (0): Bottleneck(
+          (conv1): Conv2d(64, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+          (downsample): Sequential(
+            (0): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (1): Bottleneck(
+          (conv1): Conv2d(256, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+        )
+        (2): Bottleneck(
+          (conv1): Conv2d(256, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+        )
+      )
+      (layer2): Sequential(
+        (0): Bottleneck(
+          (conv1): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+          (downsample): Sequential(
+            (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(2, 2), bias=False)
+            (1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (1): Bottleneck(
+          (conv1): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+        )
+        (2): Bottleneck(
+          (conv1): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+        )
+        (3): Bottleneck(
+          (conv1): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+        )
+      )
+      (layer3): Sequential(
+        (0): Bottleneck(
+          (conv1): Conv2d(512, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+          (downsample): Sequential(
+            (0): Conv2d(512, 1024, kernel_size=(1, 1), stride=(2, 2), bias=False)
+            (1): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (1): Bottleneck(
+          (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+        )
+        (2): Bottleneck(
+          (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+        )
+        (3): Bottleneck(
+          (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+        )
+        (4): Bottleneck(
+          (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+        )
+        (5): Bottleneck(
+          (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+        )
+        (6): Bottleneck(
+          (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+        )
+        (7): Bottleneck(
+          (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+        )
+        (8): Bottleneck(
+          (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+        )
+        (9): Bottleneck(
+          (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+        )
+        (10): Bottleneck(
+          (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+        )
+        (11): Bottleneck(
+          (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+        )
+        (12): Bottleneck(
+          (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+        )
+        (13): Bottleneck(
+          (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+        )
+        (14): Bottleneck(
+          (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+        )
+        (15): Bottleneck(
+          (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+        )
+        (16): Bottleneck(
+          (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+        )
+        (17): Bottleneck(
+          (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+        )
+        (18): Bottleneck(
+          (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+        )
+        (19): Bottleneck(
+          (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+        )
+        (20): Bottleneck(
+          (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+        )
+        (21): Bottleneck(
+          (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+        )
+        (22): Bottleneck(
+          (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+        )
+      )
+      (layer4): Sequential(
+        (0): Bottleneck(
+          (conv1): Conv2d(1024, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv3): Conv2d(512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+          (downsample): Sequential(
+            (0): Conv2d(1024, 2048, kernel_size=(1, 1), stride=(2, 2), bias=False)
+            (1): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+        )
+        (1): Bottleneck(
+          (conv1): Conv2d(2048, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv3): Conv2d(512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+        )
+        (2): Bottleneck(
+          (conv1): Conv2d(2048, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (conv3): Conv2d(512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): BatchNorm2d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (relu): ReLU(inplace=True)
+        )
+      )
+      (avgpool): AdaptiveAvgPool2d(output_size=1)
+      (fc): Linear(in_features=2048, out_features=1000, bias=True)
+      (last_linear): Sequential()
+      (layer0): Sequential(
+        (0): Conv2d(3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
+        (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        (2): ReLU(inplace=True)
+        (3): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+      )
+    )
+    (fea_bn): BatchNorm1d(2048, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (margin_head): MarginHead(
+      (fc): MagrginLinear()
+    )
+    (binary_head): BinaryHead(
+      (fc): Sequential(
+        (0): Linear(in_features=2048, out_features=9774, bias=True)
+      )
+    )
+  )
+)
+
+
+change hard_ratio: 0.01
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0001000   0.00 k    0 | 0.000    0.000    0.000   0.000   0.50  | 3.451    0.000    0.000   0.000   | 3.451     0.000    0.000   0.000   |  0 hr 00 min
+0.0001000   0.20 k    0 | 1.339   33.598   33.862   0.337   0.68  | 2.682    0.625    0.750   0.007   | 2.682    25.000   25.000   0.250   |  0 hr 02 min
+0.0001000   0.40 k    0 | 1.235   33.598   34.392   0.339   0.65  | 2.578   25.000   25.188   0.251   | 2.642    25.000   25.000   0.250   |  0 hr 04 min
+0.0001000   0.60 k    0 | 1.207   33.598   34.788   0.340   0.64  | 2.591   24.750   25.312   0.250   | 2.556    25.000   25.000   0.250   |  0 hr 06 min
+0.0001000   0.80 k    0 | 1.180   33.598   34.259   0.338   0.63  | 2.675   24.812   25.062   0.249   | 2.622    25.000   25.000   0.250   |  0 hr 08 min
+0.0001000   1.00 k    0 | 1.172   33.598   33.995   0.338   0.63  | 2.753   24.938   25.250   0.251   | 2.763    25.000   25.000   0.250   |  0 hr 10 min
+0.0001000   1.20 k    0 | 1.154   33.730   35.582   0.344   0.61  | 2.853   24.938   25.500   0.252   | 2.912    25.000   25.000   0.250   |  0 hr 12 min
+0.0001000   1.40 k    0 | 1.142   33.730   36.905   0.349   0.66  | 2.760   24.188   28.000   0.258   | 2.680    25.000   25.000   0.250   |  0 hr 14 min
+New maximum MAP@5 reached on 1466th iteration (epoch 0): 0.36104497354497356... saving on disk.
+change hard_ratio: 0.01
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0001000   1.60 k    1 | 1.135   33.598   36.905   0.348   0.65  | 2.414   25.000   25.125   0.250   | 2.603    25.000   25.000   0.250   |  0 hr 16 min
+0.0001000   1.80 k    1 | 1.134   33.995   36.111   0.348   0.64  | 2.422   24.875   25.000   0.249   | 2.442    25.000   25.000   0.250   |  0 hr 18 min
+0.0001000   2.00 k    1 | 1.135   33.730   36.508   0.347   0.63  | 2.409   24.938   25.062   0.250   | 2.339    25.000   25.000   0.250   |  0 hr 20 min
+0.0001000   2.20 k    1 | 1.128   33.730   36.772   0.349   0.64  | 2.370   24.250   25.750   0.249   | 2.319    25.000   25.000   0.250   |  0 hr 23 min
+0.0001000   2.40 k    1 | 1.127   33.995   37.566   0.353   0.64  | 2.370   24.938   25.938   0.253   | 2.330    25.000   25.000   0.250   |  0 hr 25 min
+0.0001000   2.60 k    1 | 1.117   33.995   37.698   0.354   0.63  | 2.367   25.188   26.500   0.258   | 2.446    25.000   25.000   0.250   |  0 hr 27 min
+0.0001000   2.80 k    1 | 1.105   35.979   40.873   0.380   0.63  | 2.268   26.125   30.500   0.280   | 2.029    25.000   31.250   0.281   |  0 hr 29 min
+New maximum MAP@5 reached on 2933th iteration (epoch 1): 0.394863315696649... saving on disk.
+change hard_ratio: 0.01
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0001000   3.00 k    2 | 1.082   36.376   43.122   0.392   0.62  | 1.829   24.750   32.500   0.276   | 1.860    21.875   25.000   0.234   |  0 hr 31 min
+0.0001000   3.20 k    2 | 1.077   34.656   44.444   0.384   0.61  | 1.868   24.500   27.938   0.257   | 2.011    25.000   25.000   0.250   |  0 hr 33 min
+0.0001000   3.40 k    2 | 1.082   34.656   41.799   0.373   0.61  | 1.945   24.188   26.688   0.251   | 1.939    25.000   31.250   0.262   |  0 hr 35 min
+0.0001000   3.60 k    2 | 1.073   35.185   44.180   0.388   0.60  | 1.959   24.938   26.688   0.256   | 1.675    37.500   50.000   0.430   |  0 hr 37 min
+0.0001000   3.80 k    2 | 1.073   35.582   44.180   0.391   0.62  | 1.977   23.562   27.125   0.250   | 2.027    25.000   25.000   0.250   |  0 hr 39 min
+0.0001000   4.00 k    2 | 1.060   36.111   47.222   0.406   0.60  | 1.952   24.875   28.438   0.263   | 2.110    25.000   34.375   0.289   |  0 hr 41 min
+0.0001000   4.20 k    2 | 1.052   37.698   49.868   0.424   0.61  | 1.917   27.125   34.250   0.301   | 1.969    21.875   25.000   0.234   |  0 hr 43 min
+0.0001000   4.40 k    2 | 1.020   37.963   50.265   0.427   0.64  | 1.457   56.938   76.312   0.650   | 1.358    84.375   96.875   0.906   |  0 hr 45 min
+New maximum MAP@5 reached on 4400th iteration (epoch 2): 0.4280202821869489... saving on disk.
+change hard_ratio: 0.01
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0001000   4.60 k    3 | 1.017   42.196   53.968   0.465   0.58  | 1.493   25.562   55.000   0.367   | 1.506    21.875   46.875   0.310   |  0 hr 48 min
+0.0001000   4.80 k    3 | 1.015   39.153   54.233   0.451   0.59  | 1.514   25.000   46.875   0.329   | 1.701    25.000   37.500   0.280   |  0 hr 50 min
+0.0001000   5.00 k    3 | 1.014   40.212   54.894   0.457   0.58  | 1.546   24.625   40.250   0.300   | 1.649    21.875   28.125   0.245   |  0 hr 52 min
+0.0001000   5.20 k    3 | 1.010   38.889   56.217   0.453   0.58  | 1.538   23.875   40.750   0.298   | 1.606    21.875   31.250   0.258   |  0 hr 54 min
+0.0001000   5.40 k    3 | 1.002   39.947   57.143   0.466   0.59  | 1.532   25.875   39.000   0.307   | 1.446    25.000   50.000   0.355   |  0 hr 56 min
+0.0001000   5.60 k    3 | 1.002   41.534   56.746   0.475   0.59  | 1.545   28.000   39.688   0.320   | 1.635    21.875   31.250   0.248   |  0 hr 58 min
+0.0001000   5.80 k    3 | 0.988   42.857   58.730   0.491   0.57  | 1.483   37.375   51.062   0.426   | 1.648    31.250   46.875   0.378   |  1 hr 00 min
+New maximum MAP@5 reached on 5867th iteration (epoch 3): 0.4758818342151675... saving on disk.
+change hard_ratio: 0.01
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0002000   6.00 k    4 | 1.045   35.582   46.164   0.397   0.66  | 1.427   23.125   40.562   0.292   | 1.623    25.000   31.250   0.267   |  1 hr 02 min
+0.0002000   6.20 k    4 | 1.048   35.053   48.016   0.397   0.67  | 1.472   24.000   33.625   0.270   | 1.542    25.000   31.250   0.272   |  1 hr 04 min
+0.0002000   6.40 k    4 | 1.057   35.582   45.503   0.389   0.66  | 1.515   24.375   28.812   0.259   | 1.450    21.875   25.000   0.234   |  1 hr 06 min
+0.0002000   6.60 k    4 | 1.051   35.979   48.545   0.406   0.67  | 1.538   24.375   30.000   0.264   | 1.649    25.000   31.250   0.262   |  1 hr 09 min
+0.0002000   6.80 k    4 | 1.054   36.508   48.677   0.412   0.69  | 1.575   24.938   28.375   0.263   | 1.542    25.000   25.000   0.250   |  1 hr 11 min
+0.0002000   7.00 k    4 | 1.044   38.757   49.735   0.429   0.64  | 1.565   25.438   29.250   0.269   | 1.593    25.000   25.000   0.250   |  1 hr 13 min
+0.0002000   7.20 k    4 | 1.024   39.947   54.101   0.453   0.65  | 1.536   28.688   37.062   0.322   | 1.421    18.750   34.375   0.253   |  1 hr 15 min
+change hard_ratio: 0.01
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0002000   7.40 k    5 | 0.965   43.254   59.921   0.495   0.61  | 1.208   28.625   73.625   0.464   | 1.401    18.750   56.250   0.342   |  1 hr 17 min
+0.0002000   7.60 k    5 | 0.962   43.519   59.921   0.497   0.61  | 1.203   29.000   68.938   0.444   | 1.282    21.875   65.625   0.363   |  1 hr 19 min
+0.0002000   7.80 k    5 | 0.955   41.534   61.508   0.493   0.62  | 1.215   25.812   63.062   0.392   | 1.144    21.875   53.125   0.307   |  1 hr 21 min
+0.0002000   8.00 k    5 | 0.954   40.476   61.772   0.490   0.61  | 1.218   24.938   56.812   0.363   | 1.121    28.125   68.750   0.401   |  1 hr 23 min
+0.0002000   8.20 k    5 | 0.957   40.741   62.302   0.493   0.61  | 1.217   23.938   55.188   0.350   | 1.255    28.125   62.500   0.409   |  1 hr 25 min
+0.0002000   8.40 k    5 | 0.957   40.608   62.566   0.488   0.64  | 1.234   25.688   48.625   0.336   | 1.202    46.875   71.875   0.561   |  1 hr 27 min
+0.0002000   8.60 k    5 | 0.944   41.667   61.772   0.494   0.61  | 1.277   31.562   47.812   0.371   | 1.275    25.000   53.125   0.330   |  1 hr 29 min
+0.0002000   8.80 k    5 | 0.903   42.593   68.915   0.524   0.65  | 1.085   68.312   81.812   0.737   | 1.032    93.750  100.000   0.964   |  1 hr 31 min
+New maximum MAP@5 reached on 8801th iteration (epoch 5): 0.5236331569664903... saving on disk.
+change hard_ratio: 0.01
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0002000   9.00 k    6 | 0.881   48.677   72.619   0.581   0.58  | 1.024   29.438   90.500   0.565   | 0.993    43.750   93.750   0.667   |  1 hr 33 min
+0.0002000   9.20 k    6 | 0.884   46.296   69.974   0.556   0.57  | 1.042   46.938   86.312   0.628   | 0.953    56.250   90.625   0.691   |  1 hr 35 min
+0.0002000   9.40 k    6 | 0.870   49.339   74.074   0.590   0.57  | 1.053   43.062   79.875   0.577   | 1.112    28.125   59.375   0.406   |  1 hr 37 min
+0.0002000   9.60 k    6 | 0.889   48.413   70.238   0.570   0.58  | 1.068   36.375   77.125   0.520   | 1.149    25.000   59.375   0.397   |  1 hr 40 min
+0.0002000   9.80 k    6 | 0.879   50.794   71.958   0.591   0.57  | 1.088   31.938   70.500   0.468   | 1.089    21.875   81.250   0.467   |  1 hr 42 min
+0.0002000  10.00 k    6 | 0.882   47.884   71.958   0.577   0.58  | 1.118   32.125   69.188   0.464   | 1.213    25.000   65.625   0.439   |  1 hr 44 min
+0.0002000  10.20 k    6 | 0.877   51.058   74.074   0.601   0.56  | 1.085   44.250   71.562   0.542   | 1.105    56.250   75.000   0.625   |  1 hr 46 min
+New maximum MAP@5 reached on 10268th iteration (epoch 6): 0.5799382716049383... saving on disk.
+change hard_ratio: 0.01
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0002000  10.40 k    7 | 0.820   56.746   78.704   0.654   0.53  | 0.922   62.062   96.375   0.771   | 0.923    59.375   87.500   0.706   |  1 hr 48 min
+0.0002000  10.60 k    7 | 0.826   54.101   76.323   0.631   0.53  | 0.924   71.125   94.688   0.807   | 0.912    65.625   96.875   0.776   |  1 hr 50 min
+0.0002000  10.80 k    7 | 0.824   56.217   76.587   0.642   0.53  | 0.949   63.125   93.125   0.753   | 0.849    81.250   96.875   0.885   |  1 hr 52 min
+0.0002000  11.00 k    7 | 0.825   57.937   76.984   0.652   0.54  | 0.947   57.938   90.438   0.711   | 0.880    50.000   96.875   0.715   |  1 hr 54 min
+0.0002000  11.20 k    7 | 0.820   56.614   76.058   0.647   0.54  | 0.992   46.125   83.500   0.614   | 1.042    43.750   75.000   0.558   |  1 hr 56 min
+0.0002000  11.40 k    7 | 0.819   58.201   77.513   0.660   0.54  | 0.999   44.188   82.688   0.591   | 1.074    37.500   84.375   0.574   |  1 hr 58 min
+0.0002000  11.60 k    7 | 0.812   58.333   78.704   0.666   0.55  | 1.011   44.562   81.938   0.590   | 0.964    40.625   93.750   0.602   |  2 hr 01 min
+New maximum MAP@5 reached on 11735th iteration (epoch 7): 0.6574514991181657... saving on disk.
+change hard_ratio: 0.01
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0002000  11.80 k    8 | 0.790   60.714   81.746   0.692   0.50  | 0.881   79.938   98.000   0.876   | 0.890    71.875   93.750   0.803   |  2 hr 03 min
+0.0002000  12.00 k    8 | 0.780   61.905   81.349   0.701   0.49  | 0.870   80.438   98.000   0.881   | 0.780    78.125  100.000   0.880   |  2 hr 05 min
+0.0002000  12.20 k    8 | 0.776   62.037   82.143   0.706   0.51  | 0.849   79.125   97.875   0.872   | 0.827    81.250  100.000   0.876   |  2 hr 07 min
+0.0002000  12.40 k    8 | 0.783   62.169   80.688   0.700   0.50  | 0.883   72.312   95.375   0.820   | 0.834    84.375   96.875   0.898   |  2 hr 09 min
+0.0002000  12.60 k    8 | 0.786   60.450   80.291   0.684   0.50  | 0.915   69.750   94.875   0.804   | 0.969    65.625   93.750   0.755   |  2 hr 11 min
+0.0002000  12.80 k    8 | 0.774   60.053   80.820   0.684   0.50  | 0.938   62.312   92.125   0.744   | 0.973    65.625   93.750   0.760   |  2 hr 13 min
+0.0002000  13.00 k    8 | 0.758   63.889   81.746   0.713   0.48  | 0.949   55.875   89.625   0.693   | 1.028    21.875   81.250   0.460   |  2 hr 16 min
+0.0002000  13.20 k    8 | 0.750   61.376   82.011   0.701   0.51  | 0.853   74.250   95.062   0.825   | 0.743   100.000  100.000   1.000   |  2 hr 18 min
+New maximum MAP@5 reached on 13202th iteration (epoch 8): 0.6989197530864198... saving on disk.
+change hard_ratio: 0.007
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0003000  13.40 k    9 | 0.822   51.323   75.132   0.607   0.52  | 0.929   65.125   95.125   0.774   | 0.923    62.500   96.875   0.763   |  2 hr 20 min
+0.0003000  13.60 k    9 | 0.833   47.619   74.735   0.579   0.52  | 0.990   56.125   91.438   0.702   | 0.960    59.375   87.500   0.702   |  2 hr 22 min
+0.0003000  13.80 k    9 | 0.850   47.222   73.148   0.578   0.55  | 1.091   44.750   87.125   0.615   | 1.188    21.875   84.375   0.458   |  2 hr 24 min
+0.0003000  14.00 k    9 | 0.842   51.984   75.132   0.612   0.51  | 1.122   40.688   85.688   0.581   | 1.124    31.250   78.125   0.482   |  2 hr 26 min
+0.0003000  14.20 k    9 | 0.835   54.894   75.926   0.634   0.53  | 1.234   37.625   81.000   0.542   | 1.112    21.875   68.750   0.385   |  2 hr 28 min
+0.0003000  14.40 k    9 | 0.833   54.365   76.455   0.634   0.52  | 1.274   38.062   75.062   0.525   | 1.326    31.250   59.375   0.422   |  2 hr 30 min
+0.0003000  14.60 k    9 | 0.816   57.937   79.894   0.672   0.53  | 1.194   49.375   77.938   0.601   | 1.116    59.375   90.625   0.692   |  2 hr 32 min
+change hard_ratio: 0.007
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0003000  14.80 k   10 | 0.777   67.460   84.127   0.746   0.51  | 0.816   85.375   99.312   0.916   | 0.907    90.625   96.875   0.923   |  2 hr 35 min
+0.0003000  15.00 k   10 | 0.762   66.402   83.466   0.735   0.51  | 0.824   84.562   98.938   0.909   | 0.774    93.750  100.000   0.969   |  2 hr 37 min
+0.0003000  15.20 k   10 | 0.772   65.344   83.069   0.726   0.50  | 0.817   82.875   98.312   0.896   | 0.721    81.250   96.875   0.891   |  2 hr 39 min
+0.0003000  15.40 k   10 | 0.764   64.550   82.804   0.723   0.50  | 0.857   73.500   96.625   0.834   | 0.945    53.125  100.000   0.747   |  2 hr 41 min
+0.0003000  15.60 k   10 | 0.756   64.683   82.143   0.719   0.50  | 0.895   68.438   95.062   0.792   | 0.798    71.875   96.875   0.821   |  2 hr 44 min
+0.0003000  15.80 k   10 | 0.747   67.196   82.804   0.737   0.51  | 0.900   64.250   93.250   0.762   | 0.842    56.250  100.000   0.761   |  2 hr 46 min
+0.0003000  16.00 k   10 | 0.739   67.196   83.730   0.741   0.52  | 0.898   58.438   93.125   0.727   | 0.913    37.500   93.750   0.623   |  2 hr 48 min
+New maximum MAP@5 reached on 16136th iteration (epoch 10): 0.7455026455026456... saving on disk.
+change hard_ratio: 0.007
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0003000  16.20 k   11 | 0.680   73.148   86.905   0.792   0.47  | 0.698   91.188   99.500   0.950   | 0.612   100.000  100.000   1.000   |  2 hr 50 min
+0.0003000  16.40 k   11 | 0.692   72.222   86.508   0.785   0.46  | 0.679   91.062   99.812   0.951   | 0.660    87.500  100.000   0.938   |  2 hr 52 min
+0.0003000  16.60 k   11 | 0.694   72.751   86.508   0.784   0.46  | 0.699   87.875   99.312   0.930   | 0.664    87.500  100.000   0.932   |  2 hr 55 min
+0.0003000  16.80 k   11 | 0.705   70.106   85.053   0.762   0.48  | 0.762   81.375   97.625   0.884   | 0.727    81.250  100.000   0.906   |  2 hr 57 min
+0.0003000  17.00 k   11 | 0.721   70.370   84.127   0.764   0.46  | 0.773   78.875   97.688   0.868   | 0.768    78.125   96.875   0.853   |  2 hr 59 min
+0.0003000  17.20 k   11 | 0.708   72.619   85.450   0.782   0.48  | 0.764   76.312   98.000   0.855   | 0.889    56.250   93.750   0.710   |  3 hr 01 min
+0.0003000  17.40 k   11 | 0.723   71.561   84.788   0.773   0.47  | 0.804   67.688   96.000   0.794   | 0.729    78.125   96.875   0.866   |  3 hr 03 min
+0.0003000  17.60 k   11 | 0.709   70.238   85.582   0.768   0.45  | 0.723   80.438   96.625   0.874   | 0.762    87.500  100.000   0.924   |  3 hr 05 min
+New maximum MAP@5 reached on 17603th iteration (epoch 11): 0.7656746031746032... saving on disk.
+change hard_ratio: 0.007
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0003000  17.80 k   12 | 0.674   74.868   86.640   0.800   0.43  | 0.665   91.688   99.375   0.953   | 0.790    78.125  100.000   0.880   |  3 hr 08 min
+0.0003000  18.00 k   12 | 0.676   73.413   86.111   0.789   0.42  | 0.663   88.938   99.875   0.940   | 0.648    87.500   96.875   0.917   |  3 hr 10 min
+0.0003000  18.20 k   12 | 0.669   73.810   86.376   0.790   0.43  | 0.689   84.438   99.562   0.912   | 0.658    78.125  100.000   0.891   |  3 hr 12 min
+0.0003000  18.40 k   12 | 0.686   71.164   85.714   0.773   0.45  | 0.736   83.125   98.375   0.898   | 0.677    71.875   96.875   0.833   |  3 hr 14 min
+0.0003000  18.60 k   12 | 0.707   68.783   84.524   0.755   0.48  | 0.805   74.188   97.625   0.841   | 0.924    71.875   96.875   0.823   |  3 hr 16 min
+0.0003000  18.80 k   12 | 0.703   70.635   85.317   0.769   0.47  | 0.835   67.062   96.312   0.794   | 0.816    68.750   96.875   0.785   |  3 hr 18 min
+0.0003000  19.00 k   12 | 0.688   71.296   85.847   0.774   0.45  | 0.842   64.938   93.312   0.764   | 0.875    75.000  100.000   0.854   |  3 hr 21 min
+New maximum MAP@5 reached on 19069th iteration (epoch 12): 0.7804673721340387... saving on disk.
+change hard_ratio: 0.007
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0003000  19.20 k   13 | 0.661   76.587   87.037   0.812   0.43  | 0.653   94.250   99.938   0.969   | 0.782    87.500  100.000   0.932   |  3 hr 23 min
+0.0003000  19.40 k   13 | 0.656   76.587   87.169   0.813   0.43  | 0.670   91.438   99.812   0.953   | 0.607    90.625  100.000   0.953   |  3 hr 25 min
+0.0003000  19.60 k   13 | 0.667   74.471   87.037   0.800   0.42  | 0.688   90.375   99.750   0.946   | 0.773    93.750   96.875   0.945   |  3 hr 27 min
+0.0003000  19.80 k   13 | 0.675   72.884   85.450   0.784   0.45  | 0.730   88.375   99.688   0.934   | 0.773    90.625  100.000   0.953   |  3 hr 29 min
+0.0003000  20.00 k   13 | 0.673   72.884   85.847   0.787   0.44  | 0.778   81.812   98.875   0.892   | 0.710    90.625  100.000   0.948   |  3 hr 32 min
+0.0003000  20.20 k   13 | 0.677   74.868   86.243   0.798   0.48  | 0.853   77.562   97.938   0.862   | 0.911    62.500   84.375   0.734   |  3 hr 34 min
+0.0003000  20.40 k   13 | 0.653   75.794   86.376   0.806   0.46  | 0.843   70.312   96.500   0.814   | 0.850    65.625  100.000   0.786   |  3 hr 36 min
+New maximum MAP@5 reached on 20535th iteration (epoch 13): 0.8061948853615519... saving on disk.
+change hard_ratio: 0.007
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0003000  20.60 k   14 | 0.638   78.571   87.434   0.825   0.45  | 0.613   94.000   99.812   0.967   | 0.581   100.000  100.000   1.000   |  3 hr 38 min
+0.0003000  20.80 k   14 | 0.619   78.836   87.566   0.829   0.42  | 0.593   97.375   99.938   0.986   | 0.533   100.000  100.000   1.000   |  3 hr 40 min
+0.0003000  21.00 k   14 | 0.624   79.233   87.434   0.830   0.43  | 0.597   94.938   99.750   0.972   | 0.617    96.875  100.000   0.984   |  3 hr 43 min
+0.0003000  21.20 k   14 | 0.624   77.910   87.698   0.823   0.42  | 0.605   94.625  100.000   0.971   | 0.626    93.750  100.000   0.969   |  3 hr 45 min
+0.0003000  21.40 k   14 | 0.641   77.381   87.302   0.818   0.44  | 0.670   91.125   99.562   0.950   | 0.807    84.375  100.000   0.922   |  3 hr 47 min
+0.0003000  21.60 k   14 | 0.637   77.910   87.169   0.822   0.43  | 0.694   87.875   99.250   0.930   | 0.683    96.875  100.000   0.984   |  3 hr 49 min
+0.0003000  21.80 k   14 | 0.631   77.646   87.169   0.821   0.42  | 0.752   80.562   99.500   0.890   | 0.893    84.375  100.000   0.922   |  3 hr 51 min
+0.0003000  22.00 k   14 | 0.623   77.646   86.905   0.819   0.41  | 0.605   90.938   99.312   0.946   | 0.527    96.875  100.000   0.984   |  3 hr 53 min
+New maximum MAP@5 reached on 22002th iteration (epoch 14): 0.818915343915344... saving on disk.
+change hard_ratio: 0.007
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0003000  22.20 k   15 | 0.613   80.159   87.698   0.835   0.43  | 0.569   95.500  100.000   0.976   | 0.568    96.875  100.000   0.984   |  3 hr 56 min
+0.0003000  22.40 k   15 | 0.611   80.159   87.698   0.835   0.39  | 0.572   96.125   99.938   0.979   | 0.564    96.875  100.000   0.984   |  3 hr 58 min
+0.0003000  22.60 k   15 | 0.640   78.307   86.508   0.819   0.41  | 0.599   94.062   99.875   0.968   | 0.539    96.875  100.000   0.984   |  4 hr 00 min
+0.0003000  22.80 k   15 | 0.625   80.291   87.037   0.832   0.41  | 0.612   94.688   99.938   0.972   | 0.583    90.625  100.000   0.943   |  4 hr 02 min
+0.0003000  23.00 k   15 | 0.626   78.836   87.037   0.826   0.41  | 0.666   90.250   99.750   0.946   | 0.616    90.625  100.000   0.948   |  4 hr 04 min
+0.0003000  23.20 k   15 | 0.630   77.249   86.376   0.814   0.40  | 0.760   84.125   99.188   0.908   | 0.678    87.500  100.000   0.938   |  4 hr 06 min
+0.0003000  23.40 k   15 | 0.616   79.233   86.772   0.827   0.41  | 0.726   83.438   99.062   0.902   | 0.829    84.375  100.000   0.902   |  4 hr 08 min
+New maximum MAP@5 reached on 23469th iteration (epoch 15): 0.8284171075837743... saving on disk.
+change hard_ratio: 0.007
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0003000  23.60 k   16 | 0.598   81.878   87.566   0.846   0.39  | 0.540   96.750  100.000   0.983   | 0.527    93.750  100.000   0.969   |  4 hr 11 min
+0.0003000  23.80 k   16 | 0.617   80.952   87.434   0.839   0.39  | 0.558   96.250   99.938   0.980   | 0.562    96.875  100.000   0.984   |  4 hr 13 min
+0.0003000  24.00 k   16 | 0.627   79.894   87.169   0.832   0.39  | 0.599   94.375   99.938   0.970   | 0.511    90.625  100.000   0.953   |  4 hr 15 min
+0.0003000  24.20 k   16 | 0.623   77.646   87.434   0.821   0.41  | 0.621   95.000   99.938   0.973   | 0.692    84.375  100.000   0.911   |  4 hr 17 min
+0.0003000  24.40 k   16 | 0.613   79.894   87.698   0.834   0.40  | 0.656   92.375   99.750   0.958   | 0.593    96.875  100.000   0.984   |  4 hr 20 min
+0.0003000  24.60 k   16 | 0.619   79.101   87.302   0.827   0.40  | 0.744   87.500   99.062   0.927   | 0.663   100.000  100.000   1.000   |  4 hr 22 min
+0.0003000  24.80 k   16 | 0.610   81.085   87.434   0.839   0.39  | 0.786   83.625   99.062   0.904   | 0.688    90.625  100.000   0.953   |  4 hr 24 min
+New maximum MAP@5 reached on 24936th iteration (epoch 16): 0.8399691358024691... saving on disk.
+change hard_ratio: 0.007
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0003000  25.00 k   17 | 0.590   82.672   87.566   0.848   0.40  | 0.524   97.062   99.938   0.985   | 0.482   100.000  100.000   1.000   |  4 hr 26 min
+0.0003000  25.20 k   17 | 0.595   82.011   87.698   0.846   0.38  | 0.520   97.875   99.938   0.988   | 0.527    93.750  100.000   0.969   |  4 hr 28 min
+0.0003000  25.40 k   17 | 0.588   82.011   87.698   0.846   0.40  | 0.533   96.000   99.812   0.978   | 0.485   100.000  100.000   1.000   |  4 hr 30 min
+0.0003000  25.60 k   17 | 0.592   81.878   87.434   0.845   0.39  | 0.562   95.625   99.875   0.976   | 0.536    93.750  100.000   0.958   |  4 hr 33 min
+0.0003000  25.80 k   17 | 0.604   81.085   87.037   0.839   0.38  | 0.595   95.312   99.750   0.973   | 0.654    93.750  100.000   0.961   |  4 hr 35 min
+0.0003000  26.00 k   17 | 0.607   80.688   87.037   0.836   0.40  | 0.648   91.688   99.938   0.955   | 0.718    87.500  100.000   0.932   |  4 hr 37 min
+0.0003000  26.20 k   17 | 0.595   81.217   87.037   0.838   0.40  | 0.682   87.562   99.875   0.932   | 0.960    81.250  100.000   0.901   |  4 hr 39 min
+0.0003000  26.40 k   17 | 0.600   81.349   87.698   0.843   0.37  | 0.567   94.188   99.688   0.966   | 0.447    93.750  100.000   0.964   |  4 hr 41 min
+New maximum MAP@5 reached on 26402th iteration (epoch 17): 0.8434523809523811... saving on disk.
+change hard_ratio: 0.007
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0003000  26.60 k   18 | 0.595   82.011   87.831   0.848   0.38  | 0.503   98.125   99.938   0.990   | 0.589   100.000  100.000   1.000   |  4 hr 44 min
+0.0003000  26.80 k   18 | 0.596   81.746   87.963   0.846   0.37  | 0.506   97.438   99.875   0.986   | 0.494    93.750  100.000   0.969   |  4 hr 46 min
+0.0003000  27.00 k   18 | 0.597   81.217   87.831   0.842   0.36  | 0.540   96.562   99.875   0.982   | 0.709   100.000  100.000   1.000   |  4 hr 48 min
+0.0003000  27.20 k   18 | 0.612   80.688   87.698   0.837   0.37  | 0.591   95.750  100.000   0.978   | 0.564    96.875  100.000   0.984   |  4 hr 50 min
+0.0003000  27.40 k   18 | 0.604   80.159   87.698   0.836   0.39  | 0.623   95.062   99.750   0.973   | 0.704    81.250  100.000   0.883   |  4 hr 52 min
+0.0003000  27.60 k   18 | 0.594   82.143   87.963   0.847   0.36  | 0.684   89.250   99.438   0.940   | 0.523    87.500  100.000   0.938   |  4 hr 54 min
+0.0003000  27.80 k   18 | 0.595   82.143   88.095   0.848   0.39  | 0.668   89.000   99.250   0.936   | 0.621    78.125  100.000   0.880   |  4 hr 56 min
+change hard_ratio: 0.007
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0003000  28.00 k   19 | 0.583   81.878   87.566   0.845   0.37  | 0.499   98.062   99.938   0.990   | 0.459    93.750  100.000   0.969   |  4 hr 59 min
+0.0003000  28.20 k   19 | 0.579   82.672   88.095   0.851   0.37  | 0.505   97.750   99.938   0.988   | 0.466    96.875  100.000   0.984   |  5 hr 01 min
+0.0003000  28.40 k   19 | 0.597   82.011   87.698   0.846   0.36  | 0.551   97.312   99.875   0.985   | 0.471   100.000  100.000   1.000   |  5 hr 03 min
+0.0003000  28.60 k   19 | 0.591   82.407   87.831   0.848   0.37  | 0.573   96.250   99.812   0.979   | 0.491   100.000  100.000   1.000   |  5 hr 05 min
+0.0003000  28.80 k   19 | 0.600   81.085   87.302   0.839   0.36  | 0.620   94.562   99.938   0.971   | 0.636    90.625  100.000   0.953   |  5 hr 07 min
+0.0003000  29.00 k   19 | 0.585   81.878   87.698   0.846   0.37  | 0.678   92.812   99.688   0.961   | 0.739    96.875  100.000   0.984   |  5 hr 09 min
+0.0003000  29.20 k   19 | 0.572   82.143   88.095   0.849   0.39  | 0.696   88.312  100.000   0.936   | 0.551   100.000  100.000   1.000   |  5 hr 11 min
+New maximum MAP@5 reached on 29335th iteration (epoch 19): 0.8537698412698411... saving on disk.
+change hard_ratio: 0.007
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0003000  29.40 k   20 | 0.577   83.598   88.095   0.856   0.37  | 0.467   96.938   99.938   0.984   | 0.479   100.000  100.000   1.000   |  5 hr 14 min
+0.0003000  29.60 k   20 | 0.570   84.127   88.095   0.860   0.37  | 0.476   98.375   99.875   0.991   | 0.431   100.000  100.000   1.000   |  5 hr 16 min
+0.0003000  29.80 k   20 | 0.579   82.937   88.228   0.853   0.34  | 0.475   98.438   99.938   0.992   | 0.476   100.000  100.000   1.000   |  5 hr 18 min
+0.0003000  30.00 k   20 | 0.585   82.011   88.095   0.847   0.34  | 0.533   95.625  100.000   0.977   | 0.557    93.750  100.000   0.964   |  5 hr 20 min
+0.0003000  30.20 k   20 | 0.590   81.746   87.698   0.846   0.36  | 0.588   94.812   99.938   0.972   | 0.616    96.875  100.000   0.979   |  5 hr 22 min
+0.0003000  30.40 k   20 | 0.595   82.407   87.698   0.848   0.37  | 0.615   95.312   99.812   0.975   | 0.570   100.000  100.000   1.000   |  5 hr 25 min
+0.0003000  30.60 k   20 | 0.583   83.069   87.566   0.852   0.35  | 0.671   91.062   99.875   0.952   | 0.753    87.500  100.000   0.938   |  5 hr 27 min
+0.0003000  30.80 k   20 | 0.567   83.730   87.698   0.856   0.36  | 0.527   93.562   99.500   0.963   | 0.479    96.875  100.000   0.984   |  5 hr 29 min
+New maximum MAP@5 reached on 30801th iteration (epoch 20): 0.8546075837742504... saving on disk.
+change hard_ratio: 0.007
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0003000  31.00 k   21 | 0.563   84.259   88.095   0.861   0.36  | 0.460   98.000   99.938   0.989   | 0.443   100.000  100.000   1.000   |  5 hr 31 min
+0.0003000  31.20 k   21 | 0.585   83.730   87.963   0.857   0.34  | 0.495   97.625   99.938   0.987   | 0.504    93.750  100.000   0.964   |  5 hr 33 min
+0.0003000  31.40 k   21 | 0.574   82.407   88.095   0.852   0.35  | 0.481   97.500  100.000   0.987   | 0.457    96.875  100.000   0.984   |  5 hr 35 min
+0.0003000  31.60 k   21 | 0.586   83.201   87.963   0.854   0.34  | 0.533   97.250   99.938   0.985   | 0.475   100.000  100.000   1.000   |  5 hr 38 min
+0.0003000  31.80 k   21 | 0.583   82.407   87.831   0.849   0.35  | 0.582   94.875   99.750   0.971   | 0.539   100.000  100.000   1.000   |  5 hr 40 min
+0.0003000  32.00 k   21 | 0.572   83.333   87.963   0.855   0.35  | 0.622   94.312   99.875   0.969   | 0.560    93.750  100.000   0.969   |  5 hr 42 min
+0.0003000  32.20 k   21 | 0.565   83.069   87.963   0.853   0.40  | 0.628   92.000   99.375   0.953   | 0.506   100.000  100.000   1.000   |  5 hr 44 min
+New maximum MAP@5 reached on 32268th iteration (epoch 21): 0.856084656084656... saving on disk.
+change hard_ratio: 0.007
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0003000  32.40 k   22 | 0.565   84.259   87.963   0.859   0.34  | 0.460   98.125  100.000   0.990   | 0.437    96.875  100.000   0.984   |  5 hr 46 min
+0.0003000  32.60 k   22 | 0.571   83.995   87.566   0.856   0.34  | 0.473   97.812  100.000   0.989   | 0.620   100.000  100.000   1.000   |  5 hr 48 min
+0.0003000  32.80 k   22 | 0.573   84.392   87.963   0.860   0.35  | 0.483   97.500   99.938   0.987   | 0.470    96.875  100.000   0.984   |  5 hr 50 min
+0.0003000  33.00 k   22 | 0.570   83.201   87.831   0.854   0.36  | 0.508   96.688  100.000   0.983   | 0.485   100.000  100.000   1.000   |  5 hr 53 min
+0.0003000  33.20 k   22 | 0.589   82.937   88.095   0.853   0.35  | 0.588   96.688   99.750   0.981   | 0.540    93.750  100.000   0.961   |  5 hr 55 min
+0.0003000  33.40 k   22 | 0.592   82.540   88.095   0.849   0.33  | 0.646   95.562   99.750   0.975   | 0.604    96.875  100.000   0.984   |  5 hr 57 min
+0.0003000  33.60 k   22 | 0.571   83.598   88.228   0.857   0.35  | 0.678   92.938   99.812   0.961   | 0.704    96.875  100.000   0.984   |  5 hr 59 min
+change hard_ratio: 0.007
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0003000  33.80 k   23 | 0.570   82.540   88.360   0.852   0.36  | 0.450   97.188  100.000   0.986   | 0.406   100.000  100.000   1.000   |  6 hr 02 min
+0.0003000  34.00 k   23 | 0.570   83.730   88.492   0.859   0.33  | 0.449   98.500   99.938   0.992   | 0.422    96.875  100.000   0.984   |  6 hr 04 min
+0.0003000  34.20 k   23 | 0.571   83.466   88.360   0.859   0.34  | 0.474   97.688   99.938   0.988   | 0.454   100.000  100.000   1.000   |  6 hr 06 min
+0.0003000  34.40 k   23 | 0.589   82.407   87.963   0.849   0.33  | 0.542   97.188   99.938   0.984   | 0.635    96.875  100.000   0.984   |  6 hr 08 min
+0.0003000  34.60 k   23 | 0.590   81.878   87.831   0.845   0.34  | 0.571   97.438  100.000   0.987   | 0.490   100.000  100.000   1.000   |  6 hr 10 min
+0.0003000  34.80 k   23 | 0.589   82.407   87.831   0.848   0.37  | 0.627   96.250   99.812   0.979   | 0.517   100.000  100.000   1.000   |  6 hr 12 min
+0.0003000  35.00 k   23 | 0.583   83.730   87.698   0.856   0.34  | 0.651   92.500   99.688   0.959   | 0.675   100.000  100.000   1.000   |  6 hr 14 min
+0.0003000  35.20 k   23 | 0.565   83.862   87.963   0.856   0.35  | 0.536   95.500   99.812   0.974   | 0.408   100.000  100.000   1.000   |  6 hr 16 min
+New maximum MAP@5 reached on 35201th iteration (epoch 23): 0.8565255731922399... saving on disk.
+change hard_ratio: 0.007
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0003000  35.40 k   24 | 0.570   84.524   87.963   0.862   0.33  | 0.442   97.750   99.938   0.988   | 0.381   100.000  100.000   1.000   |  6 hr 19 min
+0.0003000  35.60 k   24 | 0.564   84.524   88.095   0.862   0.33  | 0.440   98.062  100.000   0.990   | 0.488   100.000  100.000   1.000   |  6 hr 21 min
+0.0003000  35.80 k   24 | 0.572   83.598   88.360   0.859   0.32  | 0.472   98.562  100.000   0.993   | 0.465    96.875  100.000   0.984   |  6 hr 23 min
+0.0003000  36.00 k   24 | 0.573   83.995   88.624   0.861   0.31  | 0.520   96.312   99.812   0.980   | 0.592    96.875  100.000   0.984   |  6 hr 25 min
+0.0003000  36.20 k   24 | 0.570   83.598   88.095   0.856   0.31  | 0.534   95.938  100.000   0.979   | 0.504   100.000  100.000   1.000   |  6 hr 27 min
+0.0003000  36.40 k   24 | 0.568   83.730   88.095   0.857   0.34  | 0.606   94.062   99.938   0.968   | 0.793    81.250  100.000   0.896   |  6 hr 30 min
+0.0003000  36.60 k   24 | 0.570   83.333   87.963   0.854   0.38  | 0.588   94.000   99.812   0.966   | 0.793    78.125  100.000   0.885   |  6 hr 32 min
+change hard_ratio: 0.007
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0003000  36.80 k   25 | 0.562   84.788   88.228   0.864   0.34  | 0.433   98.688  100.000   0.993   | 0.455   100.000  100.000   1.000   |  6 hr 34 min
+0.0003000  37.00 k   25 | 0.575   84.524   87.963   0.860   0.33  | 0.430   99.000  100.000   0.995   | 0.486   100.000  100.000   1.000   |  6 hr 36 min
+0.0003000  37.20 k   25 | 0.574   83.730   87.698   0.855   0.32  | 0.445   98.625  100.000   0.993   | 0.701    96.875  100.000   0.984   |  6 hr 38 min
+0.0003000  37.40 k   25 | 0.586   83.730   87.698   0.855   0.31  | 0.512   97.250  100.000   0.985   | 0.499    96.875  100.000   0.984   |  6 hr 40 min
+0.0003000  37.60 k   25 | 0.602   82.540   87.831   0.849   0.32  | 0.562   96.188   99.875   0.979   | 0.460   100.000  100.000   1.000   |  6 hr 43 min
+0.0003000  37.80 k   25 | 0.590   83.862   87.566   0.856   0.31  | 0.625   95.875   99.812   0.978   | 0.577    87.500  100.000   0.938   |  6 hr 45 min
+0.0003000  38.00 k   25 | 0.566   84.127   87.963   0.859   0.33  | 0.626   94.125   99.938   0.969   | 0.570    96.875  100.000   0.984   |  6 hr 47 min
+New maximum MAP@5 reached on 38133th iteration (epoch 25): 0.8567460317460317... saving on disk.
+change hard_ratio: 0.007
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0003000  38.20 k   26 | 0.566   83.862   88.228   0.859   0.34  | 0.427   97.438  100.000   0.986   | 0.470   100.000  100.000   1.000   |  6 hr 49 min
+0.0003000  38.40 k   26 | 0.565   84.392   88.228   0.861   0.33  | 0.431   98.875  100.000   0.994   | 0.399   100.000  100.000   1.000   |  6 hr 52 min
+0.0003000  38.60 k   26 | 0.581   83.730   88.095   0.857   0.35  | 0.477   98.062  100.000   0.990   | 0.414    96.875  100.000   0.984   |  6 hr 54 min
+0.0003000  38.80 k   26 | 0.586   83.466   87.698   0.854   0.32  | 0.489   99.312  100.000   0.996   | 0.424   100.000  100.000   1.000   |  6 hr 56 min
+0.0003000  39.00 k   26 | 0.568   83.995   87.566   0.856   0.32  | 0.521   96.125  100.000   0.980   | 0.528    96.875  100.000   0.984   |  6 hr 58 min
+0.0003000  39.20 k   26 | 0.577   83.201   88.095   0.854   0.33  | 0.578   95.938   99.938   0.978   | 0.751    96.875  100.000   0.984   |  7 hr 00 min
+0.0003000  39.40 k   26 | 0.571   84.127   88.095   0.860   0.33  | 0.653   94.438   99.875   0.970   | 0.553   100.000  100.000   1.000   |  7 hr 02 min
+0.0003000  39.60 k   26 | 0.562   84.524   88.360   0.863   0.32  | 0.476   95.250   99.625   0.973   | 0.351    96.875  100.000   0.984   |  7 hr 04 min
+New maximum MAP@5 reached on 39600th iteration (epoch 26): 0.8638668430335097... saving on disk.
+change hard_ratio: 0.007
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0003000  39.80 k   27 | 0.561   84.788   88.360   0.865   0.33  | 0.414   98.688  100.000   0.993   | 0.407   100.000  100.000   1.000   |  7 hr 07 min
+0.0003000  40.00 k   27 | 0.554   85.450   88.360   0.868   0.33  | 0.433   98.375  100.000   0.991   | 0.411    96.875  100.000   0.979   |  7 hr 09 min
+0.0003000  40.20 k   27 | 0.552   84.788   88.492   0.866   0.33  | 0.433   98.812  100.000   0.994   | 0.373   100.000  100.000   1.000   |  7 hr 11 min
+0.0003000  40.40 k   27 | 0.572   84.259   88.360   0.862   0.31  | 0.487   98.438  100.000   0.992   | 0.463   100.000  100.000   1.000   |  7 hr 13 min
+0.0003000  40.60 k   27 | 0.586   84.259   88.360   0.862   0.31  | 0.560   97.188  100.000   0.985   | 0.526    93.750  100.000   0.969   |  7 hr 15 min
+0.0003000  40.80 k   27 | 0.574   83.598   88.228   0.857   0.32  | 0.573   96.062  100.000   0.979   | 0.617    93.750  100.000   0.969   |  7 hr 17 min
+0.0003000  41.00 k   27 | 0.567   83.598   88.228   0.858   0.33  | 0.603   95.562   99.875   0.975   | 0.443    96.875  100.000   0.984   |  7 hr 19 min
+change hard_ratio: 0.007
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0003000  41.20 k   28 | 0.572   84.127   88.095   0.860   0.32  | 0.430   98.125   99.938   0.990   | 0.448    93.750  100.000   0.969   |  7 hr 22 min
+0.0003000  41.40 k   28 | 0.571   84.127   88.492   0.862   0.31  | 0.431   97.812  100.000   0.989   | 0.445   100.000  100.000   1.000   |  7 hr 24 min
+0.0003000  41.60 k   28 | 0.578   84.392   88.228   0.863   0.30  | 0.458   98.062  100.000   0.990   | 0.493    96.875  100.000   0.984   |  7 hr 26 min
+0.0003000  41.80 k   28 | 0.582   83.598   88.492   0.858   0.30  | 0.488   97.125  100.000   0.985   | 0.530   100.000  100.000   1.000   |  7 hr 28 min
+0.0003000  42.00 k   28 | 0.583   84.788   88.095   0.863   0.31  | 0.548   96.188   99.938   0.980   | 0.571    90.625  100.000   0.953   |  7 hr 30 min
+0.0003000  42.20 k   28 | 0.570   84.259   88.095   0.860   0.33  | 0.585   96.188   99.938   0.980   | 0.795   100.000  100.000   1.000   |  7 hr 32 min
+0.0003000  42.40 k   28 | 0.560   84.524   88.360   0.862   0.31  | 0.616   94.875   99.875   0.973   | 0.690    93.750  100.000   0.969   |  7 hr 35 min
+change hard_ratio: 0.007
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0003000  42.60 k   29 | 0.561   84.259   88.360   0.862   0.33  | 0.404   97.875  100.000   0.989   | 0.403   100.000  100.000   1.000   |  7 hr 37 min
+0.0003000  42.80 k   29 | 0.568   84.788   88.095   0.864   0.33  | 0.411   98.938  100.000   0.995   | 0.442    96.875  100.000   0.984   |  7 hr 39 min
+0.0003000  43.00 k   29 | 0.563   85.450   88.095   0.867   0.32  | 0.427   98.938  100.000   0.994   | 0.424   100.000  100.000   1.000   |  7 hr 41 min
+0.0003000  43.20 k   29 | 0.570   85.185   88.360   0.868   0.28  | 0.439   98.312  100.000   0.991   | 0.452   100.000  100.000   1.000   |  7 hr 43 min
+0.0003000  43.40 k   29 | 0.577   83.995   88.360   0.860   0.32  | 0.490   95.438  100.000   0.976   | 0.642    93.750  100.000   0.969   |  7 hr 46 min
+0.0003000  43.60 k   29 | 0.564   84.524   88.228   0.863   0.30  | 0.546   97.438   99.938   0.986   | 0.484   100.000  100.000   1.000   |  7 hr 48 min
+0.0003000  43.80 k   29 | 0.593   83.598   88.095   0.856   0.30  | 0.615   95.812   99.750   0.978   | 0.563   100.000  100.000   1.000   |  7 hr 50 min
+0.0003000  44.00 k   29 | 0.565   84.392   88.360   0.862   0.29  | 0.459   96.250  100.000   0.980   | 0.349    96.875  100.000   0.979   |  7 hr 52 min
+change hard_ratio: 0.007
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0003000  44.20 k   30 | 0.560   83.995   88.228   0.859   0.33  | 0.399   97.750  100.000   0.989   | 0.456   100.000  100.000   1.000   |  7 hr 54 min
+0.0003000  44.40 k   30 | 0.562   85.450   88.360   0.867   0.32  | 0.411   98.750  100.000   0.994   | 0.361   100.000  100.000   1.000   |  7 hr 56 min
+0.0003000  44.60 k   30 | 0.575   85.053   88.492   0.866   0.31  | 0.455   98.000   99.938   0.989   | 0.530   100.000  100.000   1.000   |  7 hr 58 min
+0.0003000  44.80 k   30 | 0.593   85.185   88.095   0.865   0.28  | 0.516   97.812   99.938   0.989   | 0.529   100.000  100.000   1.000   |  8 hr 01 min
+0.0003000  45.00 k   30 | 0.573   85.053   88.360   0.865   0.30  | 0.580   95.312   99.938   0.975   | 0.609   100.000  100.000   1.000   |  8 hr 03 min
+0.0003000  45.20 k   30 | 0.574   84.127   88.360   0.862   0.31  | 0.578   96.750   99.938   0.983   | 0.578    96.875  100.000   0.984   |  8 hr 05 min
+0.0003000  45.40 k   30 | 0.562   83.862   88.360   0.860   0.33  | 0.573   96.188   99.875   0.980   | 0.560    93.750  100.000   0.969   |  8 hr 07 min
+change hard_ratio: 0.007
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0003000  45.60 k   31 | 0.566   85.317   88.228   0.867   0.32  | 0.397   98.875   99.875   0.994   | 0.459   100.000  100.000   1.000   |  8 hr 10 min
+0.0003000  45.80 k   31 | 0.563   84.656   88.095   0.864   0.32  | 0.401   98.500   99.938   0.992   | 0.372   100.000  100.000   1.000   |  8 hr 12 min
+0.0003000  46.00 k   31 | 0.572   85.053   88.228   0.866   0.31  | 0.436   98.562  100.000   0.993   | 0.387   100.000  100.000   1.000   |  8 hr 14 min
+0.0003000  46.20 k   31 | 0.575   84.921   88.360   0.865   0.30  | 0.467   98.250  100.000   0.991   | 0.405   100.000  100.000   1.000   |  8 hr 16 min
+0.0003000  46.40 k   31 | 0.576   85.053   88.095   0.865   0.30  | 0.504   97.500  100.000   0.987   | 0.421    93.750  100.000   0.969   |  8 hr 18 min
+0.0003000  46.60 k   31 | 0.581   84.524   88.228   0.863   0.30  | 0.589   96.438   99.875   0.981   | 0.792    93.750  100.000   0.969   |  8 hr 20 min
+0.0003000  46.80 k   31 | 0.553   84.656   88.228   0.863   0.33  | 0.579   96.062   99.875   0.979   | 0.572   100.000  100.000   1.000   |  8 hr 22 min
+New maximum MAP@5 reached on 46934th iteration (epoch 31): 0.8684964726631392... saving on disk.
+change hard_ratio: 0.007
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0003000  47.00 k   32 | 0.548   85.317   88.228   0.867   0.32  | 0.392   97.250  100.000   0.986   | 0.393   100.000  100.000   1.000   |  8 hr 25 min
+0.0003000  47.20 k   32 | 0.562   85.053   88.360   0.865   0.31  | 0.411   98.562   99.938   0.992   | 0.355    96.875  100.000   0.984   |  8 hr 27 min
+0.0003000  47.40 k   32 | 0.560   84.921   88.360   0.865   0.31  | 0.408   98.500  100.000   0.992   | 0.425   100.000  100.000   1.000   |  8 hr 29 min
+0.0003000  47.60 k   32 | 0.569   84.656   88.228   0.862   0.30  | 0.462   98.375   99.938   0.992   | 0.392   100.000  100.000   1.000   |  8 hr 31 min
+0.0003000  47.80 k   32 | 0.575   83.862   88.095   0.858   0.30  | 0.496   97.312   99.938   0.986   | 0.431   100.000  100.000   1.000   |  8 hr 33 min
+0.0003000  48.00 k   32 | 0.569   84.656   88.228   0.863   0.29  | 0.551   97.062   99.812   0.984   | 0.534   100.000  100.000   1.000   |  8 hr 35 min
+0.0003000  48.20 k   32 | 0.566   84.524   88.228   0.862   0.31  | 0.573   97.000   99.938   0.984   | 0.787   100.000  100.000   1.000   |  8 hr 37 min
+0.0003000  48.40 k   32 | 0.555   85.317   88.360   0.868   0.33  | 0.451   96.312   99.875   0.980   | 0.370   100.000  100.000   1.000   |  8 hr 40 min
+change hard_ratio: 0.007
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0003000  48.60 k   33 | 0.552   85.582   88.492   0.870   0.30  | 0.385   99.312  100.000   0.996   | 0.405   100.000  100.000   1.000   |  8 hr 42 min
+0.0003000  48.80 k   33 | 0.555   85.714   88.492   0.870   0.30  | 0.402   98.188  100.000   0.991   | 0.350   100.000  100.000   1.000   |  8 hr 44 min
+0.0003000  49.00 k   33 | 0.569   85.185   88.360   0.867   0.30  | 0.428   98.562  100.000   0.993   | 0.444   100.000  100.000   1.000   |  8 hr 46 min
+0.0003000  49.20 k   33 | 0.567   84.656   88.360   0.864   0.30  | 0.455   98.688  100.000   0.993   | 0.383   100.000  100.000   1.000   |  8 hr 48 min
+0.0003000  49.40 k   33 | 0.587   84.392   88.228   0.862   0.29  | 0.551   97.562   99.938   0.987   | 0.417   100.000  100.000   1.000   |  8 hr 50 min
+0.0003000  49.60 k   33 | 0.575   84.259   88.492   0.862   0.29  | 0.571   95.688   99.812   0.976   | 0.433    96.875  100.000   0.984   |  8 hr 53 min
+0.0003000  49.80 k   33 | 0.561   85.053   88.360   0.866   0.31  | 0.585   95.938   99.938   0.978   | 0.430   100.000  100.000   1.000   |  8 hr 55 min
+change hard_ratio: 0.007
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0003000  50.00 k   34 | 0.554   85.582   88.492   0.869   0.32  | 0.400   97.812  100.000   0.989   | 0.384   100.000  100.000   1.000   |  8 hr 57 min
+0.0003000  50.20 k   34 | 0.556   85.714   88.360   0.870   0.29  | 0.393   99.188  100.000   0.996   | 0.412    96.875  100.000   0.984   |  8 hr 59 min
+0.0003000  50.40 k   34 | 0.586   84.788   88.360   0.865   0.30  | 0.432   98.812  100.000   0.994   | 0.477   100.000  100.000   1.000   |  9 hr 01 min
+0.0003000  50.60 k   34 | 0.584   85.582   88.360   0.868   0.29  | 0.476   97.750  100.000   0.989   | 0.416   100.000  100.000   1.000   |  9 hr 03 min
+0.0003000  50.80 k   34 | 0.570   84.788   88.228   0.864   0.30  | 0.522   98.000   99.938   0.989   | 0.567    93.750  100.000   0.969   |  9 hr 05 min
+0.0003000  51.00 k   34 | 0.564   85.185   87.963   0.865   0.30  | 0.557   97.625   99.875   0.987   | 0.697   100.000  100.000   1.000   |  9 hr 07 min
+0.0003000  51.20 k   34 | 0.549   85.185   88.360   0.866   0.29  | 0.551   96.062   99.812   0.978   | 0.706    96.875  100.000   0.984   |  9 hr 09 min
+change hard_ratio: 0.007
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0003000  51.40 k   35 | 0.557   85.582   88.228   0.868   0.31  | 0.383   97.125  100.000   0.985   | 0.389    96.875  100.000   0.984   |  9 hr 12 min
+0.0003000  51.60 k   35 | 0.562   85.979   88.360   0.871   0.30  | 0.389   99.188  100.000   0.996   | 0.442   100.000  100.000   1.000   |  9 hr 14 min
+0.0003000  51.80 k   35 | 0.566   86.243   88.492   0.873   0.30  | 0.405   98.375  100.000   0.992   | 0.412   100.000  100.000   1.000   |  9 hr 16 min
+0.0003000  52.00 k   35 | 0.567   85.714   88.492   0.870   0.29  | 0.432   98.562  100.000   0.993   | 0.427   100.000  100.000   1.000   |  9 hr 18 min
+0.0003000  52.20 k   35 | 0.574   85.053   88.228   0.866   0.30  | 0.480   98.250  100.000   0.991   | 0.352   100.000  100.000   1.000   |  9 hr 20 min
+0.0003000  52.40 k   35 | 0.578   84.921   88.360   0.866   0.27  | 0.542   97.875  100.000   0.989   | 0.422   100.000  100.000   1.000   |  9 hr 23 min
+0.0003000  52.60 k   35 | 0.563   85.582   88.360   0.868   0.29  | 0.533   94.938  100.000   0.973   | 0.397   100.000  100.000   1.000   |  9 hr 25 min
+0.0003000  52.80 k   35 | 0.562   85.582   87.963   0.867   0.29  | 0.429   96.625   99.750   0.981   | 0.333    96.875  100.000   0.984   |  9 hr 27 min
+change hard_ratio: 0.007
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0003000  53.00 k   36 | 0.554   85.714   87.963   0.868   0.28  | 0.374   97.500  100.000   0.987   | 0.351    96.875  100.000   0.984   |  9 hr 29 min
+0.0003000  53.20 k   36 | 0.559   85.847   88.360   0.869   0.29  | 0.400   97.688  100.000   0.988   | 0.391   100.000  100.000   1.000   |  9 hr 31 min
+0.0003000  53.40 k   36 | 0.572   85.185   88.228   0.865   0.29  | 0.429   98.812  100.000   0.994   | 0.677   100.000  100.000   1.000   |  9 hr 33 min
+0.0003000  53.60 k   36 | 0.577   85.317   88.360   0.866   0.29  | 0.476   97.938   99.938   0.989   | 0.521    96.875  100.000   0.984   |  9 hr 36 min
+0.0003000  53.80 k   36 | 0.581   84.656   88.228   0.863   0.27  | 0.513   97.312  100.000   0.986   | 0.688    90.625  100.000   0.953   |  9 hr 38 min
+0.0003000  54.00 k   36 | 0.565   84.921   88.492   0.866   0.28  | 0.551   96.312  100.000   0.980   | 0.476    96.875  100.000   0.984   |  9 hr 40 min
+0.0003000  54.20 k   36 | 0.570   85.053   88.492   0.865   0.30  | 0.547   95.062   99.875   0.973   | 0.489    96.875  100.000   0.979   |  9 hr 42 min
+change hard_ratio: 0.007
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0003000  54.40 k   37 | 0.555   85.714   88.360   0.869   0.29  | 0.377   97.938  100.000   0.990   | 0.403   100.000  100.000   1.000   |  9 hr 44 min
+0.0003000  54.60 k   37 | 0.558   85.582   88.492   0.869   0.28  | 0.385   97.812  100.000   0.989   | 0.460    93.750  100.000   0.969   |  9 hr 46 min
+0.0003000  54.80 k   37 | 0.571   85.317   88.360   0.867   0.28  | 0.417   98.125  100.000   0.990   | 0.332    96.875  100.000   0.984   |  9 hr 49 min
+0.0003000  55.00 k   37 | 0.581   85.450   88.360   0.867   0.28  | 0.433   98.062   99.938   0.990   | 0.580   100.000  100.000   1.000   |  9 hr 51 min
+0.0003000  55.20 k   37 | 0.573   84.524   88.095   0.862   0.29  | 0.475   97.562  100.000   0.987   | 0.570    93.750  100.000   0.969   |  9 hr 53 min
+0.0003000  55.40 k   37 | 0.580   85.185   88.360   0.866   0.28  | 0.535   97.500  100.000   0.987   | 0.644    96.875  100.000   0.979   |  9 hr 55 min
+0.0003000  55.60 k   37 | 0.559   85.847   88.360   0.870   0.29  | 0.570   97.375  100.000   0.987   | 0.437   100.000  100.000   1.000   |  9 hr 57 min
+change hard_ratio: 0.007
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0003000  55.80 k   38 | 0.572   85.185   88.228   0.866   0.30  | 0.396   98.000  100.000   0.990   | 0.343   100.000  100.000   1.000   | 10 hr 00 min
+0.0003000  56.00 k   38 | 0.572   85.053   88.360   0.865   0.28  | 0.385   98.375  100.000   0.991   | 0.310   100.000  100.000   1.000   | 10 hr 02 min
+0.0003000  56.20 k   38 | 0.570   85.847   88.228   0.870   0.28  | 0.408   97.688   99.938   0.988   | 0.405   100.000  100.000   1.000   | 10 hr 04 min
+0.0003000  56.40 k   38 | 0.572   85.450   88.360   0.868   0.26  | 0.423   97.875  100.000   0.989   | 0.394   100.000  100.000   1.000   | 10 hr 06 min
+0.0003000  56.60 k   38 | 0.587   85.053   88.360   0.866   0.28  | 0.485   96.438  100.000   0.982   | 0.405    96.875  100.000   0.984   | 10 hr 08 min
+0.0003000  56.80 k   38 | 0.573   85.582   88.624   0.870   0.28  | 0.533   97.812   99.938   0.989   | 0.429   100.000  100.000   1.000   | 10 hr 10 min
+0.0003000  57.00 k   38 | 0.565   85.053   88.492   0.866   0.29  | 0.533   97.188   99.938   0.986   | 0.515   100.000  100.000   1.000   | 10 hr 12 min
+0.0003000  57.20 k   38 | 0.561   85.450   88.624   0.869   0.29  | 0.435   97.875   99.938   0.989   | 0.344    96.875  100.000   0.984   | 10 hr 14 min
+change hard_ratio: 0.006
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0001000  57.40 k   39 | 0.537   86.111   88.492   0.872   0.30  | 0.364   97.875  100.000   0.989   | 0.353   100.000  100.000   1.000   | 10 hr 17 min
+0.0001000  57.60 k   39 | 0.530   86.376   88.492   0.874   0.31  | 0.360   98.812  100.000   0.994   | 0.352   100.000  100.000   1.000   | 10 hr 19 min
+0.0001000  57.80 k   39 | 0.527   86.376   88.624   0.874   0.32  | 0.361   99.562  100.000   0.998   | 0.419    96.875  100.000   0.984   | 10 hr 21 min
+0.0001000  58.00 k   39 | 0.522   86.640   88.492   0.875   0.29  | 0.362   99.500  100.000   0.998   | 0.327   100.000  100.000   1.000   | 10 hr 23 min
+0.0001000  58.20 k   39 | 0.521   86.640   88.757   0.875   0.29  | 0.351   99.000  100.000   0.995   | 0.349   100.000  100.000   1.000   | 10 hr 26 min
+0.0001000  58.40 k   39 | 0.517   86.772   88.624   0.876   0.29  | 0.363   99.500  100.000   0.998   | 0.391   100.000  100.000   1.000   | 10 hr 28 min
+0.0001000  58.60 k   39 | 0.520   87.037   88.624   0.877   0.27  | 0.341   99.312  100.000   0.996   | 0.316   100.000  100.000   1.000   | 10 hr 30 min
+New maximum MAP@5 reached on 58666th iteration (epoch 39): 0.8752204585537919... saving on disk.
+change hard_ratio: 0.006
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+New maximum MAP@5 reached on 58799th iteration (epoch 40): 0.8766534391534391... saving on disk.
+0.0001000  58.80 k   40 | 0.524   86.905   88.624   0.877   0.27  | 0.321   99.250  100.000   0.996   | 0.333   100.000  100.000   1.000   | 10 hr 32 min
+0.0001000  59.00 k   40 | 0.528   86.640   88.624   0.875   0.28  | 0.326   99.250  100.000   0.996   | 0.328   100.000  100.000   1.000   | 10 hr 35 min
+0.0001000  59.20 k   40 | 0.529   86.243   88.757   0.874   0.28  | 0.326   99.188  100.000   0.996   | 0.335   100.000  100.000   1.000   | 10 hr 37 min
+0.0001000  59.40 k   40 | 0.535   86.772   88.757   0.876   0.26  | 0.327   99.188  100.000   0.996   | 0.313   100.000  100.000   1.000   | 10 hr 39 min
+0.0001000  59.60 k   40 | 0.534   86.905   88.624   0.877   0.27  | 0.334   99.375  100.000   0.997   | 0.315   100.000  100.000   1.000   | 10 hr 41 min
+0.0001000  59.80 k   40 | 0.536   86.508   88.624   0.875   0.26  | 0.343   99.062  100.000   0.995   | 0.335   100.000  100.000   1.000   | 10 hr 43 min
+New maximum MAP@5 reached on 59999th iteration (epoch 40): 0.8775793650793651... saving on disk.
+0.0001000  60.00 k   40 | 0.534   87.037   88.757   0.878   0.25  | 0.347   99.375  100.000   0.997   | 0.340   100.000  100.000   1.000   | 10 hr 45 min
+change hard_ratio: 0.006
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0001000  60.20 k   41 | 0.545   86.376   88.624   0.874   0.25  | 0.319   99.062  100.000   0.995   | 0.291   100.000  100.000   1.000   | 10 hr 48 min
+0.0001000  60.40 k   41 | 0.549   86.772   88.624   0.875   0.25  | 0.320   99.312  100.000   0.996   | 0.297    96.875  100.000   0.979   | 10 hr 50 min
+0.0001000  60.60 k   41 | 0.549   86.772   88.624   0.876   0.26  | 0.334   99.188  100.000   0.996   | 0.311   100.000  100.000   1.000   | 10 hr 52 min
+0.0001000  60.80 k   41 | 0.554   86.640   88.492   0.874   0.25  | 0.342   99.562  100.000   0.998   | 0.363    93.750  100.000   0.969   | 10 hr 54 min
+0.0001000  61.00 k   41 | 0.553   86.905   88.624   0.877   0.26  | 0.361   99.125  100.000   0.996   | 0.401   100.000  100.000   1.000   | 10 hr 56 min
+0.0001000  61.20 k   41 | 0.552   86.905   88.757   0.877   0.24  | 0.373   99.375   99.938   0.996   | 0.349   100.000  100.000   1.000   | 10 hr 58 min
+0.0001000  61.40 k   41 | 0.554   86.640   88.757   0.876   0.23  | 0.392   99.500  100.000   0.998   | 0.344   100.000  100.000   1.000   | 11 hr 00 min
+0.0001000  61.60 k   41 | 0.562   86.772   88.757   0.877   0.27  | 0.340   99.312  100.000   0.996   | 0.282   100.000  100.000   1.000   | 11 hr 02 min
+change hard_ratio: 0.006
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+New maximum MAP@5 reached on 61799th iteration (epoch 42): 0.8777557319223985... saving on disk.
+0.0001000  61.80 k   42 | 0.567   87.037   88.757   0.878   0.24  | 0.354   98.938  100.000   0.995   | 0.312   100.000  100.000   1.000   | 11 hr 05 min
+0.0001000  62.00 k   42 | 0.570   86.772   88.624   0.876   0.24  | 0.402   99.500  100.000   0.998   | 0.411   100.000  100.000   1.000   | 11 hr 07 min
+0.0001000  62.20 k   42 | 0.571   86.772   88.492   0.875   0.24  | 0.408   98.812  100.000   0.994   | 0.402   100.000  100.000   1.000   | 11 hr 09 min
+0.0001000  62.40 k   42 | 0.578   86.508   88.757   0.875   0.22  | 0.475   99.188  100.000   0.996   | 0.419    96.875  100.000   0.984   | 11 hr 11 min
+0.0001000  62.60 k   42 | 0.568   86.508   88.624   0.875   0.23  | 0.445   98.875  100.000   0.994   | 0.584   100.000  100.000   1.000   | 11 hr 13 min
+0.0001000  62.80 k   42 | 0.566   86.640   88.757   0.876   0.22  | 0.468   98.812  100.000   0.994   | 0.359    96.875  100.000   0.984   | 11 hr 15 min
+0.0001000  63.00 k   42 | 0.561   86.640   88.624   0.875   0.23  | 0.466   99.250  100.000   0.996   | 0.401    96.875  100.000   0.984   | 11 hr 17 min
+change hard_ratio: 0.006
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0001000  63.20 k   43 | 0.551   86.905   88.757   0.877   0.26  | 0.321   99.438  100.000   0.997   | 0.357   100.000  100.000   1.000   | 11 hr 20 min
+0.0001000  63.40 k   43 | 0.554   86.772   88.757   0.876   0.24  | 0.326   99.188  100.000   0.996   | 0.342   100.000  100.000   1.000   | 11 hr 22 min
+0.0001000  63.60 k   43 | 0.556   86.905   88.757   0.878   0.25  | 0.332   99.125  100.000   0.996   | 0.312   100.000  100.000   1.000   | 11 hr 24 min
+New maximum MAP@5 reached on 63799th iteration (epoch 43): 0.8780202821869488... saving on disk.
+0.0001000  63.80 k   43 | 0.552   87.037   88.889   0.878   0.25  | 0.345   99.438   99.938   0.997   | 0.330   100.000  100.000   1.000   | 11 hr 26 min
+0.0001000  64.00 k   43 | 0.555   87.037   88.757   0.878   0.25  | 0.344   99.625  100.000   0.998   | 0.371   100.000  100.000   1.000   | 11 hr 28 min
+0.0001000  64.20 k   43 | 0.556   87.037   88.757   0.878   0.22  | 0.362   99.062  100.000   0.995   | 0.335   100.000  100.000   1.000   | 11 hr 30 min
+0.0001000  64.40 k   43 | 0.556   86.905   88.624   0.876   0.24  | 0.370   98.812  100.000   0.994   | 0.359   100.000  100.000   1.000   | 11 hr 33 min
+change hard_ratio: 0.006
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0001000  64.60 k   44 | 0.553   86.772   88.624   0.876   0.24  | 0.311   99.312  100.000   0.996   | 0.299   100.000  100.000   1.000   | 11 hr 35 min
+0.0001000  64.80 k   44 | 0.558   86.772   88.492   0.875   0.25  | 0.317   99.312  100.000   0.997   | 0.300   100.000  100.000   1.000   | 11 hr 37 min
+0.0001000  65.00 k   44 | 0.559   86.905   88.492   0.876   0.24  | 0.318   99.375  100.000   0.997   | 0.318   100.000  100.000   1.000   | 11 hr 39 min
+0.0001000  65.20 k   44 | 0.558   86.905   88.757   0.877   0.25  | 0.327   99.188  100.000   0.996   | 0.340    93.750  100.000   0.969   | 11 hr 41 min
+0.0001000  65.40 k   44 | 0.557   87.037   88.492   0.877   0.24  | 0.340   99.188  100.000   0.996   | 0.327   100.000  100.000   1.000   | 11 hr 44 min
+0.0001000  65.60 k   44 | 0.552   87.037   88.757   0.877   0.25  | 0.345   99.312  100.000   0.997   | 0.366   100.000  100.000   1.000   | 11 hr 46 min
+0.0001000  65.80 k   44 | 0.551   87.037   88.624   0.877   0.26  | 0.360   99.562  100.000   0.998   | 0.326   100.000  100.000   1.000   | 11 hr 48 min
+0.0001000  66.00 k   44 | 0.561   86.772   88.757   0.877   0.22  | 0.328   98.875  100.000   0.994   | 0.266    96.875  100.000   0.984   | 11 hr 50 min
+change hard_ratio: 0.006
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0001000  66.20 k   45 | 0.561   86.508   88.757   0.875   0.22  | 0.324   98.938  100.000   0.995   | 0.431    96.875  100.000   0.984   | 11 hr 52 min
+0.0001000  66.40 k   45 | 0.571   86.772   88.757   0.877   0.22  | 0.360   98.938  100.000   0.995   | 0.314   100.000  100.000   1.000   | 11 hr 54 min
+0.0001000  66.60 k   45 | 0.570   86.772   88.624   0.876   0.22  | 0.376   98.562  100.000   0.993   | 0.330    96.875  100.000   0.979   | 11 hr 57 min
+0.0001000  66.80 k   45 | 0.577   86.905   88.757   0.877   0.23  | 0.459   99.062  100.000   0.995   | 0.347   100.000  100.000   1.000   | 11 hr 59 min
+0.0001000  67.00 k   45 | 0.576   86.905   88.624   0.877   0.22  | 0.500   99.500  100.000   0.997   | 0.549   100.000  100.000   1.000   | 12 hr 01 min
+0.0001000  67.20 k   45 | 0.570   86.905   88.757   0.877   0.22  | 0.474   99.438  100.000   0.997   | 0.394   100.000  100.000   1.000   | 12 hr 03 min
+0.0001000  67.40 k   45 | 0.565   86.905   88.624   0.877   0.22  | 0.505   99.062  100.000   0.995   | 0.538   100.000  100.000   1.000   | 12 hr 05 min
+change hard_ratio: 0.006
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0001000  67.60 k   46 | 0.570   86.772   88.757   0.877   0.22  | 0.360   98.688  100.000   0.993   | 0.488   100.000  100.000   1.000   | 12 hr 07 min
+0.0001000  67.80 k   46 | 0.567   86.905   88.757   0.878   0.22  | 0.352   99.125  100.000   0.996   | 0.453    96.875  100.000   0.984   | 12 hr 09 min
+0.0001000  68.00 k   46 | 0.566   86.772   88.757   0.876   0.23  | 0.370   99.000  100.000   0.995   | 0.324   100.000  100.000   1.000   | 12 hr 12 min
+0.0001000  68.20 k   46 | 0.568   87.037   88.624   0.877   0.20  | 0.381   99.062  100.000   0.995   | 0.401    96.875  100.000   0.984   | 12 hr 14 min
+0.0001000  68.40 k   46 | 0.568   87.037   88.757   0.878   0.23  | 0.417   98.375  100.000   0.992   | 0.330   100.000  100.000   1.000   | 12 hr 16 min
+0.0001000  68.60 k   46 | 0.566   86.905   88.757   0.877   0.24  | 0.442   99.375  100.000   0.997   | 0.585    96.875  100.000   0.984   | 12 hr 18 min
+0.0001000  68.80 k   46 | 0.559   86.905   88.624   0.877   0.25  | 0.430   98.812  100.000   0.994   | 0.392   100.000  100.000   1.000   | 12 hr 20 min
+change hard_ratio: 0.006
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0001000  69.00 k   47 | 0.557   86.772   88.757   0.877   0.23  | 0.308   98.875  100.000   0.994   | 0.293   100.000  100.000   1.000   | 12 hr 22 min
+0.0001000  69.20 k   47 | 0.554   86.772   88.757   0.877   0.23  | 0.310   99.500  100.000   0.998   | 0.296   100.000  100.000   1.000   | 12 hr 24 min
+New maximum MAP@5 reached on 69399th iteration (epoch 47): 0.8783068783068781... saving on disk.
+0.0001000  69.40 k   47 | 0.555   87.037   88.757   0.878   0.25  | 0.315   99.562  100.000   0.998   | 0.300   100.000  100.000   1.000   | 12 hr 27 min
+0.0001000  69.60 k   47 | 0.556   86.905   88.757   0.878   0.23  | 0.323   99.500  100.000   0.997   | 0.340   100.000  100.000   1.000   | 12 hr 29 min
+0.0001000  69.80 k   47 | 0.557   86.905   88.757   0.877   0.25  | 0.328   98.875  100.000   0.994   | 0.316   100.000  100.000   1.000   | 12 hr 31 min
+0.0001000  70.00 k   47 | 0.550   86.905   88.757   0.877   0.21  | 0.335   99.250  100.000   0.996   | 0.326    96.875  100.000   0.984   | 12 hr 33 min
+0.0001000  70.20 k   47 | 0.555   86.772   88.757   0.876   0.23  | 0.345   98.438  100.000   0.992   | 0.376   100.000  100.000   1.000   | 12 hr 35 min
+0.0001000  70.40 k   47 | 0.562   86.772   88.757   0.877   0.22  | 0.308   99.250  100.000   0.996   | 0.298    96.875  100.000   0.984   | 12 hr 37 min
+change hard_ratio: 0.006
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0001000  70.60 k   48 | 0.558   86.905   88.757   0.877   0.24  | 0.308   99.062  100.000   0.995   | 0.300   100.000  100.000   1.000   | 12 hr 40 min
+0.0001000  70.80 k   48 | 0.557   87.037   88.757   0.878   0.23  | 0.310   99.312  100.000   0.997   | 0.311   100.000  100.000   1.000   | 12 hr 41 min
+0.0001000  71.00 k   48 | 0.558   86.772   88.624   0.876   0.22  | 0.317   99.188  100.000   0.996   | 0.329    96.875  100.000   0.984   | 12 hr 44 min
+0.0001000  71.20 k   48 | 0.563   87.037   88.492   0.877   0.22  | 0.328   99.188  100.000   0.996   | 0.320    96.875  100.000   0.984   | 12 hr 45 min
+0.0001000  71.40 k   48 | 0.560   86.772   88.757   0.876   0.22  | 0.344   99.188  100.000   0.996   | 0.318   100.000  100.000   1.000   | 12 hr 47 min
+0.0001000  71.60 k   48 | 0.558   86.905   88.757   0.877   0.23  | 0.343   98.938  100.000   0.994   | 0.324   100.000  100.000   1.000   | 12 hr 49 min
+0.0001000  71.80 k   48 | 0.564   86.905   88.757   0.877   0.22  | 0.363   99.438  100.000   0.997   | 0.306   100.000  100.000   1.000   | 12 hr 51 min
+change hard_ratio: 0.005
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000500  72.00 k   49 | 0.562   87.037   88.757   0.878   0.23  | 0.321   98.938   99.938   0.994   | 0.300    96.875  100.000   0.984   | 12 hr 54 min
+0.0000500  72.20 k   49 | 0.563   86.772   88.757   0.877   0.21  | 0.321   99.125  100.000   0.996   | 0.289   100.000  100.000   1.000   | 12 hr 56 min
+0.0000500  72.40 k   49 | 0.562   86.905   88.757   0.878   0.22  | 0.325   98.750  100.000   0.994   | 0.401   100.000  100.000   1.000   | 12 hr 58 min
+0.0000500  72.60 k   49 | 0.561   86.905   88.757   0.877   0.22  | 0.340   99.312  100.000   0.997   | 0.334   100.000  100.000   1.000   | 13 hr 00 min
+New maximum MAP@5 reached on 72799th iteration (epoch 49): 0.8785273368606701... saving on disk.
+0.0000500  72.80 k   49 | 0.559   87.037   88.757   0.879   0.25  | 0.336   99.438  100.000   0.997   | 0.316   100.000  100.000   1.000   | 13 hr 02 min
+0.0000500  73.00 k   49 | 0.556   87.037   88.757   0.879   0.23  | 0.349   99.812  100.000   0.999   | 0.397   100.000  100.000   1.000   | 13 hr 04 min
+0.0000500  73.20 k   49 | 0.554   87.037   88.757   0.878   0.23  | 0.344   99.250  100.000   0.996   | 0.318   100.000  100.000   1.000   | 13 hr 06 min
+change hard_ratio: 0.005
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000500  73.40 k   50 | 0.555   87.037   88.757   0.878   0.25  | 0.295   98.750  100.000   0.994   | 0.294   100.000  100.000   1.000   | 13 hr 08 min
+0.0000500  73.60 k   50 | 0.554   87.037   88.757   0.879   0.24  | 0.300   99.438  100.000   0.997   | 0.310    96.875  100.000   0.984   | 13 hr 10 min
+0.0000500  73.80 k   50 | 0.555   86.905   88.757   0.878   0.24  | 0.305   99.562  100.000   0.998   | 0.297   100.000  100.000   1.000   | 13 hr 12 min
+0.0000500  74.00 k   50 | 0.558   87.037   88.757   0.879   0.23  | 0.308   99.375  100.000   0.997   | 0.307   100.000  100.000   1.000   | 13 hr 14 min
+0.0000500  74.20 k   50 | 0.556   87.037   88.757   0.879   0.22  | 0.315   99.750  100.000   0.999   | 0.314   100.000  100.000   1.000   | 13 hr 16 min
+0.0000500  74.40 k   50 | 0.558   87.037   88.757   0.878   0.21  | 0.316   99.125  100.000   0.996   | 0.314   100.000  100.000   1.000   | 13 hr 18 min
+0.0000500  74.60 k   50 | 0.556   87.037   88.757   0.879   0.23  | 0.312   98.562  100.000   0.993   | 0.315   100.000  100.000   1.000   | 13 hr 21 min
+0.0000500  74.80 k   50 | 0.568   87.037   88.757   0.878   0.22  | 0.290   99.250  100.000   0.996   | 0.254   100.000  100.000   1.000   | 13 hr 23 min
+change hard_ratio: 0.005
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000500  75.00 k   51 | 0.559   87.037   88.757   0.878   0.24  | 0.300   99.312  100.000   0.997   | 0.314   100.000  100.000   1.000   | 13 hr 25 min
+0.0000500  75.20 k   51 | 0.561   86.905   88.757   0.878   0.22  | 0.304   99.312  100.000   0.997   | 0.285   100.000  100.000   1.000   | 13 hr 27 min
+0.0000500  75.40 k   51 | 0.561   87.037   88.757   0.878   0.22  | 0.307   99.438  100.000   0.997   | 0.304   100.000  100.000   1.000   | 13 hr 29 min
+0.0000500  75.60 k   51 | 0.562   86.905   88.757   0.878   0.21  | 0.306   99.500  100.000   0.998   | 0.344   100.000  100.000   1.000   | 13 hr 31 min
+0.0000500  75.80 k   51 | 0.561   86.905   88.757   0.878   0.21  | 0.320   99.500  100.000   0.998   | 0.326   100.000  100.000   1.000   | 13 hr 33 min
+0.0000500  76.00 k   51 | 0.562   87.037   88.757   0.878   0.21  | 0.324   99.312  100.000   0.997   | 0.314   100.000  100.000   1.000   | 13 hr 35 min
+New maximum MAP@5 reached on 76199th iteration (epoch 51): 0.878747795414462... saving on disk.
+0.0000500  76.20 k   51 | 0.563   87.037   88.757   0.879   0.21  | 0.316   99.312  100.000   0.997   | 0.319   100.000  100.000   1.000   | 13 hr 37 min
+change hard_ratio: 0.005
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000500  76.40 k   52 | 0.564   86.905   88.757   0.878   0.22  | 0.297   98.938  100.000   0.994   | 0.295   100.000  100.000   1.000   | 13 hr 40 min
+0.0000500  76.60 k   52 | 0.567   87.037   88.757   0.878   0.22  | 0.302   99.250  100.000   0.996   | 0.292   100.000  100.000   1.000   | 13 hr 42 min
+0.0000500  76.80 k   52 | 0.570   87.037   88.757   0.878   0.22  | 0.306   99.375  100.000   0.997   | 0.284   100.000  100.000   1.000   | 13 hr 44 min
+0.0000500  77.00 k   52 | 0.575   86.905   88.757   0.877   0.21  | 0.355   99.188  100.000   0.996   | 0.424    96.875  100.000   0.984   | 13 hr 46 min
+0.0000500  77.20 k   52 | 0.581   87.037   88.624   0.878   0.21  | 0.405   99.312  100.000   0.997   | 0.588   100.000  100.000   1.000   | 13 hr 48 min
+0.0000500  77.40 k   52 | 0.571   87.037   88.757   0.878   0.23  | 0.416   99.375  100.000   0.997   | 0.395    96.875  100.000   0.984   | 13 hr 50 min
+0.0000500  77.60 k   52 | 0.573   87.037   88.757   0.878   0.20  | 0.500   99.500  100.000   0.998   | 0.480   100.000  100.000   1.000   | 13 hr 52 min
+change hard_ratio: 0.005
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000500  77.80 k   53 | 0.575   87.037   88.757   0.878   0.24  | 0.375   99.312  100.000   0.997   | 0.403   100.000  100.000   1.000   | 13 hr 54 min
+0.0000500  78.00 k   53 | 0.574   87.037   88.889   0.879   0.23  | 0.383   99.562  100.000   0.998   | 0.383   100.000  100.000   1.000   | 13 hr 56 min
+0.0000500  78.20 k   53 | 0.577   87.037   88.889   0.878   0.22  | 0.428   99.125  100.000   0.996   | 0.301    96.875  100.000   0.984   | 13 hr 58 min
+New maximum MAP@5 reached on 78399th iteration (epoch 53): 0.8792328042328041... saving on disk.
+0.0000500  78.40 k   53 | 0.576   87.169   88.889   0.879   0.21  | 0.445   99.125  100.000   0.995   | 0.538    96.875  100.000   0.984   | 14 hr 00 min
+0.0000500  78.60 k   53 | 0.578   87.037   88.757   0.878   0.22  | 0.450   99.125  100.000   0.996   | 0.330   100.000  100.000   1.000   | 14 hr 02 min
+0.0000500  78.80 k   53 | 0.576   87.037   88.757   0.878   0.21  | 0.486   99.312  100.000   0.997   | 0.361   100.000  100.000   1.000   | 14 hr 04 min
+0.0000500  79.00 k   53 | 0.573   86.905   88.757   0.878   0.21  | 0.527   99.500  100.000   0.998   | 0.557   100.000  100.000   1.000   | 14 hr 06 min
+0.0000500  79.20 k   53 | 0.580   87.037   88.757   0.878   0.22  | 0.338   99.312  100.000   0.997   | 0.294   100.000  100.000   1.000   | 14 hr 08 min
+change hard_ratio: 0.005
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000500  79.40 k   54 | 0.570   87.037   88.757   0.878   0.22  | 0.299   99.562  100.000   0.998   | 0.301   100.000  100.000   1.000   | 14 hr 11 min
+0.0000500  79.60 k   54 | 0.571   87.037   88.757   0.879   0.21  | 0.299   99.188  100.000   0.996   | 0.288   100.000  100.000   1.000   | 14 hr 13 min
+0.0000500  79.80 k   54 | 0.567   87.037   88.757   0.878   0.23  | 0.305   99.375  100.000   0.997   | 0.284   100.000  100.000   1.000   | 14 hr 15 min
+0.0000500  80.00 k   54 | 0.571   86.905   88.757   0.877   0.21  | 0.308   99.438  100.000   0.997   | 0.267   100.000  100.000   1.000   | 14 hr 17 min
+0.0000500  80.20 k   54 | 0.567   87.037   88.757   0.878   0.20  | 0.313   99.312  100.000   0.996   | 0.295   100.000  100.000   1.000   | 14 hr 20 min
+0.0000500  80.40 k   54 | 0.566   87.037   88.757   0.878   0.22  | 0.315   99.188  100.000   0.996   | 0.330    96.875  100.000   0.984   | 14 hr 22 min
+0.0000500  80.60 k   54 | 0.566   87.037   88.889   0.878   0.22  | 0.313   99.312  100.000   0.997   | 0.346   100.000  100.000   1.000   | 14 hr 24 min
+change hard_ratio: 0.005
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000500  80.80 k   55 | 0.568   86.772   88.757   0.877   0.20  | 0.294   99.312  100.000   0.996   | 0.305   100.000  100.000   1.000   | 14 hr 26 min
+0.0000500  81.00 k   55 | 0.567   87.037   88.889   0.879   0.21  | 0.302   98.875  100.000   0.994   | 0.281   100.000  100.000   1.000   | 14 hr 28 min
+0.0000500  81.20 k   55 | 0.569   87.037   88.757   0.878   0.22  | 0.301   99.500  100.000   0.997   | 0.311   100.000  100.000   1.000   | 14 hr 30 min
+0.0000500  81.40 k   55 | 0.570   87.037   88.889   0.879   0.21  | 0.310   99.312  100.000   0.996   | 0.321   100.000  100.000   1.000   | 14 hr 32 min
+0.0000500  81.60 k   55 | 0.568   87.037   88.889   0.878   0.21  | 0.316   99.438  100.000   0.997   | 0.316   100.000  100.000   1.000   | 14 hr 35 min
+0.0000500  81.80 k   55 | 0.570   86.905   88.757   0.878   0.23  | 0.316   99.562  100.000   0.998   | 0.298   100.000  100.000   1.000   | 14 hr 37 min
+0.0000500  82.00 k   55 | 0.569   87.037   88.757   0.878   0.23  | 0.318   99.500  100.000   0.998   | 0.312   100.000  100.000   1.000   | 14 hr 39 min
+change hard_ratio: 0.005
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000500  82.20 k   56 | 0.569   86.905   88.889   0.878   0.24  | 0.293   99.000  100.000   0.995   | 0.271   100.000  100.000   1.000   | 14 hr 41 min
+0.0000500  82.40 k   56 | 0.571   87.037   88.889   0.879   0.23  | 0.299   99.438  100.000   0.997   | 0.286   100.000  100.000   1.000   | 14 hr 43 min
+0.0000500  82.60 k   56 | 0.570   87.037   88.757   0.878   0.24  | 0.300   99.438  100.000   0.997   | 0.297   100.000  100.000   1.000   | 14 hr 45 min
+0.0000500  82.80 k   56 | 0.570   87.037   88.757   0.879   0.23  | 0.305   99.375  100.000   0.997   | 0.291   100.000  100.000   1.000   | 14 hr 47 min
+0.0000500  83.00 k   56 | 0.570   87.037   88.757   0.878   0.21  | 0.307   99.500  100.000   0.997   | 0.275   100.000  100.000   1.000   | 14 hr 50 min
+0.0000500  83.20 k   56 | 0.571   87.037   88.757   0.878   0.20  | 0.319   99.438  100.000   0.997   | 0.289   100.000  100.000   1.000   | 14 hr 52 min
+0.0000500  83.40 k   56 | 0.567   87.037   88.757   0.878   0.21  | 0.317   99.375  100.000   0.997   | 0.361    96.875  100.000   0.984   | 14 hr 54 min
+0.0000500  83.60 k   56 | 0.581   86.772   88.757   0.877   0.19  | 0.288   99.125  100.000   0.996   | 0.275   100.000  100.000   1.000   | 14 hr 56 min
+change hard_ratio: 0.005
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000500  83.80 k   57 | 0.571   87.037   88.757   0.878   0.22  | 0.294   99.000  100.000   0.995   | 0.366   100.000  100.000   1.000   | 14 hr 58 min
+0.0000500  84.00 k   57 | 0.577   87.037   88.757   0.878   0.22  | 0.320   99.438  100.000   0.997   | 0.282   100.000  100.000   1.000   | 15 hr 00 min
+0.0000500  84.20 k   57 | 0.580   87.037   88.889   0.879   0.20  | 0.358   99.688  100.000   0.998   | 0.418   100.000  100.000   1.000   | 15 hr 02 min
+0.0000500  84.40 k   57 | 0.581   86.905   88.889   0.877   0.21  | 0.343   99.250  100.000   0.996   | 0.319   100.000  100.000   1.000   | 15 hr 04 min
+0.0000500  84.60 k   57 | 0.579   87.037   88.757   0.878   0.20  | 0.381   99.438  100.000   0.997   | 0.294   100.000  100.000   1.000   | 15 hr 07 min
+0.0000500  84.80 k   57 | 0.576   87.169   88.624   0.878   0.22  | 0.378   99.375  100.000   0.997   | 0.332   100.000  100.000   1.000   | 15 hr 09 min
+0.0000500  85.00 k   57 | 0.575   87.037   88.757   0.878   0.21  | 0.351   99.125  100.000   0.996   | 0.304   100.000  100.000   1.000   | 15 hr 11 min
+change hard_ratio: 0.005
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000500  85.20 k   58 | 0.572   86.905   88.757   0.878   0.21  | 0.305   98.625  100.000   0.993   | 0.294   100.000  100.000   1.000   | 15 hr 13 min
+0.0000500  85.40 k   58 | 0.575   86.905   88.757   0.878   0.22  | 0.314   99.250  100.000   0.996   | 0.294   100.000  100.000   1.000   | 15 hr 15 min
+0.0000500  85.60 k   58 | 0.572   86.905   88.757   0.877   0.22  | 0.309   99.188  100.000   0.996   | 0.280   100.000  100.000   1.000   | 15 hr 18 min
+0.0000500  85.80 k   58 | 0.574   86.905   88.757   0.878   0.22  | 0.331   99.375  100.000   0.997   | 0.311    96.875  100.000   0.984   | 15 hr 20 min
+0.0000500  86.00 k   58 | 0.571   87.037   88.757   0.878   0.20  | 0.327   99.312  100.000   0.997   | 0.289    93.750  100.000   0.969   | 15 hr 22 min
+0.0000500  86.20 k   58 | 0.571   87.037   88.757   0.878   0.22  | 0.340   99.000  100.000   0.995   | 0.358   100.000  100.000   1.000   | 15 hr 24 min
+0.0000500  86.40 k   58 | 0.574   87.037   88.757   0.878   0.22  | 0.333   99.125  100.000   0.996   | 0.317   100.000  100.000   1.000   | 15 hr 26 min
+change hard_ratio: 0.004
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000100  86.60 k   59 | 0.577   87.037   88.757   0.878   0.24  | 0.293   99.188  100.000   0.996   | 0.266   100.000  100.000   1.000   | 15 hr 28 min
+0.0000100  86.80 k   59 | 0.576   87.037   88.757   0.878   0.22  | 0.290   99.812  100.000   0.999   | 0.300   100.000  100.000   1.000   | 15 hr 31 min
+0.0000100  87.00 k   59 | 0.573   87.037   88.889   0.878   0.23  | 0.291   99.312  100.000   0.997   | 0.292   100.000  100.000   1.000   | 15 hr 33 min
+0.0000100  87.20 k   59 | 0.572   87.037   88.757   0.878   0.23  | 0.294   99.500  100.000   0.998   | 0.303    93.750  100.000   0.969   | 15 hr 35 min
+0.0000100  87.40 k   59 | 0.572   86.905   88.757   0.877   0.22  | 0.292   99.062  100.000   0.995   | 0.292   100.000  100.000   1.000   | 15 hr 37 min
+0.0000100  87.60 k   59 | 0.571   86.905   88.757   0.877   0.21  | 0.289   99.188  100.000   0.996   | 0.289    96.875  100.000   0.984   | 15 hr 39 min
+0.0000100  87.80 k   59 | 0.570   87.037   88.757   0.878   0.22  | 0.289   99.500  100.000   0.998   | 0.262    96.875  100.000   0.984   | 15 hr 41 min
+0.0000100  88.00 k   59 | 0.586   86.508   88.757   0.876   0.18  | 0.266   99.312  100.000   0.997   | 0.266   100.000  100.000   1.000   | 15 hr 43 min
+change hard_ratio: 0.004
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000100  88.20 k   60 | 0.571   87.037   88.757   0.878   0.22  | 0.286   99.125  100.000   0.995   | 0.305   100.000  100.000   1.000   | 15 hr 45 min
+0.0000100  88.40 k   60 | 0.569   87.037   88.757   0.878   0.22  | 0.289   99.375  100.000   0.997   | 0.297   100.000  100.000   1.000   | 15 hr 48 min
+0.0000100  88.60 k   60 | 0.570   86.905   88.757   0.877   0.21  | 0.288   99.562  100.000   0.998   | 0.282   100.000  100.000   1.000   | 15 hr 50 min
+0.0000100  88.80 k   60 | 0.570   87.037   88.757   0.879   0.20  | 0.292   99.500  100.000   0.998   | 0.266   100.000  100.000   1.000   | 15 hr 52 min
+0.0000100  89.00 k   60 | 0.570   87.037   88.757   0.878   0.21  | 0.288   99.125  100.000   0.996   | 0.289    96.875  100.000   0.984   | 15 hr 54 min
+0.0000100  89.20 k   60 | 0.569   87.037   88.757   0.878   0.21  | 0.291   99.500  100.000   0.998   | 0.264   100.000  100.000   1.000   | 15 hr 56 min
+0.0000100  89.40 k   60 | 0.570   86.905   88.757   0.877   0.20  | 0.287   99.250  100.000   0.996   | 0.285   100.000  100.000   1.000   | 15 hr 58 min
+change hard_ratio: 0.004
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000100  89.60 k   61 | 0.569   87.037   88.757   0.878   0.21  | 0.284   98.875  100.000   0.994   | 0.280    96.875  100.000   0.984   | 16 hr 01 min
+0.0000100  89.80 k   61 | 0.571   87.037   88.757   0.878   0.21  | 0.289   99.062  100.000   0.995   | 0.271   100.000  100.000   1.000   | 16 hr 03 min
+0.0000100  90.00 k   61 | 0.572   87.037   88.757   0.878   0.21  | 0.288   99.625  100.000   0.998   | 0.283   100.000  100.000   1.000   | 16 hr 05 min
+0.0000100  90.20 k   61 | 0.572   87.037   88.757   0.878   0.21  | 0.290   99.312  100.000   0.997   | 0.300   100.000  100.000   1.000   | 16 hr 07 min
+0.0000100  90.40 k   61 | 0.571   87.037   88.757   0.878   0.20  | 0.287   99.438  100.000   0.997   | 0.272   100.000  100.000   1.000   | 16 hr 09 min
+0.0000100  90.60 k   61 | 0.571   87.037   88.757   0.878   0.20  | 0.289   99.375  100.000   0.997   | 0.299   100.000  100.000   1.000   | 16 hr 11 min
+0.0000100  90.80 k   61 | 0.573   87.037   88.757   0.878   0.22  | 0.289   99.188  100.000   0.996   | 0.299   100.000  100.000   1.000   | 16 hr 13 min
+change hard_ratio: 0.004
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000100  91.00 k   62 | 0.574   87.037   88.757   0.878   0.21  | 0.288   99.250  100.000   0.996   | 0.282   100.000  100.000   1.000   | 16 hr 16 min
+0.0000100  91.20 k   62 | 0.570   87.037   88.757   0.878   0.22  | 0.287   99.438  100.000   0.997   | 0.285   100.000  100.000   1.000   | 16 hr 18 min
+0.0000100  91.40 k   62 | 0.570   87.037   88.757   0.878   0.21  | 0.290   99.250  100.000   0.996   | 0.299    93.750  100.000   0.969   | 16 hr 20 min
+0.0000100  91.60 k   62 | 0.571   87.037   88.757   0.878   0.21  | 0.291   99.562  100.000   0.998   | 0.269   100.000  100.000   1.000   | 16 hr 22 min
+0.0000100  91.80 k   62 | 0.572   87.037   88.757   0.879   0.20  | 0.293   99.375  100.000   0.997   | 0.290   100.000  100.000   1.000   | 16 hr 24 min
+0.0000100  92.00 k   62 | 0.573   87.037   88.889   0.878   0.21  | 0.288   99.438  100.000   0.997   | 0.283   100.000  100.000   1.000   | 16 hr 26 min
+0.0000100  92.20 k   62 | 0.572   87.037   88.757   0.878   0.21  | 0.290   99.625  100.000   0.998   | 0.276    96.875  100.000   0.984   | 16 hr 29 min
+change hard_ratio: 0.004
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000100  92.40 k   63 | 0.587   86.640   88.889   0.877   0.19  | 0.305   98.438  100.000   0.992   | 0.329    96.875  100.000   0.984   | 16 hr 31 min
+0.0000100  92.60 k   63 | 0.574   86.905   88.757   0.877   0.20  | 0.289   99.062  100.000   0.995   | 0.279   100.000  100.000   1.000   | 16 hr 33 min
+0.0000100  92.80 k   63 | 0.573   87.037   88.889   0.878   0.22  | 0.291   99.250  100.000   0.996   | 0.278   100.000  100.000   1.000   | 16 hr 35 min
+0.0000100  93.00 k   63 | 0.574   87.037   88.757   0.878   0.20  | 0.290   99.625  100.000   0.998   | 0.302   100.000  100.000   1.000   | 16 hr 37 min
+0.0000100  93.20 k   63 | 0.577   87.037   88.757   0.878   0.22  | 0.286   99.125  100.000   0.996   | 0.274   100.000  100.000   1.000   | 16 hr 40 min
+0.0000100  93.40 k   63 | 0.573   87.037   88.757   0.878   0.21  | 0.290   99.500  100.000   0.998   | 0.319   100.000  100.000   1.000   | 16 hr 42 min
+0.0000100  93.60 k   63 | 0.573   87.037   88.757   0.878   0.22  | 0.290   99.312  100.000   0.997   | 0.282   100.000  100.000   1.000   | 16 hr 44 min
+0.0000100  93.80 k   63 | 0.574   86.905   88.889   0.878   0.22  | 0.285   99.250  100.000   0.996   | 0.249   100.000  100.000   1.000   | 16 hr 46 min
+change hard_ratio: 0.004
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000100  94.00 k   64 | 0.574   87.037   88.757   0.879   0.20  | 0.289   99.375  100.000   0.997   | 0.273   100.000  100.000   1.000   | 16 hr 48 min
+0.0000100  94.20 k   64 | 0.575   87.037   88.757   0.878   0.22  | 0.289   98.812  100.000   0.994   | 0.276   100.000  100.000   1.000   | 16 hr 50 min
+0.0000100  94.40 k   64 | 0.577   87.037   88.757   0.878   0.20  | 0.291   99.312  100.000   0.996   | 0.314   100.000  100.000   1.000   | 16 hr 52 min
+0.0000100  94.60 k   64 | 0.576   87.037   88.889   0.879   0.21  | 0.289   99.375  100.000   0.997   | 0.271    96.875  100.000   0.984   | 16 hr 54 min
+0.0000100  94.80 k   64 | 0.579   86.905   88.757   0.878   0.19  | 0.297   99.250  100.000   0.996   | 0.284    93.750  100.000   0.969   | 16 hr 56 min
+0.0000100  95.00 k   64 | 0.578   87.037   88.889   0.878   0.22  | 0.308   98.938  100.000   0.995   | 0.321   100.000  100.000   1.000   | 16 hr 59 min
+0.0000100  95.20 k   64 | 0.581   86.905   88.757   0.878   0.21  | 0.310   99.312  100.000   0.997   | 0.275    96.875  100.000   0.984   | 17 hr 01 min
+change hard_ratio: 0.004
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000100  95.40 k   65 | 0.581   87.037   88.757   0.878   0.21  | 0.320   98.750  100.000   0.994   | 0.306   100.000  100.000   1.000   | 17 hr 03 min
+0.0000100  95.60 k   65 | 0.584   87.037   88.757   0.878   0.20  | 0.385   99.812  100.000   0.999   | 0.385   100.000  100.000   1.000   | 17 hr 05 min
+0.0000100  95.80 k   65 | 0.585   86.905   88.757   0.877   0.21  | 0.512   99.188  100.000   0.996   | 0.445    96.875  100.000   0.984   | 17 hr 07 min
+0.0000100  96.00 k   65 | 0.585   87.037   88.757   0.878   0.20  | 0.518   99.500  100.000   0.998   | 0.425   100.000  100.000   1.000   | 17 hr 10 min
+0.0000100  96.20 k   65 | 0.586   86.905   88.757   0.877   0.21  | 0.556   99.438  100.000   0.997   | 0.646   100.000  100.000   1.000   | 17 hr 12 min
+0.0000100  96.40 k   65 | 0.587   87.037   88.757   0.879   0.20  | 0.563   99.438  100.000   0.997   | 0.745   100.000  100.000   1.000   | 17 hr 14 min
+0.0000100  96.60 k   65 | 0.586   86.905   88.757   0.877   0.21  | 0.547   99.750  100.000   0.999   | 0.623   100.000  100.000   1.000   | 17 hr 16 min
+change hard_ratio: 0.004
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000100  96.80 k   66 | 0.596   86.905   88.889   0.878   0.19  | 0.354   95.312  100.000   0.977   | 0.318    93.750  100.000   0.969   | 17 hr 18 min
+0.0000100  97.00 k   66 | 0.582   87.037   88.889   0.879   0.20  | 0.348   99.125  100.000   0.996   | 0.348   100.000  100.000   1.000   | 17 hr 21 min
+0.0000100  97.20 k   66 | 0.580   87.037   88.757   0.878   0.21  | 0.328   99.375  100.000   0.997   | 0.335   100.000  100.000   1.000   | 17 hr 23 min
+0.0000100  97.40 k   66 | 0.581   87.037   88.757   0.878   0.20  | 0.339   99.500  100.000   0.998   | 0.333   100.000  100.000   1.000   | 17 hr 25 min
+0.0000100  97.60 k   66 | 0.581   87.037   88.757   0.878   0.21  | 0.336   99.562  100.000   0.998   | 0.350   100.000  100.000   1.000   | 17 hr 27 min
+0.0000100  97.80 k   66 | 0.580   87.037   88.757   0.878   0.20  | 0.336   99.500  100.000   0.998   | 0.321   100.000  100.000   1.000   | 17 hr 29 min
+0.0000100  98.00 k   66 | 0.580   87.037   88.757   0.878   0.21  | 0.333   99.062  100.000   0.995   | 0.398   100.000  100.000   1.000   | 17 hr 31 min
+0.0000100  98.20 k   66 | 0.583   86.905   88.757   0.878   0.20  | 0.315   99.438  100.000   0.997   | 0.280   100.000  100.000   1.000   | 17 hr 33 min
+change hard_ratio: 0.004
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000100  98.40 k   67 | 0.580   87.037   88.757   0.878   0.21  | 0.294   99.125  100.000   0.996   | 0.300    96.875  100.000   0.984   | 17 hr 36 min
+0.0000100  98.60 k   67 | 0.579   86.905   88.889   0.878   0.20  | 0.292   99.438  100.000   0.997   | 0.279    96.875  100.000   0.984   | 17 hr 38 min
+0.0000100  98.80 k   67 | 0.580   86.905   88.889   0.878   0.20  | 0.293   99.375  100.000   0.997   | 0.278   100.000  100.000   1.000   | 17 hr 40 min
+0.0000100  99.00 k   67 | 0.580   87.037   88.757   0.878   0.20  | 0.292   99.125  100.000   0.996   | 0.276   100.000  100.000   1.000   | 17 hr 42 min
+0.0000100  99.20 k   67 | 0.580   86.905   88.889   0.878   0.20  | 0.292   99.688  100.000   0.998   | 0.283   100.000  100.000   1.000   | 17 hr 44 min
+0.0000100  99.40 k   67 | 0.578   87.037   88.889   0.878   0.20  | 0.294   99.500  100.000   0.998   | 0.295   100.000  100.000   1.000   | 17 hr 46 min
+0.0000100  99.60 k   67 | 0.579   87.037   88.757   0.878   0.20  | 0.290   99.250  100.000   0.996   | 0.292   100.000  100.000   1.000   | 17 hr 48 min
+change hard_ratio: 0.004
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000100  99.80 k   68 | 0.581   86.905   88.889   0.877   0.21  | 0.291   99.250  100.000   0.996   | 0.265   100.000  100.000   1.000   | 17 hr 51 min
+0.0000100  100.00 k   68 | 0.580   87.037   88.757   0.878   0.21  | 0.289   99.500  100.000   0.997   | 0.296   100.000  100.000   1.000   | 17 hr 53 min
+0.0000100  100.20 k   68 | 0.580   87.037   88.757   0.878   0.20  | 0.291   99.562  100.000   0.998   | 0.279   100.000  100.000   1.000   | 17 hr 55 min
+0.0000100  100.40 k   68 | 0.580   87.037   88.889   0.878   0.22  | 0.293   99.562  100.000   0.998   | 0.283   100.000  100.000   1.000   | 17 hr 57 min
+0.0000100  100.60 k   68 | 0.580   87.037   88.757   0.879   0.22  | 0.291   99.688  100.000   0.998   | 0.297   100.000  100.000   1.000   | 17 hr 59 min
+0.0000100  100.80 k   68 | 0.580   86.905   88.757   0.878   0.20  | 0.294   99.688  100.000   0.998   | 0.297   100.000  100.000   1.000   | 18 hr 01 min
+0.0000100  101.00 k   68 | 0.581   86.905   88.757   0.878   0.20  | 0.292   99.312  100.000   0.996   | 0.280   100.000  100.000   1.000   | 18 hr 03 min
+change hard_ratio: 0.004
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000100  101.20 k   69 | 0.593   86.772   88.757   0.877   0.22  | 0.282  100.000  100.000   1.000   | 0.276   100.000  100.000   1.000   | 18 hr 06 min
+0.0000100  101.40 k   69 | 0.580   86.905   88.757   0.878   0.22  | 0.289   99.625  100.000   0.998   | 0.268   100.000  100.000   1.000   | 18 hr 08 min
+0.0000100  101.60 k   69 | 0.581   87.037   88.757   0.879   0.23  | 0.292   99.125  100.000   0.996   | 0.285   100.000  100.000   1.000   | 18 hr 10 min
+0.0000100  101.80 k   69 | 0.583   86.905   88.757   0.878   0.20  | 0.287   99.812  100.000   0.999   | 0.264   100.000  100.000   1.000   | 18 hr 12 min
+0.0000100  102.00 k   69 | 0.580   87.037   88.757   0.879   0.20  | 0.290   98.938  100.000   0.995   | 0.284   100.000  100.000   1.000   | 18 hr 14 min
+0.0000100  102.20 k   69 | 0.580   87.037   88.757   0.878   0.21  | 0.294   99.562  100.000   0.998   | 0.283   100.000  100.000   1.000   | 18 hr 16 min
+0.0000100  102.40 k   69 | 0.579   87.037   88.889   0.879   0.22  | 0.294   99.625  100.000   0.998   | 0.290   100.000  100.000   1.000   | 18 hr 18 min
+0.0000100  102.60 k   69 | 0.587   86.772   88.757   0.877   0.19  | 0.280   99.562  100.000   0.998   | 0.294   100.000  100.000   1.000   | 18 hr 20 min
+change hard_ratio: 0.004
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000100  102.80 k   70 | 0.580   86.905   88.757   0.878   0.20  | 0.287   99.250  100.000   0.996   | 0.289   100.000  100.000   1.000   | 18 hr 23 min
+0.0000100  103.00 k   70 | 0.582   86.905   88.757   0.877   0.22  | 0.287   99.188  100.000   0.996   | 0.294   100.000  100.000   1.000   | 18 hr 25 min
+0.0000100  103.20 k   70 | 0.581   86.905   88.757   0.878   0.21  | 0.283   99.375  100.000   0.997   | 0.284   100.000  100.000   1.000   | 18 hr 27 min
+0.0000100  103.40 k   70 | 0.581   86.905   88.757   0.878   0.23  | 0.291   99.688  100.000   0.998   | 0.302   100.000  100.000   1.000   | 18 hr 29 min
+0.0000100  103.60 k   70 | 0.584   86.905   88.757   0.878   0.22  | 0.289   99.500  100.000   0.998   | 0.295   100.000  100.000   1.000   | 18 hr 31 min
+0.0000100  103.80 k   70 | 0.580   86.905   88.757   0.877   0.23  | 0.289   99.500  100.000   0.998   | 0.304   100.000  100.000   1.000   | 18 hr 33 min
+0.0000100  104.00 k   70 | 0.581   87.037   88.757   0.879   0.22  | 0.291   99.562  100.000   0.998   | 0.282   100.000  100.000   1.000   | 18 hr 36 min
+change hard_ratio: 0.004
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000100  104.20 k   71 | 0.581   87.037   88.757   0.879   0.22  | 0.287   99.250  100.000   0.996   | 0.284   100.000  100.000   1.000   | 18 hr 38 min
+0.0000100  104.40 k   71 | 0.582   87.037   88.757   0.878   0.20  | 0.285   99.438  100.000   0.997   | 0.290   100.000  100.000   1.000   | 18 hr 40 min
+0.0000100  104.60 k   71 | 0.581   86.905   88.757   0.878   0.21  | 0.288   99.250  100.000   0.996   | 0.275   100.000  100.000   1.000   | 18 hr 42 min
+0.0000100  104.80 k   71 | 0.582   86.905   88.757   0.878   0.22  | 0.291   99.562  100.000   0.998   | 0.265    96.875  100.000   0.984   | 18 hr 44 min
+0.0000100  105.00 k   71 | 0.582   87.037   88.757   0.879   0.22  | 0.290   99.500  100.000   0.998   | 0.280    96.875  100.000   0.984   | 18 hr 47 min
+0.0000100  105.20 k   71 | 0.583   87.037   88.757   0.878   0.22  | 0.294   99.562  100.000   0.998   | 0.267   100.000  100.000   1.000   | 18 hr 49 min
+0.0000100  105.40 k   71 | 0.586   86.772   88.889   0.877   0.19  | 0.291   99.312  100.000   0.997   | 0.282   100.000  100.000   1.000   | 18 hr 51 min
+change hard_ratio: 0.004
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000100  105.60 k   72 | 0.603   86.508   88.889   0.877   0.17  | 0.291   97.656  100.000   0.988   | 0.292    96.875  100.000   0.984   | 18 hr 53 min
+0.0000100  105.80 k   72 | 0.584   87.037   88.757   0.879   0.19  | 0.287   98.875  100.000   0.994   | 0.268   100.000  100.000   1.000   | 18 hr 55 min
+0.0000100  106.00 k   72 | 0.584   87.037   88.757   0.878   0.20  | 0.288   99.625  100.000   0.998   | 0.303   100.000  100.000   1.000   | 18 hr 57 min
+0.0000100  106.20 k   72 | 0.583   87.037   88.757   0.878   0.21  | 0.285   99.438  100.000   0.997   | 0.276   100.000  100.000   1.000   | 19 hr 00 min
+0.0000100  106.40 k   72 | 0.585   86.905   88.757   0.877   0.21  | 0.288   99.250  100.000   0.996   | 0.272    96.875  100.000   0.984   | 19 hr 02 min
+0.0000100  106.60 k   72 | 0.583   87.037   88.889   0.878   0.22  | 0.286   99.500  100.000   0.997   | 0.279   100.000  100.000   1.000   | 19 hr 04 min
+0.0000100  106.80 k   72 | 0.583   87.037   88.757   0.878   0.21  | 0.288   99.625  100.000   0.998   | 0.277   100.000  100.000   1.000   | 19 hr 06 min
+0.0000100  107.00 k   72 | 0.588   86.905   88.757   0.877   0.20  | 0.277   99.625  100.000   0.998   | 0.248    96.875  100.000   0.984   | 19 hr 08 min
+change hard_ratio: 0.004
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000100  107.20 k   73 | 0.584   87.037   88.757   0.878   0.22  | 0.290   99.438  100.000   0.997   | 0.295   100.000  100.000   1.000   | 19 hr 10 min
+0.0000100  107.40 k   73 | 0.585   87.037   88.757   0.878   0.22  | 0.290   99.875  100.000   0.999   | 0.288   100.000  100.000   1.000   | 19 hr 12 min
+0.0000100  107.60 k   73 | 0.585   87.037   88.889   0.878   0.21  | 0.285   99.312  100.000   0.997   | 0.290   100.000  100.000   1.000   | 19 hr 15 min
+0.0000100  107.80 k   73 | 0.585   86.905   88.757   0.877   0.22  | 0.286   99.688  100.000   0.998   | 0.283   100.000  100.000   1.000   | 19 hr 17 min
+0.0000100  108.00 k   73 | 0.585   86.905   88.757   0.878   0.21  | 0.290   99.438  100.000   0.997   | 0.273   100.000  100.000   1.000   | 19 hr 19 min
+0.0000100  108.20 k   73 | 0.584   87.037   88.757   0.878   0.20  | 0.287   99.500  100.000   0.998   | 0.273   100.000  100.000   1.000   | 19 hr 21 min
+0.0000100  108.40 k   73 | 0.586   87.037   88.757   0.878   0.20  | 0.282   99.688  100.000   0.998   | 0.288   100.000  100.000   1.000   | 19 hr 23 min
+change hard_ratio: 0.004
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000100  108.60 k   74 | 0.589   86.905   88.757   0.878   0.19  | 0.287   99.500  100.000   0.997   | 0.270   100.000  100.000   1.000   | 19 hr 26 min
+0.0000100  108.80 k   74 | 0.586   87.037   88.757   0.878   0.21  | 0.286   99.125  100.000   0.996   | 0.280   100.000  100.000   1.000   | 19 hr 28 min
+0.0000100  109.00 k   74 | 0.586   87.037   88.889   0.878   0.20  | 0.290   99.500  100.000   0.998   | 0.314   100.000  100.000   1.000   | 19 hr 30 min
+0.0000100  109.20 k   74 | 0.585   86.905   88.757   0.877   0.21  | 0.289   99.438  100.000   0.997   | 0.328   100.000  100.000   1.000   | 19 hr 32 min
+0.0000100  109.40 k   74 | 0.584   87.037   88.757   0.878   0.20  | 0.287   99.562  100.000   0.998   | 0.270   100.000  100.000   1.000   | 19 hr 34 min
+0.0000100  109.60 k   74 | 0.585   87.037   88.757   0.878   0.20  | 0.288   99.500  100.000   0.998   | 0.283   100.000  100.000   1.000   | 19 hr 36 min
+0.0000100  109.80 k   74 | 0.587   87.037   88.757   0.878   0.20  | 0.285   99.438  100.000   0.997   | 0.373    96.875  100.000   0.984   | 19 hr 38 min
+change hard_ratio: 0.004
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000100  110.00 k   75 | 0.612   86.243   88.757   0.874   0.17  | 0.279   98.958  100.000   0.995   | 0.283   100.000  100.000   1.000   | 19 hr 41 min
+0.0000100  110.20 k   75 | 0.586   87.037   88.757   0.878   0.20  | 0.283   98.375  100.000   0.992   | 0.279   100.000  100.000   1.000   | 19 hr 43 min
+0.0000100  110.40 k   75 | 0.589   86.905   88.757   0.878   0.19  | 0.282   99.625  100.000   0.998   | 0.285   100.000  100.000   1.000   | 19 hr 45 min
+0.0000100  110.60 k   75 | 0.585   87.037   88.757   0.878   0.20  | 0.288   99.438  100.000   0.997   | 0.278    96.875  100.000   0.984   | 19 hr 47 min
+0.0000100  110.80 k   75 | 0.586   87.037   88.757   0.878   0.20  | 0.286   99.250  100.000   0.996   | 0.353   100.000  100.000   1.000   | 19 hr 49 min
+0.0000100  111.00 k   75 | 0.588   87.037   88.757   0.878   0.19  | 0.286   99.562  100.000   0.998   | 0.263   100.000  100.000   1.000   | 19 hr 51 min
+0.0000100  111.20 k   75 | 0.585   86.905   88.757   0.877   0.20  | 0.286   99.062  100.000   0.995   | 0.298    96.875  100.000   0.984   | 19 hr 53 min
+0.0000100  111.40 k   75 | 0.587   87.037   88.757   0.878   0.20  | 0.283   99.375  100.000   0.997   | 0.267   100.000  100.000   1.000   | 19 hr 56 min
+change hard_ratio: 0.004
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000100  111.60 k   76 | 0.585   87.037   88.757   0.878   0.21  | 0.289   99.125  100.000   0.996   | 0.291    96.875  100.000   0.984   | 19 hr 58 min
+0.0000100  111.80 k   76 | 0.585   87.037   88.757   0.878   0.20  | 0.284   99.562  100.000   0.998   | 0.279    96.875  100.000   0.984   | 20 hr 00 min
+0.0000100  112.00 k   76 | 0.586   87.037   88.889   0.878   0.21  | 0.292   99.000   99.938   0.995   | 0.288   100.000  100.000   1.000   | 20 hr 02 min
+0.0000100  112.20 k   76 | 0.585   86.905   88.889   0.878   0.21  | 0.284   99.562  100.000   0.998   | 0.286   100.000  100.000   1.000   | 20 hr 05 min
+0.0000100  112.40 k   76 | 0.588   87.037   88.757   0.878   0.20  | 0.287   99.750  100.000   0.999   | 0.275    96.875  100.000   0.979   | 20 hr 07 min
+0.0000100  112.60 k   76 | 0.589   86.772   88.757   0.877   0.19  | 0.288   99.438  100.000   0.997   | 0.329   100.000  100.000   1.000   | 20 hr 09 min
+0.0000100  112.80 k   76 | 0.588   87.037   88.757   0.878   0.20  | 0.284   99.250  100.000   0.996   | 0.288   100.000  100.000   1.000   | 20 hr 11 min
+change hard_ratio: 0.004
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000100  113.00 k   77 | 0.587   87.037   88.757   0.878   0.20  | 0.287   99.000  100.000   0.995   | 0.312   100.000  100.000   1.000   | 20 hr 13 min
+0.0000100  113.20 k   77 | 0.586   86.905   88.757   0.877   0.21  | 0.287   99.500  100.000   0.998   | 0.283   100.000  100.000   1.000   | 20 hr 15 min
+0.0000100  113.40 k   77 | 0.587   86.905   88.757   0.878   0.20  | 0.285   99.375  100.000   0.997   | 0.265   100.000  100.000   1.000   | 20 hr 18 min
+0.0000100  113.60 k   77 | 0.589   86.905   88.889   0.878   0.22  | 0.289   99.625  100.000   0.998   | 0.305   100.000  100.000   1.000   | 20 hr 20 min
+0.0000100  113.80 k   77 | 0.591   86.905   88.757   0.878   0.19  | 0.287   99.562  100.000   0.998   | 0.274   100.000  100.000   1.000   | 20 hr 22 min
+0.0000100  114.00 k   77 | 0.587   86.905   88.757   0.877   0.21  | 0.293   99.125  100.000   0.996   | 0.287   100.000  100.000   1.000   | 20 hr 24 min
+0.0000100  114.20 k   77 | 0.586   87.037   88.757   0.878   0.21  | 0.289   99.500  100.000   0.998   | 0.276   100.000  100.000   1.000   | 20 hr 26 min
+change hard_ratio: 0.004
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000100  114.40 k   78 | 0.612   86.772   88.757   0.877   0.16  | 0.285  100.000  100.000   1.000   | 0.284   100.000  100.000   1.000   | 20 hr 28 min
+0.0000100  114.60 k   78 | 0.587   86.905   88.757   0.878   0.21  | 0.286   98.375  100.000   0.992   | 0.292    96.875  100.000   0.984   | 20 hr 30 min
+0.0000100  114.80 k   78 | 0.588   86.905   88.757   0.878   0.20  | 0.284   99.750  100.000   0.999   | 0.273   100.000  100.000   1.000   | 20 hr 33 min
+0.0000100  115.00 k   78 | 0.587   87.037   88.757   0.878   0.21  | 0.286   99.062  100.000   0.995   | 0.250    96.875  100.000   0.984   | 20 hr 35 min
+0.0000100  115.20 k   78 | 0.589   87.037   88.757   0.878   0.20  | 0.287   99.250  100.000   0.996   | 0.272   100.000  100.000   1.000   | 20 hr 37 min
+0.0000100  115.40 k   78 | 0.596   86.905   88.757   0.878   0.20  | 0.616   99.438  100.000   0.997   | 0.550   100.000  100.000   1.000   | 20 hr 39 min
+0.0000100  115.60 k   78 | 0.596   86.905   88.757   0.877   0.21  | 0.763   99.250  100.000   0.996   | 0.840   100.000  100.000   1.000   | 20 hr 41 min
+0.0000100  115.80 k   78 | 0.601   86.772   88.889   0.877   0.19  | 0.682   99.812  100.000   0.999   | 0.486   100.000  100.000   1.000   | 20 hr 43 min
+change hard_ratio: 0.004
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000100  116.00 k   79 | 0.596   86.905   88.757   0.877   0.20  | 0.686   99.188  100.000   0.996   | 0.726   100.000  100.000   1.000   | 20 hr 46 min
+0.0000100  116.20 k   79 | 0.595   86.905   88.757   0.878   0.21  | 0.709   99.438  100.000   0.997   | 0.650   100.000  100.000   1.000   | 20 hr 48 min
+0.0000100  116.40 k   79 | 0.595   87.037   88.757   0.878   0.21  | 0.715   99.312  100.000   0.997   | 0.747   100.000  100.000   1.000   | 20 hr 50 min
+0.0000100  116.60 k   79 | 0.594   87.037   88.757   0.878   0.21  | 0.738   99.500  100.000   0.998   | 0.583   100.000  100.000   1.000   | 20 hr 52 min
+0.0000100  116.80 k   79 | 0.595   86.905   88.757   0.878   0.22  | 0.758   99.562  100.000   0.998   | 0.781   100.000  100.000   1.000   | 20 hr 54 min
+0.0000100  117.00 k   79 | 0.598   86.772   88.757   0.877   0.20  | 0.757   99.250  100.000   0.996   | 0.645   100.000  100.000   1.000   | 20 hr 56 min
+0.0000100  117.20 k   79 | 0.597   86.772   88.757   0.877   0.19  | 0.714   99.438  100.000   0.997   | 0.591   100.000  100.000   1.000   | 20 hr 58 min
+change hard_ratio: 0.004
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000100  117.40 k   80 | 0.590   87.037   88.757   0.878   0.21  | 0.458   99.250  100.000   0.996   | 0.488    96.875  100.000   0.984   | 21 hr 01 min
+0.0000100  117.60 k   80 | 0.591   87.037   88.757   0.878   0.21  | 0.434   99.312  100.000   0.997   | 0.376   100.000  100.000   1.000   | 21 hr 03 min
+0.0000100  117.80 k   80 | 0.591   87.037   88.757   0.878   0.21  | 0.421   99.562  100.000   0.998   | 0.416    96.875  100.000   0.984   | 21 hr 05 min
+0.0000100  118.00 k   80 | 0.590   87.037   88.757   0.878   0.19  | 0.432   99.375  100.000   0.997   | 0.415   100.000  100.000   1.000   | 21 hr 07 min
+0.0000100  118.20 k   80 | 0.591   87.037   88.757   0.879   0.21  | 0.430   99.438  100.000   0.997   | 0.343    96.875  100.000   0.984   | 21 hr 09 min
+0.0000100  118.40 k   80 | 0.590   87.037   88.757   0.878   0.21  | 0.419   99.688  100.000   0.998   | 0.411    93.750  100.000   0.969   | 21 hr 11 min
+0.0000100  118.60 k   80 | 0.589   87.037   88.757   0.878   0.21  | 0.424   99.250  100.000   0.996   | 0.434   100.000  100.000   1.000   | 21 hr 13 min
+change hard_ratio: 0.004
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000100  118.80 k   81 | 0.605   86.640   88.757   0.877   0.16  | 0.307   98.958  100.000   0.995   | 0.310    96.875  100.000   0.984   | 21 hr 16 min
+0.0000100  119.00 k   81 | 0.589   86.905   88.757   0.878   0.19  | 0.311   98.625  100.000   0.993   | 0.283   100.000  100.000   1.000   | 21 hr 18 min
+0.0000100  119.20 k   81 | 0.588   86.905   88.757   0.877   0.20  | 0.301   99.562  100.000   0.998   | 0.299   100.000  100.000   1.000   | 21 hr 20 min
+0.0000100  119.40 k   81 | 0.588   87.037   88.757   0.878   0.19  | 0.303   99.000  100.000   0.995   | 0.316   100.000  100.000   1.000   | 21 hr 22 min
+0.0000100  119.60 k   81 | 0.589   87.037   88.757   0.878   0.19  | 0.297   99.250  100.000   0.996   | 0.284    96.875  100.000   0.984   | 21 hr 24 min
+0.0000100  119.80 k   81 | 0.592   87.037   88.757   0.878   0.21  | 0.304   99.188  100.000   0.996   | 0.312   100.000  100.000   1.000   | 21 hr 26 min
+0.0000100  120.00 k   81 | 0.591   87.037   88.757   0.878   0.19  | 0.300   99.375  100.000   0.997   | 0.287    96.875  100.000   0.984   | 21 hr 28 min
+0.0000100  120.20 k   81 | 0.597   86.772   88.757   0.877   0.19  | 0.283   99.188  100.000   0.996   | 0.293    96.875  100.000   0.984   | 21 hr 30 min
+change hard_ratio: 0.004
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000100  120.40 k   82 | 0.588   86.905   88.757   0.878   0.21  | 0.292   99.000  100.000   0.995   | 0.289   100.000  100.000   1.000   | 21 hr 33 min
+0.0000100  120.60 k   82 | 0.587   86.905   88.757   0.878   0.21  | 0.292   99.500  100.000   0.998   | 0.279   100.000  100.000   1.000   | 21 hr 35 min
+0.0000100  120.80 k   82 | 0.588   87.037   88.757   0.879   0.19  | 0.290   99.750  100.000   0.999   | 0.286   100.000  100.000   1.000   | 21 hr 37 min
+0.0000100  121.00 k   82 | 0.589   87.037   88.757   0.878   0.19  | 0.292   99.375  100.000   0.997   | 0.272   100.000  100.000   1.000   | 21 hr 39 min
+0.0000100  121.20 k   82 | 0.589   87.037   88.757   0.878   0.20  | 0.292   99.375  100.000   0.997   | 0.321   100.000  100.000   1.000   | 21 hr 41 min
+0.0000100  121.40 k   82 | 0.588   87.037   88.757   0.878   0.20  | 0.291   99.312  100.000   0.997   | 0.296   100.000  100.000   1.000   | 21 hr 43 min
+0.0000100  121.60 k   82 | 0.591   86.772   88.757   0.877   0.17  | 0.282   99.250  100.000   0.996   | 0.270   100.000  100.000   1.000   | 21 hr 45 min
+change hard_ratio: 0.004
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000100  121.80 k   83 | 0.589   87.037   88.757   0.878   0.21  | 0.281   98.750  100.000   0.994   | 0.292   100.000  100.000   1.000   | 21 hr 48 min
+0.0000100  122.00 k   83 | 0.591   86.905   88.757   0.877   0.19  | 0.284   99.438  100.000   0.997   | 0.283   100.000  100.000   1.000   | 21 hr 50 min
+0.0000100  122.20 k   83 | 0.590   87.037   88.757   0.878   0.21  | 0.282   98.938  100.000   0.995   | 0.308    96.875  100.000   0.984   | 21 hr 52 min
+0.0000100  122.40 k   83 | 0.591   86.905   88.757   0.878   0.19  | 0.287   99.562  100.000   0.998   | 0.294   100.000  100.000   1.000   | 21 hr 54 min
+0.0000100  122.60 k   83 | 0.592   87.037   88.757   0.878   0.20  | 0.286   99.375  100.000   0.997   | 0.283   100.000  100.000   1.000   | 21 hr 56 min
+0.0000100  122.80 k   83 | 0.589   87.037   88.757   0.878   0.20  | 0.286   99.625  100.000   0.998   | 0.284    96.875  100.000   0.984   | 21 hr 58 min
+0.0000100  123.00 k   83 | 0.589   87.037   88.757   0.878   0.20  | 0.288   99.250  100.000   0.996   | 0.284   100.000  100.000   1.000   | 22 hr 00 min
+change hard_ratio: 0.004
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000100  123.20 k   84 | 0.617   86.772   88.757   0.877   0.17  | 0.287   98.958  100.000   0.995   | 0.288    96.875  100.000   0.984   | 22 hr 03 min
+0.0000100  123.40 k   84 | 0.589   87.037   88.757   0.878   0.20  | 0.283   99.000  100.000   0.995   | 0.276   100.000  100.000   1.000   | 22 hr 05 min
+0.0000100  123.60 k   84 | 0.590   86.772   88.889   0.877   0.18  | 0.282   99.438  100.000   0.997   | 0.276   100.000  100.000   1.000   | 22 hr 07 min
+0.0000100  123.80 k   84 | 0.590   86.905   88.757   0.877   0.20  | 0.286   99.500  100.000   0.998   | 0.283   100.000  100.000   1.000   | 22 hr 09 min
+0.0000100  124.00 k   84 | 0.586   87.037   88.757   0.878   0.19  | 0.288   99.688  100.000   0.998   | 0.310   100.000  100.000   1.000   | 22 hr 11 min
+0.0000100  124.20 k   84 | 0.590   86.905   88.757   0.877   0.22  | 0.288   99.375  100.000   0.997   | 0.277   100.000  100.000   1.000   | 22 hr 13 min
+0.0000100  124.40 k   84 | 0.590   87.037   88.757   0.878   0.19  | 0.283   99.375  100.000   0.997   | 0.283   100.000  100.000   1.000   | 22 hr 16 min
+0.0000100  124.60 k   84 | 0.605   86.376   88.757   0.875   0.17  | 0.276   99.312  100.000   0.996   | 0.315    96.875  100.000   0.984   | 22 hr 18 min
+change hard_ratio: 0.004
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000100  124.80 k   85 | 0.589   87.037   88.757   0.878   0.20  | 0.286   99.438  100.000   0.997   | 0.272   100.000  100.000   1.000   | 22 hr 20 min
+0.0000100  125.00 k   85 | 0.590   87.037   88.757   0.878   0.21  | 0.295   99.188   99.938   0.996   | 0.284   100.000  100.000   1.000   | 22 hr 22 min
+0.0000100  125.20 k   85 | 0.590   86.905   88.757   0.877   0.20  | 0.283   99.625  100.000   0.998   | 0.282   100.000  100.000   1.000   | 22 hr 25 min
+0.0000100  125.40 k   85 | 0.589   86.905   88.757   0.878   0.20  | 0.285   99.312  100.000   0.997   | 0.284    96.875  100.000   0.984   | 22 hr 27 min
+0.0000100  125.60 k   85 | 0.588   86.905   88.757   0.878   0.20  | 0.289   99.500  100.000   0.998   | 0.288   100.000  100.000   1.000   | 22 hr 29 min
+0.0000100  125.80 k   85 | 0.588   87.037   88.757   0.878   0.19  | 0.285   99.438  100.000   0.997   | 0.281   100.000  100.000   1.000   | 22 hr 31 min
+0.0000100  126.00 k   85 | 0.599   86.772   88.757   0.877   0.18  | 0.280   99.562  100.000   0.998   | 0.282    96.875  100.000   0.984   | 22 hr 33 min
+change hard_ratio: 0.004
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000100  126.20 k   86 | 0.592   86.905   88.757   0.877   0.20  | 0.281   99.250  100.000   0.996   | 0.271   100.000  100.000   1.000   | 22 hr 35 min
+0.0000100  126.40 k   86 | 0.596   87.037   88.757   0.878   0.19  | 0.283   99.062  100.000   0.995   | 0.297    96.875  100.000   0.984   | 22 hr 37 min
+0.0000100  126.60 k   86 | 0.589   87.037   88.757   0.878   0.21  | 0.282   99.312  100.000   0.996   | 0.276   100.000  100.000   1.000   | 22 hr 40 min
+0.0000100  126.80 k   86 | 0.591   86.905   88.757   0.877   0.19  | 0.284   99.188  100.000   0.996   | 0.291    96.875  100.000   0.984   | 22 hr 42 min
+0.0000100  127.00 k   86 | 0.589   87.037   88.757   0.878   0.20  | 0.285   99.438  100.000   0.997   | 0.259    93.750  100.000   0.969   | 22 hr 44 min
+0.0000100  127.20 k   86 | 0.589   86.905   88.757   0.877   0.19  | 0.284   99.625  100.000   0.998   | 0.278   100.000  100.000   1.000   | 22 hr 46 min
+0.0000100  127.40 k   86 | 0.591   86.905   88.757   0.877   0.20  | 0.287   99.125  100.000   0.996   | 0.279   100.000  100.000   1.000   | 22 hr 48 min
+change hard_ratio: 0.004
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000100  127.60 k   87 | 0.616   86.640   88.757   0.876   0.17  | 0.279  100.000  100.000   1.000   | 0.288   100.000  100.000   1.000   | 22 hr 51 min
+0.0000100  127.80 k   87 | 0.591   86.905   88.757   0.877   0.20  | 0.282   99.312  100.000   0.996   | 0.303   100.000  100.000   1.000   | 22 hr 53 min
+0.0000100  128.00 k   87 | 0.593   86.905   88.757   0.878   0.20  | 0.277   99.000  100.000   0.995   | 0.269   100.000  100.000   1.000   | 22 hr 55 min
+0.0000100  128.20 k   87 | 0.590   86.905   88.757   0.878   0.20  | 0.282   99.438  100.000   0.997   | 0.294   100.000  100.000   1.000   | 22 hr 57 min
+0.0000100  128.40 k   87 | 0.592   86.905   88.757   0.878   0.20  | 0.288   99.188  100.000   0.996   | 0.323   100.000  100.000   1.000   | 22 hr 59 min
+0.0000100  128.60 k   87 | 0.589   87.037   88.757   0.878   0.21  | 0.284   99.125  100.000   0.996   | 0.266   100.000  100.000   1.000   | 23 hr 01 min
+0.0000100  128.80 k   87 | 0.590   86.905   88.757   0.878   0.20  | 0.284   99.438  100.000   0.997   | 0.318   100.000  100.000   1.000   | 23 hr 03 min
+0.0000100  129.00 k   87 | 0.595   86.772   88.757   0.877   0.18  | 0.276   99.625  100.000   0.998   | 0.278   100.000  100.000   1.000   | 23 hr 05 min
+change hard_ratio: 0.004
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000100  129.20 k   88 | 0.591   86.772   88.757   0.877   0.18  | 0.284   98.375  100.000   0.992   | 0.276   100.000  100.000   1.000   | 23 hr 08 min
+0.0000100  129.40 k   88 | 0.596   86.772   88.757   0.877   0.18  | 0.285   99.438  100.000   0.997   | 0.282   100.000  100.000   1.000   | 23 hr 10 min
+0.0000100  129.60 k   88 | 0.592   87.037   88.757   0.879   0.21  | 0.281   99.250  100.000   0.996   | 0.286   100.000  100.000   1.000   | 23 hr 12 min
+0.0000100  129.80 k   88 | 0.595   86.772   88.757   0.877   0.18  | 0.281   99.562  100.000   0.998   | 0.267   100.000  100.000   1.000   | 23 hr 14 min
+0.0000100  130.00 k   88 | 0.589   86.905   88.757   0.878   0.21  | 0.285   99.375  100.000   0.997   | 0.281    96.875  100.000   0.984   | 23 hr 16 min
+0.0000100  130.20 k   88 | 0.592   86.905   88.757   0.877   0.20  | 0.279   99.562  100.000   0.998   | 0.275   100.000  100.000   1.000   | 23 hr 18 min
+0.0000100  130.40 k   88 | 0.595   86.772   88.757   0.877   0.18  | 0.278   99.562  100.000   0.998   | 0.247   100.000  100.000   1.000   | 23 hr 20 min
+change hard_ratio: 0.004
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000100  130.60 k   89 | 0.593   86.772   88.757   0.877   0.18  | 0.280   99.188  100.000   0.996   | 0.274   100.000  100.000   1.000   | 23 hr 23 min
+0.0000100  130.80 k   89 | 0.593   86.905   88.757   0.877   0.20  | 0.283   99.062  100.000   0.995   | 0.275   100.000  100.000   1.000   | 23 hr 25 min
+0.0000100  131.00 k   89 | 0.596   87.037   88.757   0.878   0.20  | 0.279   99.688  100.000   0.998   | 0.266   100.000  100.000   1.000   | 23 hr 27 min
+0.0000100  131.20 k   89 | 0.600   86.508   88.757   0.876   0.17  | 0.283   99.562  100.000   0.998   | 0.268    96.875  100.000   0.984   | 23 hr 29 min
+0.0000100  131.40 k   89 | 0.594   86.772   88.757   0.877   0.18  | 0.283   99.000  100.000   0.995   | 0.290   100.000  100.000   1.000   | 23 hr 31 min
+0.0000100  131.60 k   89 | 0.596   86.905   88.757   0.878   0.19  | 0.283   99.000  100.000   0.995   | 0.281   100.000  100.000   1.000   | 23 hr 33 min
+0.0000100  131.80 k   89 | 0.593   86.905   88.757   0.878   0.19  | 0.279   99.312  100.000   0.996   | 0.342   100.000  100.000   1.000   | 23 hr 36 min
+change hard_ratio: 0.004
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000100  132.00 k   90 | 0.619   86.508   88.757   0.876   0.16  | 0.284   99.219  100.000   0.996   | 0.290    96.875  100.000   0.984   | 23 hr 38 min
+0.0000100  132.20 k   90 | 0.594   86.905   88.757   0.877   0.20  | 0.280   98.750  100.000   0.994   | 0.276   100.000  100.000   1.000   | 23 hr 40 min
+0.0000100  132.40 k   90 | 0.596   87.037   88.757   0.878   0.21  | 0.282   99.438  100.000   0.997   | 0.286   100.000  100.000   1.000   | 23 hr 42 min
+0.0000100  132.60 k   90 | 0.595   86.905   88.757   0.877   0.20  | 0.281   99.438  100.000   0.997   | 0.264   100.000  100.000   1.000   | 23 hr 45 min
+0.0000100  132.80 k   90 | 0.593   87.037   88.757   0.879   0.21  | 0.282   99.625  100.000   0.998   | 0.321   100.000  100.000   1.000   | 23 hr 47 min
+0.0000100  133.00 k   90 | 0.599   86.905   88.757   0.878   0.17  | 0.282   99.625  100.000   0.998   | 0.277    96.875  100.000   0.984   | 23 hr 49 min
+0.0000100  133.20 k   90 | 0.595   86.905   88.757   0.878   0.19  | 0.279   99.000  100.000   0.995   | 0.305   100.000  100.000   1.000   | 23 hr 51 min
+0.0000100  133.40 k   90 | 0.601   86.905   88.757   0.878   0.17  | 0.269   99.250  100.000   0.996   | 0.277   100.000  100.000   1.000   | 23 hr 53 min
+change hard_ratio: 0.004
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000100  133.60 k   91 | 0.594   87.037   88.757   0.878   0.21  | 0.279   98.938  100.000   0.995   | 0.263   100.000  100.000   1.000   | 23 hr 55 min
+0.0000100  133.80 k   91 | 0.595   86.905   88.757   0.877   0.19  | 0.279   99.375  100.000   0.997   | 0.283   100.000  100.000   1.000   | 23 hr 57 min
+0.0000100  134.00 k   91 | 0.595   86.905   88.757   0.877   0.20  | 0.281   99.375  100.000   0.997   | 0.262   100.000  100.000   1.000   | 24 hr 00 min
+0.0000100  134.20 k   91 | 0.598   86.905   88.757   0.878   0.17  | 0.286   99.562  100.000   0.998   | 0.276    96.875  100.000   0.984   | 24 hr 02 min
+0.0000100  134.40 k   91 | 0.597   86.772   88.757   0.877   0.19  | 0.482   99.312  100.000   0.997   | 0.623   100.000  100.000   1.000   | 24 hr 04 min
+0.0000100  134.60 k   91 | 0.601   86.772   88.757   0.877   0.20  | 0.760   99.500  100.000   0.998   | 0.795   100.000  100.000   1.000   | 24 hr 06 min
+0.0000100  134.80 k   91 | 0.602   86.905   88.757   0.878   0.20  | 0.776   99.125  100.000   0.996   | 0.614   100.000  100.000   1.000   | 24 hr 08 min
+change hard_ratio: 0.004
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000100  135.00 k   92 | 0.597   86.905   88.757   0.878   0.22  | 0.741   99.188  100.000   0.996   | 0.783   100.000  100.000   1.000   | 24 hr 10 min
+0.0000100  135.20 k   92 | 0.594   86.905   88.757   0.878   0.22  | 0.762   99.500  100.000   0.998   | 0.636   100.000  100.000   1.000   | 24 hr 12 min
+0.0000100  135.40 k   92 | 0.595   86.905   88.757   0.878   0.22  | 0.728   99.250  100.000   0.996   | 0.768   100.000  100.000   1.000   | 24 hr 14 min
+0.0000100  135.60 k   92 | 0.594   86.905   88.757   0.877   0.22  | 0.763   99.625  100.000   0.998   | 0.948   100.000  100.000   1.000   | 24 hr 16 min
+0.0000100  135.80 k   92 | 0.593   86.905   88.757   0.877   0.21  | 0.831   99.500  100.000   0.997   | 0.800   100.000  100.000   1.000   | 24 hr 18 min
+0.0000100  136.00 k   92 | 0.593   86.905   88.757   0.877   0.22  | 0.804   99.312  100.000   0.997   | 0.949   100.000  100.000   1.000   | 24 hr 21 min
+0.0000100  136.20 k   92 | 0.593   86.905   88.757   0.877   0.21  | 0.738   99.438  100.000   0.997   | 0.807    96.875  100.000   0.984   | 24 hr 23 min
+change hard_ratio: 0.004
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000100  136.40 k   93 | 0.603   86.640   88.757   0.877   0.18  | 0.438   98.438  100.000   0.992   | 0.415   100.000  100.000   1.000   | 24 hr 25 min
+0.0000100  136.60 k   93 | 0.593   86.905   88.757   0.877   0.21  | 0.411   99.250  100.000   0.996   | 0.490   100.000  100.000   1.000   | 24 hr 27 min
+0.0000100  136.80 k   93 | 0.591   87.037   88.757   0.878   0.21  | 0.377   99.625  100.000   0.998   | 0.362    96.875  100.000   0.984   | 24 hr 29 min
+0.0000100  137.00 k   93 | 0.593   87.037   88.757   0.878   0.20  | 0.404   99.375  100.000   0.997   | 0.364   100.000  100.000   1.000   | 24 hr 32 min
+0.0000100  137.20 k   93 | 0.592   86.905   88.757   0.877   0.21  | 0.377   99.250  100.000   0.996   | 0.352   100.000  100.000   1.000   | 24 hr 34 min
+0.0000100  137.40 k   93 | 0.593   86.905   88.757   0.878   0.20  | 0.376   99.625  100.000   0.998   | 0.431   100.000  100.000   1.000   | 24 hr 36 min
+0.0000100  137.60 k   93 | 0.598   86.640   88.757   0.876   0.17  | 0.395   99.312  100.000   0.997   | 0.447   100.000  100.000   1.000   | 24 hr 38 min
+0.0000100  137.80 k   93 | 0.598   86.905   88.757   0.877   0.19  | 0.349   99.500  100.000   0.998   | 0.270   100.000  100.000   1.000   | 24 hr 40 min
+change hard_ratio: 0.004
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000100  138.00 k   94 | 0.592   86.905   88.757   0.877   0.18  | 0.291   99.125  100.000   0.996   | 0.257   100.000  100.000   1.000   | 24 hr 42 min
+0.0000100  138.20 k   94 | 0.591   86.905   88.757   0.878   0.17  | 0.294   99.312  100.000   0.996   | 0.282   100.000  100.000   1.000   | 24 hr 45 min
+0.0000100  138.40 k   94 | 0.592   86.905   88.757   0.878   0.18  | 0.293   99.062  100.000   0.995   | 0.296    96.875  100.000   0.984   | 24 hr 47 min
+0.0000100  138.60 k   94 | 0.592   86.905   88.757   0.877   0.21  | 0.292   99.375  100.000   0.997   | 0.287   100.000  100.000   1.000   | 24 hr 49 min
+0.0000100  138.80 k   94 | 0.594   86.905   88.757   0.877   0.18  | 0.296   99.312  100.000   0.996   | 0.293   100.000  100.000   1.000   | 24 hr 51 min
+0.0000100  139.00 k   94 | 0.600   86.772   88.757   0.877   0.19  | 0.290   99.500  100.000   0.998   | 0.255   100.000  100.000   1.000   | 24 hr 53 min
+0.0000100  139.20 k   94 | 0.597   86.905   88.757   0.877   0.21  | 0.279   99.500  100.000   0.998   | 0.272   100.000  100.000   1.000   | 24 hr 55 min
+change hard_ratio: 0.004
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000100  139.40 k   95 | 0.591   86.905   88.757   0.878   0.20  | 0.281   98.812  100.000   0.994   | 0.282   100.000  100.000   1.000   | 24 hr 58 min
+0.0000100  139.60 k   95 | 0.595   86.772   88.757   0.878   0.18  | 0.279   99.500  100.000   0.997   | 0.288   100.000  100.000   1.000   | 25 hr 00 min
+0.0000100  139.80 k   95 | 0.593   86.905   88.757   0.877   0.21  | 0.286   99.250  100.000   0.996   | 0.288   100.000  100.000   1.000   | 25 hr 02 min
+0.0000100  140.00 k   95 | 0.592   86.905   88.757   0.877   0.20  | 0.284   99.500  100.000   0.998   | 0.269    96.875  100.000   0.984   | 25 hr 04 min
+0.0000100  140.20 k   95 | 0.595   86.905   88.757   0.878   0.20  | 0.283   99.375  100.000   0.997   | 0.288   100.000  100.000   1.000   | 25 hr 06 min
+0.0000100  140.40 k   95 | 0.594   86.905   88.757   0.878   0.20  | 0.287   99.438  100.000   0.997   | 0.282   100.000  100.000   1.000   | 25 hr 08 min
+0.0000100  140.60 k   95 | 0.594   87.037   88.757   0.878   0.20  | 0.281   99.625  100.000   0.998   | 0.270   100.000  100.000   1.000   | 25 hr 10 min
+change hard_ratio: 0.004
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000100  140.80 k   96 | 0.625   86.111   88.757   0.874   0.18  | 0.280   99.479  100.000   0.997   | 0.279   100.000  100.000   1.000   | 25 hr 13 min
+0.0000100  141.00 k   96 | 0.592   86.905   88.757   0.878   0.21  | 0.280   99.188  100.000   0.996   | 0.305   100.000  100.000   1.000   | 25 hr 15 min
+0.0000100  141.20 k   96 | 0.597   86.905   88.757   0.878   0.19  | 0.278   99.312  100.000   0.997   | 0.289    96.875  100.000   0.984   | 25 hr 17 min
+0.0000100  141.40 k   96 | 0.596   86.905   88.757   0.878   0.18  | 0.279   99.062  100.000   0.995   | 0.283   100.000  100.000   1.000   | 25 hr 19 min
+0.0000100  141.60 k   96 | 0.602   86.905   88.757   0.878   0.17  | 0.280   99.562  100.000   0.998   | 0.284   100.000  100.000   1.000   | 25 hr 21 min
+0.0000100  141.80 k   96 | 0.598   86.905   88.757   0.878   0.18  | 0.279   99.188  100.000   0.996   | 0.273   100.000  100.000   1.000   | 25 hr 23 min
+0.0000100  142.00 k   96 | 0.597   86.905   88.757   0.877   0.20  | 0.281   99.500  100.000   0.998   | 0.314   100.000  100.000   1.000   | 25 hr 25 min
+0.0000100  142.20 k   96 | 0.604   86.905   88.757   0.878   0.17  | 0.269   99.250  100.000   0.996   | 0.291   100.000  100.000   1.000   | 25 hr 27 min
+change hard_ratio: 0.004
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000100  142.40 k   97 | 0.597   86.905   88.757   0.878   0.20  | 0.280   99.562  100.000   0.998   | 0.261   100.000  100.000   1.000   | 25 hr 30 min
+0.0000100  142.60 k   97 | 0.598   86.772   88.757   0.877   0.17  | 0.272   99.500  100.000   0.998   | 0.287   100.000  100.000   1.000   | 25 hr 32 min
+0.0000100  142.80 k   97 | 0.601   86.905   88.757   0.878   0.18  | 0.279   99.312  100.000   0.997   | 0.268   100.000  100.000   1.000   | 25 hr 34 min
+0.0000100  143.00 k   97 | 0.597   86.905   88.757   0.877   0.18  | 0.277   99.312  100.000   0.997   | 0.262   100.000  100.000   1.000   | 25 hr 36 min
+0.0000100  143.20 k   97 | 0.596   86.905   88.757   0.877   0.18  | 0.280   99.438  100.000   0.997   | 0.270   100.000  100.000   1.000   | 25 hr 38 min
+0.0000100  143.40 k   97 | 0.603   86.640   88.757   0.877   0.18  | 0.276   99.625  100.000   0.998   | 0.296   100.000  100.000   1.000   | 25 hr 40 min
+0.0000100  143.60 k   97 | 0.604   86.772   88.757   0.877   0.17  | 0.275   99.188  100.000   0.996   | 0.252    96.875  100.000   0.984   | 25 hr 42 min
+change hard_ratio: 0.004
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000100  143.80 k   98 | 0.599   86.905   88.757   0.877   0.19  | 0.277   99.375  100.000   0.997   | 0.271   100.000  100.000   1.000   | 25 hr 45 min
+0.0000100  144.00 k   98 | 0.596   87.037   88.757   0.878   0.19  | 0.281   99.188  100.000   0.996   | 0.306   100.000  100.000   1.000   | 25 hr 47 min
+0.0000100  144.20 k   98 | 0.607   86.640   88.757   0.877   0.18  | 0.275   99.312  100.000   0.996   | 0.246   100.000  100.000   1.000   | 25 hr 49 min
+0.0000100  144.40 k   98 | 0.603   87.037   88.757   0.878   0.19  | 0.276   99.125  100.000   0.996   | 0.287   100.000  100.000   1.000   | 25 hr 51 min
+0.0000100  144.60 k   98 | 0.600   86.905   88.757   0.877   0.18  | 0.279   99.500  100.000   0.998   | 0.264    93.750  100.000   0.969   | 25 hr 54 min
+0.0000100  144.80 k   98 | 0.595   86.905   88.757   0.877   0.20  | 0.277   99.250  100.000   0.996   | 0.271   100.000  100.000   1.000   | 25 hr 56 min
+0.0000100  145.00 k   98 | 0.597   86.905   88.757   0.878   0.20  | 0.279   99.188  100.000   0.996   | 0.266   100.000  100.000   1.000   | 25 hr 58 min
+change hard_ratio: 0.004
+  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5    |  batch_loss  Top@1   Top@5   MAP@5   |     Time
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+0.0000100  145.20 k   99 | 0.628   86.772   88.757   0.877   0.16  | 0.272   99.479  100.000   0.997   | 0.274   100.000  100.000   1.000   | 26 hr 00 min
+0.0000100  145.40 k   99 | 0.596   86.905   88.757   0.878   0.22  | 0.276   98.875  100.000   0.994   | 0.265   100.000  100.000   1.000   | 26 hr 02 min
+0.0000100  145.60 k   99 | 0.604   86.640   88.757   0.877   0.17  | 0.275   99.562  100.000   0.998   | 0.255    96.875  100.000   0.984   | 26 hr 04 min
+0.0000100  145.80 k   99 | 0.604   86.905   88.757   0.878   0.17  | 0.279   99.375  100.000   0.997   | 0.298   100.000  100.000   1.000   | 26 hr 06 min
+0.0000100  146.00 k   99 | 0.596   87.037   88.757   0.878   0.21  | 0.276   99.250  100.000   0.996   | 0.284   100.000  100.000   1.000   | 26 hr 09 min
+0.0000100  146.20 k   99 | 0.598   86.905   88.757   0.877   0.19  | 0.275   99.562  100.000   0.998   | 0.270   100.000  100.000   1.000   | 26 hr 11 min
+0.0000100  146.40 k   99 | 0.602   86.772   88.757   0.877   0.17  | 0.280   99.375  100.000   0.997   | 0.263   100.000  100.000   1.000   | 26 hr 13 min
+0.0000100  146.60 k   99 | 0.616   86.508   88.757   0.876   0.17  | 0.264   99.312  100.000   0.997   | 0.270    96.875  100.000   0.984   | 26 hr 15 min
+
+Training end time: 2020-08-15 15:59:04
