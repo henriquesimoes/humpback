@@ -1,4 +1,4 @@
-SWA start time: 2020-08-05 18:18:24
+SWA start time: 2020-08-18 12:00:06
 Configuration:
 { 'data': { 'dir': 'data',
             'name': 'IdentificationDataset',
@@ -14,12 +14,12 @@ Configuration:
   'optimizer': { 'name': 'adam',
                  'params': {'lr': 0.0005, 'weight_decay': 0.0005}},
   'scheduler': { 'name': 'multi_step',
-                 'params': {'gamma': 0.5, 'milestones': [30, 40]}},
+                 'params': {'gamma': 0.5, 'milestones': [90, 120]}},
   'task': {'name': 'Identifier', 'params': {}},
   'train': { 'batch_size': 32,
              'dir': './train_logs/test1',
              'log_step': 200,
-             'num_epochs': 100,
+             'num_epochs': 300,
              'num_grad_acc': None,
              'save_checkpoint_epoch': 2},
   'transform': { 'name': 'align_transform',
@@ -36,5 +36,5 @@ Averaging the following checkpoints:
 ./train_logs/test1/checkpoint/best.score_mavg.0007.pth
 ./train_logs/test1/checkpoint/best.score_mavg.0008.pth
 ./train_logs/test1/checkpoint/best.score_mavg.0009.pth
-Averaged 10 checkpoints, ending on 98th epoch
-SWA end time: 2020-08-05 18:22:34
+Averaged 10 checkpoints, ending on 184th epoch
+SWA end time: 2020-08-18 12:05:11

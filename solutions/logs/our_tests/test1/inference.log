@@ -1,4 +1,4 @@
-Inference start time: 2020-08-06 12:27:25
+Inference start time: 2020-08-18 12:05:30
 from checkpoint: ./train_logs/test1/checkpoint/swa.pth last epoch:-1
 Configuration:
 { 'data': { 'dir': 'data',
@@ -15,46 +15,46 @@ Configuration:
   'optimizer': { 'name': 'adam',
                  'params': {'lr': 0.0005, 'weight_decay': 0.0005}},
   'scheduler': { 'name': 'multi_step',
-                 'params': {'gamma': 0.5, 'milestones': [30, 40]}},
+                 'params': {'gamma': 0.5, 'milestones': [90, 120]}},
   'task': {'name': 'Identifier', 'params': {}},
   'train': { 'batch_size': 32,
              'dir': './train_logs/test1',
              'log_step': 200,
-             'num_epochs': 100,
+             'num_epochs': 300,
              'num_grad_acc': None,
              'save_checkpoint_epoch': 2},
   'transform': { 'name': 'align_transform',
                  'num_preprocessor': 4,
                  'params': {'align': True, 'align_p': 0.5, 'size': 320}}}
 Inferencing known whales to compose the features...
-non-aligned: 0 h 1 min 29 s 543 ms
-aligned: 0 h 1 min 39 s 984 ms
+non-aligned: 0 h 1 min 59 s 159 ms
+aligned: 0 h 2 min 11 s 226 ms
 
-Computing feature centers... 0 h 0 min 0 s 705 ms
+Computing feature centers... 0 h 0 min 1 s 414 ms
 
 Inferencing flipped known whales to compose the features...
-non-aligned: 0 h 1 min 31 s 578 ms
-aligned: 0 h 1 min 43 s 613 ms
+non-aligned: 0 h 2 min 2 s 894 ms
+aligned: 0 h 2 min 14 s 560 ms
 
-Computing flipped feature centers... 0 h 0 min 0 s 734 ms
-
-Inferencing test example features...
-non-aligned: 0 h 0 min 32 s 241 ms
-aligned: 0 h 0 min 35 s 325 ms
-
-Computing feature centers... 0 h 0 min 0 s 231 ms
+Computing flipped feature centers... 0 h 0 min 1 s 391 ms
 
 Inferencing test example features...
-non-aligned: 0 h 0 min 30 s 990 ms
-aligned: 0 h 0 min 36 s 24 ms
+non-aligned: 0 h 0 min 42 s 831 ms
+aligned: 0 h 0 min 47 s 384 ms
 
-Computing flipped feature centers... 0 h 0 min 0 s 257 ms
+Computing feature centers... 0 h 0 min 0 s 309 ms
+
+Inferencing test example features...
+non-aligned: 0 h 0 min 45 s 207 ms
+aligned: 0 h 0 min 49 s 940 ms
+
+Computing flipped feature centers... 0 h 0 min 0 s 334 ms
 
 Calculating the test-vs-classes distance matrix... 0 h 0 min 0 s 152 ms
 
-Calculating the test-vs-classes distance matrix for flipped images... 0 h 0 min 0 s 180 ms
-Averaging it with the non-flipped-images matrix... 0 h 0 min 0 s 229 ms
+Calculating the test-vs-classes distance matrix for flipped images... 0 h 0 min 0 s 162 ms
+Averaging it with the non-flipped-images matrix... 0 h 0 min 0 s 244 ms
 
-Writing result matrix on similarities/test1.csv... 0 h 0 min 34 s 88 ms
+Writing result matrix on similarities/test1.csv... 0 h 1 min 7 s 891 ms
 
-Inference end time: 2020-08-06 12:36:41
+Inference end time: 2020-08-18 12:18:16
