@@ -35,6 +35,6 @@ def precisionk(actual, predicted, topk=(1, 5)):
   res = []
   for k in topk:
     correct_k = correct[:k].any(dim=0).view(-1).float().sum()
-    res.append(correct_k * 1.0 / batch_size)
+    res.append((correct_k * 1.0 / batch_size).item())
 
   return res
