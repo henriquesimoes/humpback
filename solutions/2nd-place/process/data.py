@@ -1,16 +1,26 @@
+import os
+import random
+
+import cv2
+import torch
+import numpy as np
+from torch.utils.data.dataset import Dataset
+from imgaug import augmenters as iaa
+
 from process.data_helper import *
 
-TRAIN_DF  = []
-TEST_DF   = []
+TRAIN_DF = []
+TEST_DF = []
+
 
 class WhaleDataset(Dataset):
-    def __init__(self, mode, test_index='<NIL>', image_size=(128,256),
-                 augment = None,
-                 is_pseudo = False,
-                 is_flip = False):
+    def __init__(self, mode, test_index='<NIL>', image_size=(128, 256),
+                 augment=None,
+                 is_pseudo=False,
+                 is_flip=False):
 
         super(WhaleDataset, self).__init__()
-        self.mode       = mode
+        self.mode = mode
         self.augment = augment
         self.is_pseudo = is_pseudo
         self.is_flip = is_flip
@@ -38,13 +48,13 @@ class WhaleDataset(Dataset):
 
         if self.mode == 'train' or self.mode == 'train_list':
             self.train_list = load_train_list(train_image_list_path=f'{LIST_DIR}/test{self.fold_index}.train.txt')
-            val_list =  read_txt(f'{LIST_DIR}/test{self.fold_index}.val.txt')
+            val_list = read_txt(f'{LIST_DIR}/test{self.fold_index}.val.txt')
             print(f'{LIST_DIR}/test{self.fold_index}.val.txt')
-            val_set = set([tmp for tmp,_ in val_list])
+            val_set = set([tmp for tmp, _ in val_list])
             self.train_list = [tmp for tmp in self.train_list if tmp[0] not in val_set]
             self.train_list += self.pseudo_list
             self.train_dict, self.id_list = image_list2dict(self.train_list)
-            self.num_data = len(self.train_list)*2
+            self.num_data = len(self.train_list) * 2
             print('set dataset mode: train')
 
         elif self.mode == 'val':
@@ -66,7 +76,6 @@ class WhaleDataset(Dataset):
             print('set dataset mode: test')
 
         print('data num: ' + str(self.num_data))
-
 
     def __getitem__(self, index):
         if self.fold_index is None:
@@ -96,15 +105,15 @@ class WhaleDataset(Dataset):
             image_tmp, label = self.train_list[image_index]
 
             if label == -1:
-                return None,label,None
+                return None, label, None
 
             if index >= len(self.train_list):
                 label += self.class_num
 
-            return None,label,None
+            return None, label, None
 
         if self.mode == 'val':
-            image_tmp,label = self.val_list[index]
+            image_tmp, label = self.val_list[index]
             image_path = os.path.join(self.train_image_path, image_tmp)
 
             if not os.path.exists(image_path):
@@ -113,7 +122,6 @@ class WhaleDataset(Dataset):
             image = cv2.imread(image_path, 1)
             image = get_cropped_img(image, self.bbox_dict[os.path.split(image_path)[1]], is_mask=False)
 
-
         if self.mode == 'test':
             image_path = os.path.join(self.test_image_path, self.test_list[index])
             image = cv2.imread(image_path, 1)
@@ -121,7 +129,7 @@ class WhaleDataset(Dataset):
 
             image_id = self.test_list[index]
             image = cv2.resize(image, (self.image_size[1], self.image_size[0]))
-            image = aug_image(image, is_infer=True,augment=self.augment)
+            image = aug_image(image, is_infer=True, augment=self.augment)
 
             image = np.transpose(image, (2, 0, 1))
             image = image.astype(np.float32)
@@ -134,7 +142,7 @@ class WhaleDataset(Dataset):
             image = cv2.imread(os.path.join(self.train_image_path, self.test_list[index]), 1)
             image_id = self.test_list[index]
             image = cv2.resize(image, (self.image_size[1], self.image_size[0]))
-            image = aug_image(image, is_infer=True,augment=self.augment)
+            image = aug_image(image, is_infer=True, augment=self.augment)
 
             image = np.transpose(image, (2, 0, 1))
             image = image.astype(np.float32)
@@ -145,7 +153,7 @@ class WhaleDataset(Dataset):
         image = cv2.resize(image, (self.image_size[1], self.image_size[0]))
 
         if self.mode == 'train':
-            if random.randint(0,1) == 0:
+            if random.randint(0, 1) == 0:
                 image = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
                 image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
 
@@ -165,7 +173,7 @@ class WhaleDataset(Dataset):
                 label += self.class_num
 
         elif self.mode == 'val':
-            image = aug_image(image, is_infer=True,augment=self.augment)
+            image = aug_image(image, is_infer=True, augment=self.augment)
 
             if self.is_flip:
                 seq = iaa.Sequential([iaa.Fliplr(1.0)])
@@ -189,10 +197,10 @@ class WhaleDataset(Dataset):
     def __len__(self):
         return self.num_data
 
-# check #################################################################
+
 def run_check_train_data():
-    dataset = WhaleDataset(mode = 'train',
-                           image_size=(256,768),
+    dataset = WhaleDataset(mode='train',
+                           image_size=(256, 768),
                            fold_index=0,
                            is_pseudo=False,
                            augment=[0])
@@ -212,7 +220,7 @@ def run_check_train_data():
         if c == 100:
             break
 
-# main #################################################################
+
 if __name__ == '__main__':
-    print( '%s: calling main function ... ' % os.path.basename(__file__))
+    print('%s: calling main function ... ' % os.path.basename(__file__))
     run_check_train_data()

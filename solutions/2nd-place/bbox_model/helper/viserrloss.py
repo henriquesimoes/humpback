@@ -1,8 +1,7 @@
 import torch
-from torch import nn
 import torch.nn.functional as F
-from torch.autograd import Variable
-import numpy as np
+from torch import nn
+
 
 class VisErrorLoss(nn.Module):
     def __init__(self):
@@ -47,7 +46,7 @@ class VisErrorLoss(nn.Module):
         hm_preds = hm_preds.view(b, k, -1)
         vismap = vismap.view(b, k, 1).repeat(1, 1, h * w)
         ids = vismap == 1  # variable with requires_grad=False
-        diff = (hm_targets - hm_preds)**2
+        diff = (hm_targets - hm_preds) ** 2
         total_loss = (diff * ids.float()).sum(2).sum(0) / (ids.float().sum(2).sum(0) + epsilon)
         if ohem < 1:
             k = int(total_loss.size(0) * ohem)
@@ -63,5 +62,4 @@ class VisErrorLoss(nn.Module):
         '''
         loss1 = self.compute_l1_weighted_loss(hm_targets, hm_preds1, vismap)
         loss2 = self.compute_l1_weighted_loss(hm_targets, hm_preds2, vismap, ohem=0.5)
-        return loss1+loss2, loss1, loss2
-
+        return loss1 + loss2, loss1, loss2

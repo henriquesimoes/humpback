@@ -1,16 +1,16 @@
-from include import *
 import torch
 import torch.nn as nn
-import numpy as np
-from torch.autograd import Variable
+
+from include import *
+
 
 def l2_norm(input, axis=1):
-    norm = torch.norm(input,2, axis, True)
+    norm = torch.norm(input, 2, axis, True)
     output = torch.div(input, norm)
     return output
 
-def euclidean_dist(x, y):
 
+def euclidean_dist(x, y):
     m, n = x.size(0), y.size(0)
     xx = torch.pow(x, 2).sum(1, keepdim=True).expand(m, n)
     yy = torch.pow(y, 2).sum(1, keepdim=True).expand(n, m).t()
@@ -19,8 +19,8 @@ def euclidean_dist(x, y):
     dist = dist.clamp(min=1e-12).sqrt()  # for numerical stability
     return dist
 
-def hard_example_mining(dist_mat, labels, return_inds=False):
 
+def hard_example_mining(dist_mat, labels, return_inds=False):
     assert len(dist_mat.size()) == 2
     assert dist_mat.size(0) == dist_mat.size(1)
     N = dist_mat.size(0)
@@ -58,6 +58,7 @@ def hard_example_mining(dist_mat, labels, return_inds=False):
 
     return dist_ap, dist_an
 
+
 class TripletLoss(object):
     """Modified from Tong Xiao's open-reid (https://github.com/Cysu/open-reid).
     Related Triplet Loss theory can be found in paper 'In Defense of the Triplet
@@ -73,7 +74,6 @@ class TripletLoss(object):
 
     def __call__(self, global_feat, labels):
 
-
         global_feat = l2_norm(global_feat)
 
         dist_mat = euclidean_dist(global_feat, global_feat)
@@ -88,10 +88,12 @@ class TripletLoss(object):
 
         return loss
 
+
 def softmax_loss(results, labels):
     labels = labels.view(-1)
     loss = F.cross_entropy(results, labels, reduce=True)
     return loss
+
 
 def focal_loss(input, target, OHEM_n=None):
     gamma = 2
@@ -108,14 +110,16 @@ def focal_loss(input, target, OHEM_n=None):
         OHEM, _ = loss.topk(k=OHEM_n, dim=1, largest=True, sorted=True)
         return OHEM.mean()
 
+
 def bce_loss(input, target, OHEM_n=None):
     if OHEM_n is None:
         loss = F.binary_cross_entropy_with_logits(input, target, reduce=True)
         return loss
     else:
         loss = F.binary_cross_entropy_with_logits(input, target, reduce=False)
-        value, index= loss.topk(OHEM_n, dim=1, largest=True, sorted=True)
+        value, index = loss.topk(OHEM_n, dim=1, largest=True, sorted=True)
         return value.mean()
+
 
 def focal_OHEM(results, labels, labels_onehot, OHEM_percent=100):
     batch_size, class_num = results.shape
@@ -125,6 +129,6 @@ def focal_OHEM(results, labels, labels_onehot, OHEM_percent=100):
     indexs_ = (labels != class_num).nonzero().view(-1)
     if len(indexs_) == 0:
         return loss0 + loss1
-    results_ = results[torch.arange(0,len(results))[indexs_],labels[indexs_]].contiguous()
+    results_ = results[torch.arange(0, len(results))[indexs_], labels[indexs_]].contiguous()
     loss2 = focal_loss(results_, torch.ones_like(results_).float().cuda())
     return loss0 + loss1 + loss2

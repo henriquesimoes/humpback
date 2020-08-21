@@ -1,11 +1,9 @@
-import torch
+import sys
+
 import cv2
 import numpy as np
-
-import sys
-import os
-import numpy as np
 import torch
+
 
 class Logger(object):
     def __init__(self, logfile):
@@ -21,6 +19,7 @@ class Logger(object):
         # this handles the flush command by doing nothing.
         # you might want to specify some extra behavior here.
         pass
+
 
 def split4(data, max_stride, margin):
     splits = []
@@ -299,10 +298,12 @@ def bbox_iou(anchor_bboxes, gt_bboxes):
     rb = torch.min(anchor_bboxes[:, None, 2:], gt_bboxes[:, 2:])  # [N, M, 2]
     wh = (rb - lb + 1).clamp(min=0)  # [N, M, 2]
     intersection = wh[:, :, 0] * wh[:, :, 1]  # [N, M]
-    area1 = ((anchor_bboxes[:, 2] - anchor_bboxes[:, 0]) + 1) * ((anchor_bboxes[:, 3] - anchor_bboxes[:, 1]) + 1)  # [N,]
+    area1 = ((anchor_bboxes[:, 2] - anchor_bboxes[:, 0]) + 1) * (
+                (anchor_bboxes[:, 3] - anchor_bboxes[:, 1]) + 1)  # [N,]
     area2 = ((gt_bboxes[:, 2] - gt_bboxes[:, 0]) + 1) * ((gt_bboxes[:, 3] - gt_bboxes[:, 1]) + 1)  # [M,]
     iou = intersection / (area1[:, None] + area2 - intersection)
     return iou
+
 
 def bbox_nms(bboxes, scores, threshold=0.5, mode='union', topk=5):
     '''Non maximum suppression.
@@ -316,12 +317,12 @@ def bbox_nms(bboxes, scores, threshold=0.5, mode='union', topk=5):
     Reference:
       https://github.com/rbgirshick/py-faster-rcnn/blob/master/lib/nms/py_cpu_nms.py
     '''
-    x1 = bboxes[:,0]
-    y1 = bboxes[:,1]
-    x2 = bboxes[:,2]
-    y2 = bboxes[:,3]
+    x1 = bboxes[:, 0]
+    y1 = bboxes[:, 1]
+    x2 = bboxes[:, 2]
+    y2 = bboxes[:, 3]
 
-    areas = (x2-x1+1) * (y2-y1+1)
+    areas = (x2 - x1 + 1) * (y2 - y1 + 1)
     _, order = scores.sort(0, descending=True)
 
     keep = []
@@ -337,9 +338,9 @@ def bbox_nms(bboxes, scores, threshold=0.5, mode='union', topk=5):
         xx2 = x2[order[1:]].clamp(max=x2[i])
         yy2 = y2[order[1:]].clamp(max=y2[i])
 
-        w = (xx2-xx1+1).clamp(min=0)
-        h = (yy2-yy1+1).clamp(min=0)
-        inter = w*h
+        w = (xx2 - xx1 + 1).clamp(min=0)
+        h = (yy2 - yy1 + 1).clamp(min=0)
+        inter = w * h
 
         if mode == 'union':
             ovr = inter / (areas[i] + areas[order[1:]] - inter)
@@ -348,12 +349,13 @@ def bbox_nms(bboxes, scores, threshold=0.5, mode='union', topk=5):
         else:
             raise TypeError('Unknown nms mode: %s.' % mode)
 
-        ids = (ovr<=threshold).nonzero().squeeze()
+        ids = (ovr <= threshold).nonzero().squeeze()
         if ids.numel() == 0:
             break
-        order = order[ids+1]
+        order = order[ids + 1]
     keep = keep[:topk]
     return torch.LongTensor(keep)
+
 
 def draw_bbox(image, bboxes, probs, save_path, gt_bboxes=None):
     '''
@@ -371,11 +373,11 @@ def draw_bbox(image, bboxes, probs, save_path, gt_bboxes=None):
     font_scale = 0.5
     overlay = image.copy()
     for bbox, prob in zip(bboxes, probs):
-        label_txt = 'Prob: %.2f'%prob
+        label_txt = 'Prob: %.2f' % prob
         x1, y1, x2, y2 = np.round(bbox).astype(np.int)
         overlay = cv2.rectangle(overlay, (x1, y1), (x2, y2), color, thick)
         txt_size = cv2.getTextSize(label_txt, font, font_scale, thick)
-        overlay = cv2.rectangle(overlay, (x1, y1-txt_size[0][1]), (x1+txt_size[0][0], y1), color, cv2.FILLED)
+        overlay = cv2.rectangle(overlay, (x1, y1 - txt_size[0][1]), (x1 + txt_size[0][0], y1), color, cv2.FILLED)
         overlay = cv2.putText(overlay, label_txt, (x1, y1), font, font_scale, (255, 255, 255), thick, cv2.LINE_AA)
     if gt_bboxes is not None:
         for bbox in gt_bboxes:
@@ -383,6 +385,7 @@ def draw_bbox(image, bboxes, probs, save_path, gt_bboxes=None):
             overlay = cv2.rectangle(overlay, (x1, y1), (x2, y2), (0, 0, 255), thick)
     image = cv2.addWeighted(overlay, alpha, image, 1 - alpha, 0)
     cv2.imwrite(save_path, image)
+
 
 def draw_keypoint_with_caption(image, keypoint, text):
     '''
@@ -405,6 +408,7 @@ def draw_keypoint_with_caption(image, keypoint, text):
     image = cv2.addWeighted(overlay, alpha, image, 1 - alpha, 0)
     return image
 
+
 color_palette = [(136, 112, 246),
                  (49, 136, 219),
                  (49, 156, 173),
@@ -415,6 +419,7 @@ color_palette = [(136, 112, 246),
                  (244, 154, 110),
                  (244, 121, 204),
                  (204, 101, 245)]  # husl
+
 
 def draw_keypoints(image, keypoints, gt_keypoints=None):
     '''
@@ -435,8 +440,10 @@ def draw_keypoints(image, keypoints, gt_keypoints=None):
         for i, kpt in enumerate(keypoints):
             x, y, v = kpt
             if v > 0:
-                overlay = cv2.line(overlay, (x-l, y-l), (x+l, y+l), color_palette[i%len(color_palette)], thick)
-                overlay = cv2.line(overlay, (x-l, y+l), (x+l, y-l), color_palette[i%len(color_palette)], thick)
+                overlay = cv2.line(overlay, (x - l, y - l), (x + l, y + l), color_palette[i % len(color_palette)],
+                                   thick)
+                overlay = cv2.line(overlay, (x - l, y + l), (x + l, y - l), color_palette[i % len(color_palette)],
+                                   thick)
 
     if gt_keypoints is not None:
         for k in range(len(keypoints)):
@@ -451,6 +458,7 @@ def draw_keypoints(image, keypoints, gt_keypoints=None):
                 overlay = cv2.putText(overlay, str(k), (gtx, gty), font, font_scale, color2, thick, cv2.LINE_AA)
     image = cv2.addWeighted(overlay, alpha, image, 1 - alpha, 0)
     return image
+
 
 def draw_heatmap(image, heatmap):
     '''
@@ -469,6 +477,7 @@ def draw_heatmap(image, heatmap):
     fin = cv2.addWeighted(heatmap_img, alpha, image, 1 - alpha, 0)
     return fin
 
+
 def normalized_error(preds, targets, widths):
     '''
     :param preds: [[x, y, v], ...]
@@ -477,10 +486,10 @@ def normalized_error(preds, targets, widths):
     :return: 
     '''
     dist = preds[:, :2] - targets[:, :2]
-    dist = np.sqrt(dist[:, 0]**2 + dist[:, 1]**2)
+    dist = np.sqrt(dist[:, 0] ** 2 + dist[:, 1] ** 2)
     targets = np.copy(targets)
-    targets[targets<0] = 0
+    targets[targets < 0] = 0
     if np.sum(targets[:, 2]) == 0:
         return 0
-    ne = np.sum(dist/widths * targets[:, 2]) / np.sum(targets[:, 2])
+    ne = np.sum(dist / widths * targets[:, 2]) / np.sum(targets[:, 2])
     return ne

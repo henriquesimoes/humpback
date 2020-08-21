@@ -3,8 +3,9 @@ ResNet code gently borrowed from
 https://github.com/pytorch/vision/blob/master/torchvision/models/resnet.py
 """
 from __future__ import print_function, division, absolute_import
-from collections import OrderedDict
+
 import math
+from collections import OrderedDict
 
 import torch.nn as nn
 from torch.utils import model_zoo
@@ -108,6 +109,7 @@ class Bottleneck(nn.Module):
     """
     Base class for bottlenecks that implements `forward()` method.
     """
+
     def forward(self, x):
         residual = x
 
@@ -190,7 +192,6 @@ class SEResNeXtBottleneck(Bottleneck):
                  downsample=None, base_width=4):
         super(SEResNeXtBottleneck, self).__init__()
         width = int(math.floor(planes * (base_width / 64)) * groups)
-
 
         self.conv1 = nn.Conv2d(inplanes, width, kernel_size=1, stride=1, bias=False)
         self.bn1 = nn.BatchNorm2d(width)

@@ -1,13 +1,15 @@
-from include import *
-from torch.autograd import Variable
-import torch
 import numpy as np
+import torch
+from torch.autograd import Variable
+
 from process.data_helper import *
 
-def save(list_or_dict,name):
+
+def save(list_or_dict, name):
     f = open(name, 'w')
     f.write(str(list_or_dict))
     f.close()
+
 
 def load(name):
     f = open(name, 'r')
@@ -16,20 +18,23 @@ def load(name):
     f.close()
     return tmp
 
-def dot_numpy(vector1 , vector2,emb_size = 512):
+
+def dot_numpy(vector1, vector2, emb_size=512):
     vector1 = vector1.reshape([-1, emb_size])
     vector2 = vector2.reshape([-1, emb_size])
-    vector2 = vector2.transpose(1,0)
+    vector2 = vector2.transpose(1, 0)
 
     cosV12 = np.dot(vector1, vector2)
     return cosV12
+
 
 def to_var(x, volatile=False):
     if torch.cuda.is_available():
         x = x.cuda()
     return Variable(x, volatile=volatile)
 
-def metric(prob, label, thres = 0.5):
+
+def metric(prob, label, thres=0.5):
     shape = prob.shape
     prob_tmp = np.ones([shape[0], shape[1] + 1]) * thres
     prob_tmp[:, :shape[1]] = prob
@@ -39,7 +44,8 @@ def metric(prob, label, thres = 0.5):
 
     precision = mapk(label, prob_tmp, k=5)
     top1, top5 = accuracy(prob_tmp, label, topk=(1, 5))
-    return  precision, (top1, top5)
+    return precision, (top1, top5)
+
 
 def top_n_np(preds, labels):
     n = 5
@@ -55,8 +61,9 @@ def top_n_np(preds, labels):
 
     re = re / len(preds)
     for i in range(n):
-        top5.append(np.sum(labels == predicted[:, i])/ (1.0*len(labels)))
+        top5.append(np.sum(labels == predicted[:, i]) / (1.0 * len(labels)))
     return re, top5
+
 
 def accuracy(output, target, topk=(1, 5)):
     """Computes the precision@k for the specified values of k"""
@@ -73,44 +80,46 @@ def accuracy(output, target, topk=(1, 5)):
         res.append(correct_k.mul_(100.0 / batch_size))
     return res
 
+
 def apk(actual, predicted, k=10):
     actual = [int(actual)]
-    if len(predicted)>k:
+    if len(predicted) > k:
         predicted = predicted[:k]
 
     score = 0.0
     num_hits = 0.0
 
-    for i,p in enumerate(predicted):
+    for i, p in enumerate(predicted):
         if p in actual and p not in predicted[:i]:
             num_hits += 1.0
-            score += num_hits / (i+1.0)
+            score += num_hits / (i + 1.0)
 
     if not actual:
         return 0.0
 
     return score / min(len(actual), k)
 
+
 def mapk(actual, predicted, k=10):
     _, predicted = predicted.topk(k, 1, True, True)
     actual = actual.data.cpu().numpy()
     predicted = predicted.data.cpu().numpy()
-    return np.mean([apk(a,p,k) for a,p in zip(actual, predicted)])
+    return np.mean([apk(a, p, k) for a, p in zip(actual, predicted)])
 
 
 def prob_to_csv_top5(prob, key_id, name):
-    CLASS_NAME,_ = load_CLASS_NAME()
+    CLASS_NAME, _ = load_CLASS_NAME()
 
     prob = np.asarray(prob)
     print(prob.shape)
 
-    top = np.argsort(-prob,1)[:,:5]
+    top = np.argsort(-prob, 1)[:, :5]
     word = []
     index = 0
 
     rs = []
 
-    for (t0,t1,t2,t3,t4) in top:
+    for (t0, t1, t2, t3, t4) in top:
         word.append(
             CLASS_NAME[t0] + ' ' + \
             CLASS_NAME[t1] + ' ' + \
@@ -140,4 +149,4 @@ def prob_to_csv_top5(prob, key_id, name):
         rs.append(top_k_label_name)
         index += 1
 
-    pd.DataFrame({'key_id':key_id, 'word':rs}).to_csv( '{}.csv'.format(name), index=None)
+    pd.DataFrame({'key_id': key_id, 'word': rs}).to_csv('{}.csv'.format(name), index=None)

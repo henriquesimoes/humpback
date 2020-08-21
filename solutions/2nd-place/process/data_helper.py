@@ -1,6 +1,4 @@
-from include import *
 import pandas as pd
-from process.augmentation import *
 
 PJ_DIR = r'/solutions/2nd-place/'
 train_df = pd.read_csv('/dataset/train.csv')
@@ -9,6 +7,7 @@ TST_IMGS_DIR = '/dataset/test/'
 LIST_DIR = PJ_DIR + r'/image_list'
 
 NUM_CLASSES = 4887
+
 
 def load_label_dict(label_list_path):
     f = open(label_list_path, 'r')
@@ -25,6 +24,7 @@ def load_label_dict(label_list_path):
 
     return label_dict
 
+
 def get_list(csv):
     bbox_data = pd.read_csv(csv)
     labelName = bbox_data['Image'].tolist()
@@ -32,7 +32,8 @@ def get_list(csv):
     y0 = bbox_data['y0'].tolist()
     x1 = bbox_data['x1'].tolist()
     y1 = bbox_data['y1'].tolist()
-    return labelName,x0,y0,x1,y1
+    return labelName, x0, y0, x1, y1
+
 
 def read_txt(txt):
     f = open(txt, 'r')
@@ -47,7 +48,8 @@ def read_txt(txt):
 
     return list
 
-def load_train_list(train_image_list_path = LIST_DIR + r'/train_image_list.txt'):
+
+def load_train_list(train_image_list_path=LIST_DIR + r'/train_image_list.txt'):
     f = open(train_image_list_path, 'r')
     lines = f.readlines()
     f.close()
@@ -61,7 +63,8 @@ def load_train_list(train_image_list_path = LIST_DIR + r'/train_image_list.txt')
         list.append([img_name, index])
     return list
 
-def load_train_map(train_image_list_path = LIST_DIR + r'/train_image_list.txt'):
+
+def load_train_map(train_image_list_path=LIST_DIR + r'/train_image_list.txt'):
     f = open(train_image_list_path, 'r')
     lines = f.readlines()
     f.close()
@@ -73,12 +76,12 @@ def load_train_map(train_image_list_path = LIST_DIR + r'/train_image_list.txt'):
         img_name = line[0]
         index = int(line[1])
         id = line[2]
-        label_dict[img_name] = [index,id]
+        label_dict[img_name] = [index, id]
 
     return label_dict
 
-def load_bbox_dict():
 
+def load_bbox_dict():
     bbox_dict = {}
     csv_origin = PJ_DIR + r'/bbox_model/se50_bbox.csv'
     print(csv_origin)
@@ -87,12 +90,13 @@ def load_bbox_dict():
     csv_origin = PJ_DIR + r'/bbox_model/se101_bbox.csv'
     print(csv_origin)
     labelName, x0_se101, y0_se101, x1_se101, y1_se101 = get_list(csv_origin)
-    for (name, x0,y0,x1,y1,x0_,y0_,x1_,y1_) in zip(labelName, x0_se50,y0_se50,x1_se50,y1_se50,
-                                                              x0_se101,y0_se101,x1_se101,y1_se101):
-        bbox_dict[name] = [(x0+x0_)//2,(y0+y0_)//2,(x1+x1_)//2,(y1+y1_)//2]
+    for (name, x0, y0, x1, y1, x0_, y0_, x1_, y1_) in zip(labelName, x0_se50, y0_se50, x1_se50, y1_se50,
+                                                          x0_se101, y0_se101, x1_se101, y1_se101):
+        bbox_dict[name] = [(x0 + x0_) // 2, (y0 + y0_) // 2, (x1 + x1_) // 2, (y1 + y1_) // 2]
     return bbox_dict
 
-def load_pseudo_list(path = LIST_DIR + r'/pseudo_list.txt'):
+
+def load_pseudo_list(path=LIST_DIR + r'/pseudo_list.txt'):
     f = open(path, 'r')
     lines = f.readlines()
     f.close()
@@ -106,17 +110,19 @@ def load_pseudo_list(path = LIST_DIR + r'/pseudo_list.txt'):
         list.append([img_name, index])
     return list
 
+
 def image_list2dict(image_list):
     dict = {}
     id_list = []
-    for image,id in image_list:
+    for image, id in image_list:
         if id in dict:
             dict[id].append(image)
         else:
             dict[id] = [image]
             id_list.append(id)
 
-    return dict,id_list
+    return dict, id_list
+
 
 def load_CLASS_NAME():
     label_list_path = LIST_DIR + r'/label_list.txt'
@@ -139,7 +145,3 @@ def load_CLASS_NAME():
         id_dict[id] = index
 
     return label_dict, id_dict
-
-
-
-

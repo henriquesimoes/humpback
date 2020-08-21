@@ -1,16 +1,11 @@
-import imgaug.augmenters as iaa
-from scipy.ndimage import affine_transform
-from tqdm import tqdm_notebook as tqdm
-import numpy as np
-
-from imgaug import augmenters as iaa
-import imgaug as ia
-import cv2
-import os
-import numpy as np
 import random
-import skimage
-#===================================================paug===============================================================
+
+import cv2
+import numpy as np
+from imgaug import augmenters as iaa
+
+
+# ===================================================paug===============================================================
 def order_points(pts):
     # initialzie a list of coordinates that will be ordered
     # such that the first entry in the list is the top-left,
@@ -31,6 +26,7 @@ def order_points(pts):
     # return the ordered coordinates
     return rect
 
+
 def four_point_transform(image, pts):
     # obtain a consistent order of the points and unpack them
     # individually
@@ -43,18 +39,19 @@ def four_point_transform(image, pts):
     warped = cv2.warpPerspective(image, M, (image.shape[1], image.shape[0]))
     return warped
 
-def Perspective_aug(img,   threshold1 = 0.25, threshold2 = 0.75):
+
+def Perspective_aug(img, threshold1=0.25, threshold2=0.75):
     # img = cv2.imread(img_name)
     rows, cols, ch = img.shape
 
-    x0,y0 = random.randint(0, int(cols * threshold1)), random.randint(0, int(rows * threshold1))
-    x1,y1 = random.randint(int(cols * threshold2), cols - 1), random.randint(0, int(rows * threshold1))
-    x2,y2 = random.randint(int(cols * threshold2), cols - 1), random.randint(int(rows * threshold2), rows - 1)
-    x3,y3 = random.randint(0, int(cols * threshold1)), random.randint(int(rows * threshold2), rows - 1)
-    pts = np.float32([(x0,y0),
-                      (x1,y1),
-                      (x2,y2),
-                      (x3,y3)])
+    x0, y0 = random.randint(0, int(cols * threshold1)), random.randint(0, int(rows * threshold1))
+    x1, y1 = random.randint(int(cols * threshold2), cols - 1), random.randint(0, int(rows * threshold1))
+    x2, y2 = random.randint(int(cols * threshold2), cols - 1), random.randint(int(rows * threshold2), rows - 1)
+    x3, y3 = random.randint(0, int(cols * threshold1)), random.randint(int(rows * threshold2), rows - 1)
+    pts = np.float32([(x0, y0),
+                      (x1, y1),
+                      (x2, y2),
+                      (x3, y3)])
 
     warped = four_point_transform(img, pts)
 
@@ -66,11 +63,12 @@ def Perspective_aug(img,   threshold1 = 0.25, threshold2 = 0.75):
     min_y = np.min(y_)
     max_y = np.max(y_)
 
-    warped = warped[min_y:max_y,min_x:max_x,:]
+    warped = warped[min_y:max_y, min_x:max_x, :]
     return warped
 
-#===================================================origin=============================================================
-def aug_image(image, is_infer=False, augment = None):
+
+# ===================================================origin=============================================================
+def aug_image(image, is_infer=False, augment=None):
     if is_infer:
         flip_code = augment[0]
 
@@ -81,14 +79,14 @@ def aug_image(image, is_infer=False, augment = None):
         elif flip_code == 3:
             seq = iaa.Sequential([iaa.Flipud(1.0),
                                   iaa.Fliplr(1.0)])
-        elif flip_code ==0:
+        elif flip_code == 0:
             return image
 
     else:
 
         seq = iaa.Sequential([
-            iaa.Affine(rotate= (-15, 15),
-                       shear = (-15, 15),
+            iaa.Affine(rotate=(-15, 15),
+                       shear=(-15, 15),
                        mode='edge'),
 
             iaa.SomeOf((0, 2),
@@ -106,7 +104,8 @@ def aug_image(image, is_infer=False, augment = None):
     image = seq.augment_image(image)
     return image
 
-#===================================================crop===============================================================
+
+# ===================================================crop===============================================================
 def get_cropped_img(image, bbox, is_mask=False):
     crop_margin = 0.1
 
@@ -138,6 +137,7 @@ def get_cropped_img(image, bbox, is_mask=False):
         crop = image[int(y0):int(y1), int(x0):int(x1), :]
 
     return crop
+
 
 def get_center_aligned_img(crop_img, pt):
     x0, y0 = pt[2]

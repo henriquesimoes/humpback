@@ -1,6 +1,3 @@
-import math
-import numpy as np
-
 class Config:
 
     def __init__(self, type):
@@ -11,10 +8,10 @@ class Config:
 
         self.type = type
         self.keypoints = {'whale':
-                        ['left_down_point',
-                         'left_up_point',
-                         'right_down_point',
-                         'right_up_point']}
+                              ['left_down_point',
+                               'left_up_point',
+                               'right_down_point',
+                               'right_up_point']}
 
         keypoint = self.keypoints[self.type]
         self.num_keypoints = len(keypoint)
@@ -36,10 +33,10 @@ class Config:
         self.hm_stride = 4
         # Heatmap
 
-        self.hm_sigma = self.img_max_size / self.hm_stride / 16. #4 #16 for 256 size
+        self.hm_sigma = self.img_max_size / self.hm_stride / 16.  # 4 #16 for 256 size
         self.hm_alpha = 100.
 
-        lrschedule = {'whale' : [4, 8, 12]}
+        lrschedule = {'whale': [4, 8, 12]}
         self.lrschedule = lrschedule[type]
 
 

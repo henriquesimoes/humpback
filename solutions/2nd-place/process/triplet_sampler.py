@@ -4,6 +4,8 @@ from collections import defaultdict
 
 import numpy as np
 from torch.utils.data.sampler import Sampler
+
+
 # from data import WhaleDataset
 
 
@@ -17,7 +19,7 @@ class WhaleRandomIdentitySampler(Sampler):
     - batch_size (int): number of examples in a batch.
     """
 
-    def __init__(self, data_source, batch_size, num_instances, is_newwhale = True, NW_ratio = 0.5):
+    def __init__(self, data_source, batch_size, num_instances, is_newwhale=True, NW_ratio=0.5):
         self.data_source = data_source
         self.batch_size = batch_size
         self.num_instances = num_instances
@@ -28,10 +30,10 @@ class WhaleRandomIdentitySampler(Sampler):
         self.NW_ratio = NW_ratio
 
         if self.is_NW:
-            self.NW_id_num = int(self.num_pids_per_batch*self.NW_ratio)
+            self.NW_id_num = int(self.num_pids_per_batch * self.NW_ratio)
 
-        print('NW ratio!!!!!!! : '+str(NW_ratio))
-        print('NW id num!!!!!! : '+str(self.NW_id_num))
+        print('NW ratio!!!!!!! : ' + str(NW_ratio))
+        print('NW id num!!!!!! : ' + str(self.NW_id_num))
 
         for index, (_, pid, _) in enumerate(self.data_source):
             self.index_dic[pid].append(index)
@@ -84,7 +86,7 @@ class WhaleRandomIdentitySampler(Sampler):
                         avai_pids_noNW.remove(pid)
 
                 for _ in range(self.NW_id_num):
-                    random_pos = random.randint(0,len(batch_idxs_dict[-1])-1)
+                    random_pos = random.randint(0, len(batch_idxs_dict[-1]) - 1)
                     batch_idxs = batch_idxs_dict[-1][random_pos]
                     final_idxs.extend(batch_idxs)
 
