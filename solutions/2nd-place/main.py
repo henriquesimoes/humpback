@@ -1,5 +1,7 @@
 import argparse
 
+import torchcontrib
+
 from loss.loss import softmax_loss, TripletLoss, focal_OHEM
 from process.data import *
 from process.triplet_sampler import *
@@ -192,18 +194,28 @@ def run_train(config):
                                  eps=1e-08,
                                  weight_decay=0.0002)
 
+    if config.use_swa:
+        optimizer = torchcontrib.optim.SWA(optimizer,
+                                           swa_start=config.swa_start, swa_freq=config.swa_freq, swa_lr=config.swa_lr)
+
     iter_smooth = 50
     start_iter = 0
 
     log.write('\n')
-    valid_loss = np.zeros(6, np.float32)
-    batch_loss = np.zeros(6, np.float32)
-    train_loss = np.zeros(6, np.float32)
-    valid_thres = 0.5
+    valid_stats = np.zeros(6, np.float32)
+    swa_stats = np.zeros(6, np.float32)
+    batch_stats = np.zeros(6, np.float32)
+    train_stats = np.zeros(6, np.float32)
+    swa_thres = valid_thres = 0.5
+
+    def get_stats(hard_ratio):
+        stats, thres = do_valid(net, valid_loader, hard_ratio, is_flip=False)
+        stats_flip, thres_flip = do_valid(net, valid_loader_flip, hard_ratio, is_flip=True)
+        return (stats + stats_flip) / 2.0, (thres + thres_flip) / 2.0
 
     i = 0
     start = timer()
-    max_valid = 0
+    swa_max_valid = max_valid = 0
 
     for epoch in range(config.train_epoch):
         sum_train_loss = np.zeros(6, np.float32)
@@ -226,9 +238,12 @@ def run_train(config):
                                   drop_last=False,
                                   num_workers=16,
                                   pin_memory=True)
-        header = '  lr      iter   epoch   |  val_loss  Top@1  Top@5  MAP@5  thres  | train_loss  Top@1  Top@5  MAP@5' \
-                 '    |  batch_loss  Top@1   Top@5   MAP@5   |     Time\n' + \
-                 '-' * 170
+        header = '  lr        iter    epoch | ' \
+                 'val_loss  Top@1   Top@5   MAP@5   thres  | ' \
+                 'swa_loss  Top@1   Top@5   MAP@5   thres  | ' \
+                 'train_loss  Top@1  Top@5  MAP@5   |  ' \
+                 'batch_loss  Top@1   Top@5   MAP@5 |     Time\n' + \
+                 '-' * 200
         print(header)
         log.write(header + '\n')
 
@@ -273,25 +288,29 @@ def run_train(config):
             optimizer.step()
             optimizer.zero_grad()
 
-            batch_loss[:4] = np.array((loss.data.cpu().numpy(),
+            batch_stats[:4] = np.array((loss.data.cpu().numpy(),
                                        top1,
                                        top5,
                                        precision)).reshape([4])
 
-            sum_train_loss += batch_loss
+            sum_train_loss += batch_stats
             sum += 1
 
             if iter % iter_smooth == 0:
-                train_loss = sum_train_loss / sum
+                train_stats = sum_train_loss / sum
                 sum_train_loss = np.zeros(6, np.float32)
                 sum = 0
 
-            stats = '%0.7f  %5.2f k  %3d | %5.3f  %7.3f  %7.3f   %0.3f   %0.2f  | %5.3f  %7.3f  %7.3f   %0.3f   |' \
-                    ' %5.3f   %7.3f  %7.3f   %0.3f   | %s' % ( \
+            stats = '%0.7f  %5.2f k  %3d   |' \
+                    ' %5.3f  %7.3f  %7.3f   %0.3f   %0.2f   | ' \
+                    ' %5.3f  %7.3f  %7.3f   %0.3f   %0.2f  |' \
+                    ' %5.3f  %7.3f  %7.3f   %0.3f   |' \
+                    ' %5.3f   %7.3f  %7.3f   %0.3f   | %s' % (
                         rate, iter / 1000.0, epoch,
-                        valid_loss[0], valid_loss[1], valid_loss[2], valid_loss[3], valid_thres,
-                        train_loss[0], train_loss[1], train_loss[2], train_loss[3],
-                        batch_loss[0], batch_loss[1], batch_loss[2], batch_loss[3],
+                        valid_stats[0], valid_stats[1], valid_stats[2], valid_stats[3], valid_thres,
+                        swa_stats[0], swa_stats[1], swa_stats[2], swa_stats[3], swa_thres,
+                        train_stats[0], train_stats[1], train_stats[2], train_stats[3],
+                        batch_stats[0], batch_stats[1], batch_stats[2], batch_stats[3],
                         time_to_str((timer() - start), 'min'))
 
             if i % 10 == 0:
@@ -303,14 +322,18 @@ def run_train(config):
 
             if iter > start_iter and (i % 200 == 0):
                 net.eval()
-                valid_loss, valid_thres = do_valid(net, valid_loader, hard_ratio, is_flip=False)
-                valid_loss_flip, valid_thres_flip = do_valid(net, valid_loader_flip, hard_ratio, is_flip=True)
-                valid_loss, valid_thres = (valid_loss + valid_loss_flip) / 2.0, (valid_thres + valid_thres_flip) / 2.0
+                valid_stats, valid_thres = get_stats(hard_ratio)  # original stats
+
+                if config.use_swa:
+                    optimizer.swap_swa_sgd()
+                    swa_stats, swa_thres = get_stats(hard_ratio)  # swa stats
+                    optimizer.swap_swa_sgd()
                 net.train()
 
-                if max_valid < valid_loss[3] and (epoch + 1) > 40:
-                    max_valid = valid_loss[3]
-                    saving_msg = f'New maximum MAP@5 reached on {iter}th iteration (epoch {epoch}): {max_valid}... saving on disk.'
+                if max_valid < valid_stats[3] and (epoch + 1) > 40:
+                    max_valid = valid_stats[3]
+                    saving_msg = f'New maximum MAP@5 reached on {iter}th iteration (epoch {epoch}): {max_valid}... ' \
+                                 'saving on disk.'
                     print(saving_msg)
                     log.write(saving_msg + '\n')
 
@@ -320,20 +343,50 @@ def run_train(config):
             torch.save(net.state_dict(), out_dir + '/checkpoint/%08d_model.pth' % (epoch))
 
         net.eval()
-        valid_loss, valid_thres = do_valid(net, valid_loader, hard_ratio, is_flip=False)
-        valid_loss_flip, valid_thres_flip = do_valid(net, valid_loader_flip, hard_ratio, is_flip=True)
-        valid_loss, valid_thres = (valid_loss + valid_loss_flip) / 2.0, (valid_thres + valid_thres_flip) / 2.0
+        valid_stats, valid_thres = get_stats(hard_ratio)  # original stats
+
+        if config.use_swa:
+            optimizer.swap_swa_sgd()
+            swa_stats, swa_thres = get_stats(hard_ratio)  # swa stats
+            optimizer.swap_swa_sgd()
+
         net.train()
 
-        if max_valid < valid_loss[3]:
-            max_valid = valid_loss[3]
+        if max_valid < valid_stats[3] and (epoch + 1) > 40:
+            max_valid = valid_stats[3]
             saving_msg = f'New maximum MAP@5 reached on {iter}th iteration (epoch {epoch}): {max_valid}... ' \
+                         'saving on disk.'
+            print(saving_msg)
+            log.write(saving_msg + '\n')
+
+            torch.save(net.state_dict(), out_dir + '/checkpoint/max_valid_model.pth')
+
+        if config.use_swa and epoch >= config.swa_start and swa_max_valid < swa_stats[3]:
+            swa_max_valid = swa_stats[3]
+            saving_msg = f'New maximum MAP@5 reached on {iter}th iteration (epoch {epoch}) for SWA: {max_valid}... ' \
                          'saving on disk.'
 
             print(saving_msg)
             log.write(saving_msg + '\n')
 
-            torch.save(net.state_dict(), out_dir + '/checkpoint/max_valid_model.pth')
+            optimizer.swap_swa_sgd()
+            torch.save(net.state_dict(), out_dir + '/checkpoint/max_valid_swa_model.pth')
+            optimizer.swap_swa_sgd()
+
+    if config.use_swa:
+        swa_model = os.path.join(out_dir, 'checkpoint', 'max_valid_swa_model.pth')
+        net.load_state_dict(torch.load(swa_model, map_location=lambda storage, loc: storage))
+
+        loader = DataLoader(train_dataset,
+                            sampler=WhaleRandomIdentitySampler(train_list, batch_size, NUM_INSTANCE, NW_ratio=0.25),
+                            batch_size=batch_size,
+                            drop_last=False,
+                            num_workers=16,
+                            pin_memory=True)
+
+        torchcontrib.optim.SWA.bn_update(loader, net, torch.device('cuda'))
+
+        torch.save(net.state_dict(), swa_model)
 
     log.write('\nTraining end time: {}\n'.format(datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
     log.close()
@@ -480,6 +533,15 @@ if __name__ == '__main__':
 
     parser.add_argument('--iter_save_interval', type=int, default=5)
     parser.add_argument('--train_epoch', type=int, default=100)
+
+    parser.add_argument('--swa', type=bool, default=False, nargs='?', const=True,
+                        dest='use_swa', help="use Stochastic Weight Averaging (SWA)")
+    parser.add_argument('--swa_start', type=int, default=75,
+                        help="SWA start epoch, default 75")
+    parser.add_argument('--swa_freq', type=int, default=None,
+                        help="SWA update frequency (epochs)")
+    parser.add_argument('--swa_lr', type=float, default=None,
+                        help="SWA learning rate")
 
     config = parser.parse_args()
     print(config)

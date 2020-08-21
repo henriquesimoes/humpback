@@ -1,0 +1,8 @@
+torch
+torchcontrib
+torchvision
+tqdm
+pandas
+numpy
+imgaug
+opencv-python
