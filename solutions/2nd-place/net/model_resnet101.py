@@ -1,6 +1,7 @@
 import torchvision.models as tvm
 
 from net.margin import *
+from process.contrast import *
 
 BatchNorm2d = nn.BatchNorm2d
 
