@@ -147,7 +147,7 @@ def run_train(config):
                               shuffle=False,
                               batch_size=batch_size,
                               drop_last=False,
-                              num_workers=16,
+                              num_workers=4,
                               pin_memory=True)
 
     valid_dataset_flip = WhaleDataset('val', test_index=config.fold_index, image_size=image_size, augment=[0.0],
@@ -157,7 +157,7 @@ def run_train(config):
                                    shuffle=False,
                                    batch_size=batch_size,
                                    drop_last=False,
-                                   num_workers=16,
+                                   num_workers=4,
                                    pin_memory=True)
 
     net = get_model(config.model, config)
@@ -241,7 +241,7 @@ def run_train(config):
                                                                      NW_ratio=0.25),
                                   batch_size=batch_size,
                                   drop_last=False,
-                                  num_workers=16,
+                                  num_workers=4,
                                   pin_memory=True)
         header = '  lr        iter    epoch | ' \
                  'val_loss  Top@1   Top@5   MAP@5   thres  | ' \
@@ -386,7 +386,7 @@ def run_train(config):
                             sampler=WhaleRandomIdentitySampler(train_list, batch_size, NUM_INSTANCE, NW_ratio=0.25),
                             batch_size=batch_size,
                             drop_last=False,
-                            num_workers=16,
+                            num_workers=4,
                             pin_memory=True)
 
         torchcontrib.optim.SWA.bn_update(loader, net, torch.device('cuda'))
@@ -429,7 +429,7 @@ def run_infer(config):
                               shuffle=False,
                               batch_size=batch_size,
                               drop_last=False,
-                              num_workers=8,
+                              num_workers=4,
                               pin_memory=True)
 
     valid_dataset_flip = WhaleDataset('val', test_index=config.fold_index, image_size=image_size,
@@ -440,7 +440,7 @@ def run_infer(config):
                                    shuffle=False,
                                    batch_size=batch_size,
                                    drop_last=False,
-                                   num_workers=8,
+                                   num_workers=4,
                                    pin_memory=True)
 
     print('          loss    Top@1    Top@5    MAP@5   threshold')
@@ -467,7 +467,7 @@ def run_infer(config):
                                   shuffle=False,
                                   batch_size=batch_size,
                                   drop_last=False,
-                                  num_workers=8,
+                                  num_workers=4,
                                   pin_memory=True)
 
         # infer test
