@@ -200,8 +200,12 @@ def run_train(config):
                                  weight_decay=0.0002)
 
     if config.use_swa:
+        steps_per_epoch = int(len(train_dataset) / config.batch_size)
+        swa_start = config.swa_start * steps_per_epoch
+        swa_freq = config.swa_freq * steps_per_epoch
+
         optimizer = torchcontrib.optim.SWA(optimizer,
-                                           swa_start=config.swa_start, swa_freq=config.swa_freq, swa_lr=config.swa_lr)
+                                           swa_start=swa_start, swa_freq=swa_freq, swa_lr=config.swa_lr)
 
     iter_smooth = 50
     start_iter = 0
@@ -328,11 +332,6 @@ def run_train(config):
             if iter > start_iter and (i % 200 == 0):
                 net.eval()
                 valid_stats, valid_thres = get_stats(hard_ratio)  # original stats
-
-                if config.use_swa and (epoch + 1) >= config.swa_start:
-                    optimizer.swap_swa_sgd()
-                    swa_stats, swa_thres = get_stats(hard_ratio)  # swa stats
-                    optimizer.swap_swa_sgd()
                 net.train()
 
                 if max_valid < valid_stats[3] and (epoch + 1) > 40:
@@ -349,12 +348,6 @@ def run_train(config):
 
         net.eval()
         valid_stats, valid_thres = get_stats(hard_ratio)  # original stats
-
-        if config.use_swa and (epoch + 1) >= swa.config.swa_start:
-            optimizer.swap_swa_sgd()
-            swa_stats, swa_thres = get_stats(hard_ratio)  # swa stats
-            optimizer.swap_swa_sgd()
-
         net.train()
 
         if max_valid < valid_stats[3] and (epoch + 1) > 40:
@@ -366,32 +359,25 @@ def run_train(config):
 
             torch.save(net.state_dict(), out_dir + '/checkpoint/max_valid_model.pth')
 
-        if config.use_swa and (epoch + 1) >= config.swa_start and swa_max_valid < swa_stats[3]:
-            swa_max_valid = swa_stats[3]
-            saving_msg = f'New maximum MAP@5 reached on {iter}th iteration (epoch {epoch}) for SWA: {max_valid}... ' \
-                         'saving on disk.'
+        if config.use_swa and (epoch + 1) >= config.swa_start:
+            optimizer.swap_swa_sgd()
+            optimizer.bn_update(train_loader, net, 'cuda')
 
-            print(saving_msg)
-            log.write(saving_msg + '\n')
+            net.eval()
+            swa_stats, swa_thres = get_stats(hard_ratio)  # swa stats
+            net.train()
+
+            if swa_max_valid < swa_stats[3]:
+               swa_max_valid = swa_stats[3]
+               saving_msg = f'New maximum MAP@5 reached on {iter}th iteration (epoch {epoch})' \
+                            f' for SWA: {swa_max_valid}... saving on disk.'
+
+               print(saving_msg)
+               log.write(saving_msg + '\n')
+
+               torch.save(net.state_dict(), out_dir + '/checkpoint/max_valid_swa_model.pth')
 
             optimizer.swap_swa_sgd()
-            torch.save(net.state_dict(), out_dir + '/checkpoint/max_valid_swa_model.pth')
-            optimizer.swap_swa_sgd()
-
-    if config.use_swa:
-        swa_model = os.path.join(out_dir, 'checkpoint', 'max_valid_swa_model.pth')
-        net.load_state_dict(torch.load(swa_model, map_location=lambda storage, loc: storage))
-
-        loader = DataLoader(train_dataset,
-                            sampler=WhaleRandomIdentitySampler(train_list, batch_size, NUM_INSTANCE, NW_ratio=0.25),
-                            batch_size=batch_size,
-                            drop_last=False,
-                            num_workers=4,
-                            pin_memory=True)
-
-        torchcontrib.optim.SWA.bn_update(loader, net, torch.device('cuda'))
-
-        torch.save(net.state_dict(), swa_model)
 
     log.write('\nTraining end time: {}\n'.format(datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
     log.close()
