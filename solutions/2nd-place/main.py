@@ -329,7 +329,7 @@ def run_train(config):
                 net.eval()
                 valid_stats, valid_thres = get_stats(hard_ratio)  # original stats
 
-                if config.use_swa:
+                if config.use_swa and (epoch + 1) >= config.swa_start:
                     optimizer.swap_swa_sgd()
                     swa_stats, swa_thres = get_stats(hard_ratio)  # swa stats
                     optimizer.swap_swa_sgd()
@@ -350,7 +350,7 @@ def run_train(config):
         net.eval()
         valid_stats, valid_thres = get_stats(hard_ratio)  # original stats
 
-        if config.use_swa:
+        if config.use_swa and (epoch + 1) >= swa.config.swa_start:
             optimizer.swap_swa_sgd()
             swa_stats, swa_thres = get_stats(hard_ratio)  # swa stats
             optimizer.swap_swa_sgd()
@@ -366,7 +366,7 @@ def run_train(config):
 
             torch.save(net.state_dict(), out_dir + '/checkpoint/max_valid_model.pth')
 
-        if config.use_swa and epoch >= config.swa_start and swa_max_valid < swa_stats[3]:
+        if config.use_swa and (epoch + 1) >= config.swa_start and swa_max_valid < swa_stats[3]:
             swa_max_valid = swa_stats[3]
             saving_msg = f'New maximum MAP@5 reached on {iter}th iteration (epoch {epoch}) for SWA: {max_valid}... ' \
                          'saving on disk.'
@@ -543,7 +543,7 @@ if __name__ == '__main__':
                         dest='use_swa', help="use Stochastic Weight Averaging (SWA)")
     parser.add_argument('--swa_start', type=int, default=75,
                         help="SWA start epoch, default 75")
-    parser.add_argument('--swa_freq', type=int, default=None,
+    parser.add_argument('--swa_freq', type=int, default=1,
                         help="SWA update frequency (epochs)")
     parser.add_argument('--swa_lr', type=float, default=None,
                         help="SWA learning rate")
