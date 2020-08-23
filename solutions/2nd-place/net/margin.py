@@ -1,3 +1,8 @@
+import math
+
+import torch
+from torch import nn
+
 from include import *
 
 
@@ -7,12 +12,12 @@ def l2_norm(input, axis=1):
     return output
 
 
-class MarginLinear(nn.Module):
+class MarginLinear(torch.nn.Module):
     # implementation of additive margin softmax loss in https://arxiv.org/abs/1801.05599
     def __init__(self, embedding_size=512, classnum=10008, s=64., m=0.5):
         super(MarginLinear, self).__init__()
         self.class_num = classnum
-        self.kernel = nn.Parameter(torch.Tensor(embedding_size, classnum))
+        self.kernel = torch.nn.Parameter(torch.Tensor(embedding_size, classnum))
         # initial kernel
         self.kernel.data.uniform_(-1, 1).renorm_(2, 1, 1e-5).mul_(1e5)
         self.m = m  # the margin value, default is 0.5
@@ -56,3 +61,4 @@ class MarginLinear(nn.Module):
 if __name__ == '__main__':
     print('%s: calling main function ... ' % os.path.basename(__file__))
     print('\nsuccess!')
+

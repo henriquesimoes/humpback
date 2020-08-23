@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 
 from include import *
-
+import torch.nn.functional as F
 
 def l2_norm(input, axis=1):
     norm = torch.norm(input, 2, axis, True)

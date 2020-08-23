@@ -8,6 +8,7 @@ from torch.utils.data.dataset import Dataset
 from imgaug import augmenters as iaa
 
 from process.data_helper import *
+from process.augmentation import *
 
 TRAIN_DF = []
 TEST_DF = []
