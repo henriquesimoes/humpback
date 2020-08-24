@@ -1,7 +1,7 @@
 import argparse
 
-import torchcontrib
 from torch.utils.data import DataLoader
+from torch.optim import swa_utils
 
 from loss.loss import softmax_loss, TripletLoss, focal_OHEM
 from process.data import *
@@ -198,14 +198,13 @@ def run_train(config):
                                  betas=(0.9, 0.999),
                                  eps=1e-08,
                                  weight_decay=0.0002)
+    swa_model = None
+    swa_scheduler = None
 
     if config.use_swa:
-        steps_per_epoch = int(len(train_dataset) / config.batch_size)
-        swa_start = config.swa_start * steps_per_epoch
-        swa_freq = config.swa_freq * steps_per_epoch
-
-        optimizer = torchcontrib.optim.SWA(optimizer,
-                                           swa_start=swa_start, swa_freq=swa_freq, swa_lr=config.swa_lr)
+        swa_model = swa_utils.AveragedModel(net, device=torch.device('cuda'))
+        swa_scheduler = swa_utils.SWALR(optimizer, swa_lr=config.swa_lr)
+        swa_model.train()
 
     iter_smooth = 50
     start_iter = 0
@@ -217,9 +216,9 @@ def run_train(config):
     train_stats = np.zeros(6, np.float32)
     swa_thres = valid_thres = 0.5
 
-    def get_stats(hard_ratio):
-        stats, thres = do_valid(net, valid_loader, hard_ratio, is_flip=False)
-        stats_flip, thres_flip = do_valid(net, valid_loader_flip, hard_ratio, is_flip=True)
+    def get_stats(model, hard_ratio):
+        stats, thres = do_valid(model, valid_loader, hard_ratio, is_flip=False)
+        stats_flip, thres_flip = do_valid(model, valid_loader_flip, hard_ratio, is_flip=True)
         return (stats + stats_flip) / 2.0, (thres + thres_flip) / 2.0
 
     i = 0
@@ -229,9 +228,12 @@ def run_train(config):
     for epoch in range(config.train_epoch):
         sum_train_loss = np.zeros(6, np.float32)
         sum = 0
-        optimizer.zero_grad()
 
         rate, hard_ratio = adjust_lr_and_hard_ratio(optimizer, epoch + 1)
+
+        if config.use_swa and (epoch + 1) >= config.swa_start:
+            swa_scheduler.step()
+            rate = optimizer.param_groups[0]['lr']
 
         print('change lr: ' + str(rate))
         print('change hard_ratio: ' + str(hard_ratio))
@@ -293,9 +295,9 @@ def run_train(config):
             precision, top = metric(prob, truth_, thres=valid_thres)
             top1, top5 = top
 
+            optimizer.zero_grad()
             loss.backward()
             optimizer.step()
-            optimizer.zero_grad()
 
             batch_stats[:4] = np.array((loss.data.cpu().numpy(),
                                        top1,
@@ -331,7 +333,7 @@ def run_train(config):
 
             if iter > start_iter and (i % 200 == 0):
                 net.eval()
-                valid_stats, valid_thres = get_stats(hard_ratio)  # original stats
+                valid_stats, valid_thres = get_stats(net, hard_ratio)  # original stats
                 net.train()
 
                 if max_valid < valid_stats[3] and (epoch + 1) > 40:
@@ -347,7 +349,7 @@ def run_train(config):
             torch.save(net.state_dict(), out_dir + '/checkpoint/%08d_model.pth' % (epoch))
 
         net.eval()
-        valid_stats, valid_thres = get_stats(hard_ratio)  # original stats
+        valid_stats, valid_thres = get_stats(net, hard_ratio)  # original stats
         net.train()
 
         if max_valid < valid_stats[3] and (epoch + 1) > 40:
@@ -360,24 +362,22 @@ def run_train(config):
             torch.save(net.state_dict(), out_dir + '/checkpoint/max_valid_model.pth')
 
         if config.use_swa and (epoch + 1) >= config.swa_start:
-            optimizer.swap_swa_sgd()
-            optimizer.bn_update(train_loader, net, 'cuda')
+            swa_model.update_parameters(net)
+            swa_utils.bn_update(train_loader, swa_model, device='cuda')
 
-            net.eval()
-            swa_stats, swa_thres = get_stats(hard_ratio)  # swa stats
-            net.train()
+            swa_model.eval()
+            swa_stats, swa_thres = get_stats(swa_model, hard_ratio)  # swa stats
+            swa_model.train()
 
             if swa_max_valid < swa_stats[3]:
-               swa_max_valid = swa_stats[3]
-               saving_msg = f'New maximum MAP@5 reached on {iter}th iteration (epoch {epoch})' \
+                swa_max_valid = swa_stats[3]
+                saving_msg = f'New maximum MAP@5 reached on {iter}th iteration (epoch {epoch})' \
                             f' for SWA: {swa_max_valid}... saving on disk.'
 
-               print(saving_msg)
-               log.write(saving_msg + '\n')
+                print(saving_msg)
+                log.write(saving_msg + '\n')
 
-               torch.save(net.state_dict(), out_dir + '/checkpoint/max_valid_swa_model.pth')
-
-            optimizer.swap_swa_sgd()
+                torch.save(swa_model.state_dict(), out_dir + '/checkpoint/max_valid_swa_model.pth')
 
     log.write('\nTraining end time: {}\n'.format(datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
     log.close()
