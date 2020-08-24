@@ -203,7 +203,8 @@ def run_train(config):
 
     if config.use_swa:
         swa_model = swa_utils.AveragedModel(net, device=torch.device('cuda'))
-        swa_scheduler = swa_utils.SWALR(optimizer, swa_lr=config.swa_lr)
+        swa_scheduler = swa_utils.SWALR(optimizer, swa_lr=config.swa_lr, anneal_strategy=config.swa_anneal_strategy,
+                                        anneal_epochs=config.swa_anneal_epochs)
         swa_model.train()
 
     iter_smooth = 50
@@ -363,7 +364,7 @@ def run_train(config):
 
         if config.use_swa and (epoch + 1) >= config.swa_start:
             swa_model.update_parameters(net)
-            swa_utils.bn_update(train_loader, swa_model, device='cuda')
+            swa_utils.update_bn(train_loader, swa_model, device='cuda')
 
             swa_model.eval()
             swa_stats, swa_thres = get_stats(swa_model, hard_ratio)  # swa stats
@@ -529,10 +530,13 @@ if __name__ == '__main__':
                         dest='use_swa', help="use Stochastic Weight Averaging (SWA)")
     parser.add_argument('--swa_start', type=int, default=75,
                         help="SWA start epoch, default 75")
-    parser.add_argument('--swa_freq', type=int, default=1,
-                        help="SWA update frequency (epochs)")
-    parser.add_argument('--swa_lr', type=float, default=None,
-                        help="SWA learning rate")
+    parser.add_argument('--swa_lr', type=float, default=0.0001,
+                        help="SWA learning rate, default=0.0001")
+
+    parser.add_argument('--swa_anneal_strategy', type=str, default='cos', choices=['cos', 'linear'],
+                        help="SWA annealing strategy (default='cos'), i.e. how to connect start lr to swa_lr")
+    parser.add_argument('--swa_anneal_epochs', type=int, default=10,
+                        help="Number of epochs to reach the final swa_lr from start lr, default=10")
 
     config = parser.parse_args()
     print(config)
