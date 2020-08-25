@@ -1,4 +1,4 @@
-Inference start time: 2020-08-18 12:05:30
+Inference start time: 2020-08-25 01:20:50
 from checkpoint: ./train_logs/test1/checkpoint/swa.pth last epoch:-1
 Configuration:
 { 'data': { 'dir': 'data',
@@ -27,34 +27,34 @@ Configuration:
                  'num_preprocessor': 4,
                  'params': {'align': True, 'align_p': 0.5, 'size': 320}}}
 Inferencing known whales to compose the features...
-non-aligned: 0 h 1 min 59 s 159 ms
-aligned: 0 h 2 min 11 s 226 ms
+non-aligned: 0 h 1 min 49 s 25 ms
+aligned: 0 h 2 min 8 s 486 ms
 
-Computing feature centers... 0 h 0 min 1 s 414 ms
+Computing feature centers... 0 h 0 min 0 s 899 ms
 
 Inferencing flipped known whales to compose the features...
-non-aligned: 0 h 2 min 2 s 894 ms
-aligned: 0 h 2 min 14 s 560 ms
+non-aligned: 0 h 2 min 0 s 388 ms
+aligned: 0 h 2 min 21 s 696 ms
 
-Computing flipped feature centers... 0 h 0 min 1 s 391 ms
-
-Inferencing test example features...
-non-aligned: 0 h 0 min 42 s 831 ms
-aligned: 0 h 0 min 47 s 384 ms
-
-Computing feature centers... 0 h 0 min 0 s 309 ms
+Computing flipped feature centers... 0 h 0 min 1 s 91 ms
 
 Inferencing test example features...
-non-aligned: 0 h 0 min 45 s 207 ms
-aligned: 0 h 0 min 49 s 940 ms
+non-aligned: 0 h 0 min 42 s 22 ms
+aligned: 0 h 0 min 51 s 508 ms
 
-Computing flipped feature centers... 0 h 0 min 0 s 334 ms
+Computing feature centers... 0 h 0 min 0 s 279 ms
 
-Calculating the test-vs-classes distance matrix... 0 h 0 min 0 s 152 ms
+Inferencing test example features...
+non-aligned: 0 h 0 min 44 s 330 ms
+aligned: 0 h 0 min 51 s 281 ms
 
-Calculating the test-vs-classes distance matrix for flipped images... 0 h 0 min 0 s 162 ms
-Averaging it with the non-flipped-images matrix... 0 h 0 min 0 s 244 ms
+Computing flipped feature centers... 0 h 0 min 0 s 301 ms
 
-Writing result matrix on similarities/test1.csv... 0 h 1 min 7 s 891 ms
+Calculating the test-vs-classes distance matrix... 0 h 0 min 0 s 122 ms
 
-Inference end time: 2020-08-18 12:18:16
+Calculating the test-vs-classes distance matrix for flipped images... 0 h 0 min 0 s 214 ms
+Averaging it with the non-flipped-images matrix... 0 h 0 min 0 s 349 ms
+
+Writing result matrix on similarities/test1.csv... 0 h 0 min 53 s 799 ms
+
+Inference end time: 2020-08-25 01:33:16
