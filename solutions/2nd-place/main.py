@@ -204,7 +204,7 @@ def run_train(config):
     if config.use_swa:
         swa_model = swa_utils.AveragedModel(net, device=torch.device('cuda'))
         swa_scheduler = swa_utils.SWALR(optimizer, swa_lr=config.swa_lr, anneal_strategy=config.swa_anneal_strategy,
-                                        anneal_epochs=config.swa_anneal_epochs)
+                                        anneal_epochs=config.swa_anneal_epochs, last_epoch=config.start_epoch - 1)
         swa_model.train()
 
     iter_smooth = 50
@@ -226,7 +226,7 @@ def run_train(config):
     start = timer()
     swa_max_valid = max_valid = 0
 
-    for epoch in range(config.train_epoch):
+    for epoch in range(config.start_epoch, config.train_epoch):
         sum_train_loss = np.zeros(6, np.float32)
         sum = 0
 
@@ -534,6 +534,8 @@ if __name__ == '__main__':
 
     parser.add_argument('--iter_save_interval', type=int, default=5)
     parser.add_argument('--train_epoch', type=int, default=100)
+    parser.add_argument('--start_epoch', type=int, default=0,
+                        help="Epoch to starting counting (0 based). Used when loading pretrained model.")
 
     parser.add_argument('--swa', type=bool, default=False, nargs='?', const=True,
                         dest='use_swa', help="use Stochastic Weight Averaging (SWA)")
