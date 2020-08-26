@@ -380,6 +380,15 @@ def run_train(config):
 
                 torch.save(swa_model.state_dict(), out_dir + '/checkpoint/max_valid_swa_model.pth')
 
+            if (epoch + 1) == config.train_epoch:
+                saving_msg = f'Final training epoch ({epoch}). ' \
+                             f'SWA validation: {swa_stats[3]}... saving SWA model on disk.'
+
+                print(saving_msg)
+                log.write(saving_msg + '\n')
+
+                torch.save(swa_model.state_dict(), out_dir + '/checkpoint/swa_final_model.pth')
+
     log.write('\nTraining end time: {}\n'.format(datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
     log.close()
 
