@@ -1,3 +1,5 @@
+import os
+import argparse
 from collections import defaultdict, Counter
 
 from process.data_helper import *
@@ -103,10 +105,17 @@ def write_models(blend, file_name, is_top1=False):
     return file_name + '.csv'
 
 
+
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--name', type=str, dest='model_name', required=True, help='model name')
+    parser.add_argument('--checkpoint', type=str, default='max_valid_model', help='use checkpoint prediction, default=max_valid_model')
+    parser.add_argument('--threshold', type=float, dest='thres', default=0.185, help='use threshold to new whales, default=0.185')
+    config = parser.parse_args()
+
     model_pred = {
         # r'./models/resnet101_test1_256_512/checkpoint/max_valid_model': 10,
-        r'./models/resnet101_test2_256_512/checkpoint/max_valid_model': 10,
+        os.path.join('models', config.model_name, 'checkpoint', config.checkpoint): 10,
 
         # r'./models/resnet101_fold0_256_512/checkpoint/max_valid_model': 10,
         # r'./models/resnet101_fold0_256_512/checkpoint/max_valid_model': 10,
