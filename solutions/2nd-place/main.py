@@ -401,7 +401,6 @@ def run_infer(config):
     out_dir = os.path.join('./models/', config.model_name)
 
     net = get_model(config.model, config)
-    net = torch.nn.DataParallel(net)
     print(net)
 
     if config.pretrained_model is not None:
@@ -411,8 +410,17 @@ def run_infer(config):
 
     if initial_checkpoint is not None:
         print(initial_checkpoint)
-        net.load_state_dict(torch.load(initial_checkpoint, map_location=lambda storage, loc: storage))
+        state_dict = torch.load(initial_checkpoint, map_location=lambda storage, loc: storage)
 
+        if config.use_swa:
+            # fix module parameter names, which replicates the 'module' term
+            state_dict = {k.replace('module.module', 'module'): v for k, v in state_dict.items()}
+
+            net = swa_utils.AveragedModel(net)
+
+        net.load_state_dict(state_dict)
+
+    net = torch.nn.DataParallel(net)
     net = net.cuda()
     net.eval()
 
@@ -475,7 +483,7 @@ def run_infer(config):
             input = input.cuda()
             input = to_var(input)
             logit, _, fea = net.forward(input, None, is_infer=True)
-            prob = F.sigmoid(logit)
+            prob = torch.sigmoid(logit)
 
             if augments[index][0] == 0.0:
                 prob = prob[:, :whale_id_num]
