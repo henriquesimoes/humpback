@@ -39,8 +39,8 @@ def update_new_whales(df_train, df_test):
 def remove_new_whales(df_test, df_pred):
   nw_indices = df_test.loc[df_test['Id'] == 'new_whale'].index
 
-  df_test = df_test.loc[~df_test.index.isin(nw_indices)]
-  df_pred = df_pred.loc[~df_pred.index.isin(nw_indices)]
+  df_test = df_test.loc[~df_test.index.isin(nw_indices)].copy()
+  df_pred = df_pred.loc[~df_pred.index.isin(nw_indices)].copy()
 
   return df_test, df_pred
 
