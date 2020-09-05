@@ -5,7 +5,7 @@
  - Dataset: Hard
  - Solution: 2nd solution - SWA
  - Description: Trained on test #2 dataset, with max validation when SWAed
- - Date: 2020-08-29 13:51:07
+ - Date: 2020-09-05 15:07:35
 
 ## Test results: 
 

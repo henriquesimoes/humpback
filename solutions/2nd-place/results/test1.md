@@ -4,13 +4,13 @@
 
  - Dataset: Test #1
  - Solution: 2nd solution - SWA
- - Description: Max validation using SWA
- - Date: 2020-08-29 13:52:35
+ - Description: Best validation SWA
+ - Date: 2020-09-05 15:14:28
 
 ## Test results: 
 
- - MAP@5:    0.98433
+ - MAP@5:    0.98457
  - Top@1:    0.97621
- - Top@3:    0.99249
- - Top@5:    0.99274
+ - Top@3:    0.99299
+ - Top@5:    0.99349
 
