@@ -1,5 +1,8 @@
 # Kaggle Humpback Whale Identification Challenge  1st place code
 
+> :warning: This source code (including this file) is a clone of the original solution. You can find the original at 
+> https://github.com/earhian/Humpback-Whale-Identification-1st-
+
 #### Recent Updates
 [2019.3.1 16:44] uploading mask file
 #### Dependencies
