@@ -4,71 +4,72 @@ from __future__ import print_function
 
 from datetime import datetime
 
-class Report():
-  def __init__(self, dataset):
-    self.date = datetime.now()
-    self.dataset = dataset
-    self.results = []
-  
-  def set_solution(self, solution):
-    self.solution = solution
 
-  def set_description(self, description):
-    self.description = description
+class Report:
+    def __init__(self, dataset):
+        self.date = datetime.now()
+        self.dataset = dataset
+        self.results = []
 
-  def add_result(self, result):
-    self.results.append(result)
+    def set_solution(self, solution):
+        self.solution = solution
 
-  def set_known_only(self, known_only):
-    self.known_only = known_only
+    def set_description(self, description):
+        self.description = description
 
-  def __str__(self):
-    out = "# Test Report\n\n"
-    out += "## Configuration\n\n"
-    if self.dataset:
-      out += " - Dataset: " + self.dataset + "\n"
-    if self.solution:
-      out += " - Solution: " + str(self.solution) + "\n"
-    if self.description:
-      out += " - Description: " + self.description + "\n"
-    if self.known_only:
-      out += " - Only known whales\n"
-    out += " - Date: " + self.date.strftime('%Y-%m-%d %H:%M:%S') + "\n\n"
-    out += "## Test results: \n\n"
+    def add_result(self, result):
+        self.results.append(result)
 
-    for result in self.results:
-      out += " - {}: {:10.5f}\n".format(result['metric'], result['result'])
+    def set_known_only(self, known_only):
+        self.known_only = known_only
 
-    out += '\n'
+    def __str__(self):
+        out = "# Test Report\n\n"
+        out += "## Configuration\n\n"
+        if self.dataset:
+            out += " - Dataset: " + self.dataset + "\n"
+        if self.solution:
+            out += " - Solution: " + str(self.solution) + "\n"
+        if self.description:
+            out += " - Description: " + self.description + "\n"
+        if self.known_only:
+            out += " - Only known whales\n"
+        out += " - Date: " + self.date.strftime('%Y-%m-%d %H:%M:%S') + "\n\n"
+        out += "## Test results: \n\n"
 
-    return out
+        for result in self.results:
+            out += " - {}: {:10.5f}\n".format(result['metric'], result['result'])
+
+        out += '\n'
+
+        return out
+
 
 class ReportManager:
-  def __init__(self, dataset):
-    self.dataset = dataset
-    self._reset()
+    def __init__(self, dataset):
+        self.dataset = dataset
+        self._reset()
 
-  def _reset(self):
-    self.report = Report(self.dataset)
+    def _reset(self):
+        self.report = Report(self.dataset)
 
-  def set_info(self, solution, description = '', known_only=False):
-    self.report.set_solution(solution)
-    self.report.set_description(description)
-    self.report.set_known_only(known_only)
-  
-  def add_metric(self, name, result):
-    self.report.add_result({'metric': name, 'result': result})
+    def set_info(self, solution, description='', known_only=False):
+        self.report.set_solution(solution)
+        self.report.set_description(description)
+        self.report.set_known_only(known_only)
 
-  def finish(self, path, save=True):
-    self.display()
-    if save: self.save(path)
-    self._reset()
+    def add_metric(self, name, result):
+        self.report.add_result({'metric': name, 'result': result})
 
-  def save(self, path):
-    f = open(path, 'w')
-    f.write(str(self.report))
-    f.close()
+    def finish(self, path, save=True):
+        self.display()
+        if save: self.save(path)
+        self._reset()
 
-  def display(self):
-    print(self.report, end='\n\n')
-    
+    def save(self, path):
+        f = open(path, 'w')
+        f.write(str(self.report))
+        f.close()
+
+    def display(self):
+        print(self.report, end='\n\n')
