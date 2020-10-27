@@ -9,8 +9,8 @@ Humpback whales (_Megaptera novaeangliae_) were predominantly explored by the fi
 late 1900s. After the humpback whale fishing was banned, and the species declared endangered, the population started to
 recover. However, the data of this recovery were still limited. In order to track the population dynamics, researchers
 use the whale’s fluke shape and markings to identify the individuals. But this process had to be done manually.
-In this sense, the Kaggle platform hosted a competition from Nov. 2018 to Feb. 2019 where an automatic model should
-identify the whales by their tails. In this research project, we aimed at analyzing and reproducing the competition top
+To address this issue, the Kaggle platform hosted a competition from Nov. 2018 to Feb. 2019 where an automatic model should
+identify the whales by their tails. In our research project, we aimed at analyzing and reproducing the competition top
 solutions’ results, as well as at testing improvements that could be incorporated to the best solution.
 
 ## Repository Structure
@@ -22,22 +22,22 @@ The files are distributed across several folders which are described next.
 - [data-analysis](./data-analysis): Processed information about the data used by competitors to build their algorithms.
 - [solutions](./solutions): Solutions developed by the analysed candidates;
 - [util](./util): Executables created by us to handle some tasks;
-- [test](./test): Corrected data (and examination intermediate files);
+- [test](./test): Corrected data (and intermediate files);
 
 ### Branches
 
-This repository contains several branches, which corresponds to different changes in the source codes.
+This repository contains several branches, which correspond to different changes in the source code.
 
-In this branch (`main`), the `solutions`  folder contains the top-3 solution code provided by the authors. Little
+In this branch (`main`), the `solutions` folder contains the top-3 solution code provided by the authors. Small
 fixes had to be done in order to run the code, such as changing the resources' paths or fixing imports. In order words,
-this branch contains the code we used to reproduce each solution trained model.
+this branch contains the code we used to reproduce the creation of each solution's trained model.
 
 The other branches have the following changes:
-- `{1st,2nd,3rd}-solution`: Updates the corresponding solution to use our datasets;
-- `gcn`: Updates the `2nd-solution` branch code to use Global Contrast Normalization (GCN);
-- `lcn`: The same as above but to use Local Contrast Normalization (LCN);
-- `no-cn`: The same as above but not to use Contrast Normalization;
-- `swa`: The same as above but to use [Stochastic Weight Averaging (SWA)][10];
+- `{1st,2nd,3rd}-solution`: Updated solutions using our datasets;
+- `gcn`: Updated `2nd-solution` branch code using Global Contrast Normalization (GCN);
+- `lcn`: Same as above but using Local Contrast Normalization (LCN);
+- `no-cn`: Same as above but using no Contrast Normalization;
+- `swa`: Same as above but using [Stochastic Weight Averaging (SWA)][10];
 
 ## Acknowledgments
 
