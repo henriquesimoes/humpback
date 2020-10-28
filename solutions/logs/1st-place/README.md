@@ -1,4 +1,4 @@
-# Log files for trainings and experiments done so far
+# Log files for trainings and experiments
 
 ## Training steps
 

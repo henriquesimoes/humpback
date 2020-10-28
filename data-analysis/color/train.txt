@@ -1,6 +1,0 @@
-Images processed from: data/train
-
-*** Results ***
-Total images:  25361
-Gray scale: 8270 (32.61%)
-Colored: 17091 (67.39%)

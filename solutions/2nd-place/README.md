@@ -1,4 +1,8 @@
 # Kaggle Humpback Whale Identification Challenge 2019 2nd place code
+
+> :warning: This source code (including this file) is a clone of the original solution. You can find the original at 
+> https://github.com/SeuTao/Kaggle_Whale2019_2nd_palce_solution
+
 This is the source code for my part of the 2nd place solution to the [Humpback Whale Identification Challenge](https://www.kaggle.com/c/humpback-whale-identification) hosted by Kaggle.com. 
 
 ![image](https://github.com/SeuTao/Kaggle_Whale2019_2nd_palce_solution/blob/master/png/whale.png)
