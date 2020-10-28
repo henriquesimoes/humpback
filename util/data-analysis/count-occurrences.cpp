@@ -1,6 +1,6 @@
 /**
- * This utilitary program was created to count the number of
- * occurences of the number of examples per whale.
+ * This utility program was created to count the number of
+ * occurrences of the number of examples per whale.
  */
 
 #include <iostream>
@@ -15,10 +15,10 @@ int main() {
     int n, lower = INT_MAX, upper = 0;
     int occurrences[MAX];
 
-    memset(occurrences, 0, sizeof(occurrences)); // reset occurreces counting
+    memset(occurrences, 0, sizeof(occurrences)); // reset occurrences counting
 
     while (scanf("%d%*[^\n]", &n) != EOF) {
-        occurrences[n]++;            // increase the number of occurences
+        occurrences[n]++;            // increase the number of occurrences
 
         lower = min(lower, n);
         upper = max(upper, n);
