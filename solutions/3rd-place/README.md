@@ -1,4 +1,8 @@
 # kaggle-humpback-submission
+    
+> :warning: This source code (including this file) is a clone of the original solution. You can find the original at 
+> https://github.com/pudae/kaggle-humpback
+
 Code for 3rd place solution in Kaggle Humpback Whale Identification Challange.
 
 To read the detailed solution, please, refer to [the Kaggle post](https://www.kaggle.com/c/humpback-whale-identification/discussion/82484)
