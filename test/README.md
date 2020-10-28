@@ -5,7 +5,7 @@ experiments.
 
 ## Data curation
 
-As part of our examinination on the dataset, we selected from the [Kaggle forum][1] issues found by competitors regarding labels.
+As part of our examination on the dataset, we selected from the [Kaggle forum][1] issues found by competitors regarding labels.
 The main issues were duplicate classes and mislabeled examples (either as a different identifiable class or as the _new whale_
 class). Our inspection results are available on the [filter directory](./filter), which has the following files:
 
@@ -32,8 +32,8 @@ whale. We did not make use of this list, though. We decided to keep them all as 
 The most frequent factor was multiple flukes in the same image file (either from the same whale or from other whales).
 - [texted.csv](./filter/texted.csv) - Image files that contain some type of textual information on them. The most
 frequent situation is hand-written or typed information in a white box on the bottom of the image.
-- [duplicates](./filter/duplicates) - Duplicate tuples found in the Kaggle forum (`raw`), and its compressed version,
-which merges multiple (redundant) occurrences. 
+- [duplicates](./filter/duplicates) - Potentially duplicate tuples found in the Kaggle forum (`raw`), and its compressed
+version, which merges multiple (redundant) occurrences and includes our conclusions about them. 
 
 ## Splits
 

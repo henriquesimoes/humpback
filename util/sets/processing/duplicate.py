@@ -33,7 +33,7 @@ class DuplicateProcessing():
 
     def _fix_classes(self, df):
         if self.df_classes is not None:
-            df_filter = self.df_classes[self.df_classes['Veredict'] == True]
+            df_filter = self.df_classes[self.df_classes['Verdict'] == True]
 
             for idx, row in df_filter.iterrows():
                 classes = row['Duplicates'].split()
@@ -73,7 +73,7 @@ def test_duplicate_classes():
 
     duplicate_dict = {
         'Duplicates': ['a b', 'c d', 'e f g'],
-        'Veredict': [True, False, True]
+        'Verdict': [True, False, True]
     }
 
     duplicate.df_classes = pd.DataFrame(duplicate_dict)
