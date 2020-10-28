@@ -1,9 +1,9 @@
-import imgaug as ia
-from imgaug import augmenters as iaa
-import os
-from PIL import Image
 import argparse
+import os
+
 import numpy as np
+from PIL import Image
+from imgaug import augmenters as iaa
 
 ap = argparse.ArgumentParser()
 ap.add_argument("-i", "--image", required=True, help="Input image path")
@@ -14,9 +14,8 @@ args = vars(ap.parse_args())
 imagefile = args["image"]
 
 if not os.path.exists(imagefile):
-  print("Not found {}...".format(imagefile))
-  exit(1)
-
+    print("Not found {}...".format(imagefile))
+    exit(1)
 
 original = Image.open(imagefile)
 original = np.array(original)[48:481, :]
@@ -24,7 +23,7 @@ original = np.array(Image.fromarray(original).resize((512, 256)))
 image = original.copy()
 
 seq = iaa.Sequential([
-  iaa.PerspectiveTransform(scale=(0.01, 0.1))
+    iaa.PerspectiveTransform(scale=(0.01, 0.1))
 ])
 
 image = seq.augment_image(image)
@@ -32,16 +31,15 @@ Image.fromarray(original).show()
 Image.fromarray(image).show()
 
 if input("Save? ") in ["yes", "y", "yep"]:
-  os.makedirs(args["output"], exist_ok=True)
+    os.makedirs(args["output"], exist_ok=True)
 
-  id = ""
-  if input("Identifier (yes/no)? ") in ["yes", "y", "yep"]:
-    id = input("\tEnter id: ")
+    id = ""
+    if input("Identifier (yes/no)? ") in ["yes", "y", "yep"]:
+        id = input("\tEnter id: ")
 
-  outname = os.path.join(args["output"], id + os.path.basename(imagefile))
+    outname = os.path.join(args["output"], id + os.path.basename(imagefile))
 
-  print("Saving at {}".format(outname))
-  Image.fromarray(image).save(outname)
+    print("Saving at {}".format(outname))
+    Image.fromarray(image).save(outname)
 
-  print("Done...")
-  
+    print("Done...")
