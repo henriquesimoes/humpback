@@ -28,14 +28,16 @@ The files are distributed across several folders which are described next.
 
 This repository contains several branches, which correspond to different changes in the source code.
 
-In this branch (`main`), the `solutions` folder contains the top-3 solution code provided by the authors. Small
-fixes had to be done in order to run the code, such as changing the resources' paths or fixing imports. In order words,
-this branch contains the code we used to reproduce the creation of each solution's trained model.
+In this branch (`gcn`), the second solution code using our dataset is updated to use Global Contrast
+Normalization (GCN). For a description of this strategy, see Goodfellow _et al._'s [Deep Learning book][11],
+section 12.2.1.1. To do so, we added a [contrast module](./solutions/2nd-place/process/contrast.py) which allows the
+application of the global and local normalization, as well as the author's original transformation, to a batch of
+images.
 
 The other branches have the following changes:
+- `main`: Original solutions;
 - `{1st,2nd,3rd}-solution`: Updated solutions using our datasets;
-- `gcn`: Updated `2nd-solution` branch code using Global Contrast Normalization (GCN);
-- `lcn`: Same as above but using Local Contrast Normalization (LCN);
+- `lcn`: Updated `2nd-solution` branch code using Local Contrast Normalization (LCN);
 - `no-cn`: Same as above but using no Contrast Normalization;
 - `swa`: Same as above but using [Stochastic Weight Averaging (SWA)][10];
 
@@ -47,7 +49,7 @@ which includes the configuration and maintenance of the machine used in our expe
 support under grant #2018/00031-7. Moreover, we also thank [SAE/Unicamp][7] for the support given.
 
 Opinions, hypothesis and conclusions, or recommendations made in this material are responsibility of the authors,
-and not necessarily reflect FAPESP's point of view.
+and do not necessarily reflect FAPESP's point of view.
 
 [1]: http://lattes.cnpq.br/2364440352119569
 [2]: http://lattes.cnpq.br/1313385414995585
@@ -58,3 +60,4 @@ and not necessarily reflect FAPESP's point of view.
 [8]: https://ic.unicamp.br/
 
 [10]: https://arxiv.org/abs/1803.05407
+[11]: https://www.deeplearningbook.org
