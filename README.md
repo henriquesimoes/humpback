@@ -28,12 +28,15 @@ The files are distributed across several folders which are described next.
 
 This repository contains several branches, which correspond to different changes in the source code.
 
-In this branch (`main`), the `solutions` folder contains the top-3 solution code provided by the authors. Small
-fixes had to be done in order to run the code, such as changing the resources' paths or fixing imports. In order words,
-this branch contains the code we used to reproduce the creation of each solution's trained model.
+In this branch (`1st-solution`), the first solution is updated to use our dataset. This means hard-coded information,
+such as the number of classes, had to be changed in the source code. Moreover, the source code had to be updated to use
+new files containing new training and validation sets. In order to create such sets, the same proportion as the original
+splits is used; as it can be seen in the [generate_valid script](./solutions/1st-place/input/generate_valid.py).
+We also customized the training logging, in order to keep the measurement standards.  
 
 The other branches have the following changes:
-- `{1st,2nd,3rd}-solution`: Updated solutions using our datasets;
+- `main`: Original solutions;
+- `{2nd,3rd}-solution`: Updated solutions using our datasets;
 - `gcn`: Updated `2nd-solution` branch code using Global Contrast Normalization (GCN);
 - `lcn`: Same as above but using Local Contrast Normalization (LCN);
 - `no-cn`: Same as above but using no Contrast Normalization;
@@ -47,7 +50,7 @@ which includes the configuration and maintenance of the machine used in our expe
 support under grant #2018/00031-7. Moreover, we also thank [SAE/Unicamp][7] for the support given.
 
 Opinions, hypothesis and conclusions, or recommendations made in this material are responsibility of the authors,
-and not necessarily reflect FAPESP's point of view.
+and do not necessarily reflect FAPESP's point of view.
 
 [1]: http://lattes.cnpq.br/2364440352119569
 [2]: http://lattes.cnpq.br/1313385414995585
