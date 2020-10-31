@@ -28,16 +28,26 @@ The files are distributed across several folders which are described next.
 
 This repository contains several branches, which correspond to different changes in the source code.
 
-In this branch (`main`), the `solutions` folder contains the top-3 solution code provided by the authors. Small
-fixes had to be done in order to run the code, such as changing the resources' paths or fixing imports. In order words,
-this branch contains the code we used to reproduce the creation of each solution's trained model.
+In this branch (`3rd-solution`), the third solution is updated to use our dataset. In this process, we introduced some
+potential breaking changes. This solution training procedure is suited for two tasks: landmark prediction and whale
+identification. We changed it satisfy to our needs for the identification task only. To do so, we have made the
+following changes:
+- we created more [configuration files](./solutions/3rd-place/configs).
+- we changed the training log strategy. We used a similar approach as the first and second solution, which consists in
+writing the information directly to a text file, instead of using [TensorBoardX][11].
+- we also included the _precision@k_ (_top@k_) metric to the log.
+- we created a [bash script](./solutions/3rd-place/inference_tests.sh) to automatically run all inference steps for
+the tests.
+- we added landmarks and a bounding box for a image (`076e1f97f.jpg`) which did not have it available in the 5th split.
 
 The other branches have the following changes:
-- `{1st,2nd,3rd}-solution`: Updated solutions using our datasets;
+- `main`: Original solutions;
+- `{1st,2nd}-solution`: Updated solutions using our datasets;
 - `gcn`: Updated `2nd-solution` branch code using Global Contrast Normalization (GCN);
 - `lcn`: Same as above but using Local Contrast Normalization (LCN);
 - `no-cn`: Same as above but using no Contrast Normalization;
 - `swa`: Same as above but using [Stochastic Weight Averaging (SWA)][10];
+
 
 ## Acknowledgments
 
@@ -58,3 +68,4 @@ and not necessarily reflect FAPESP's point of view.
 [8]: https://ic.unicamp.br/
 
 [10]: https://arxiv.org/abs/1803.05407
+[11]: https://tensorboardx.readthedocs.io/en/latest/tensorboard.html
