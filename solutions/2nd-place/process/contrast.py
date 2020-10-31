@@ -79,7 +79,7 @@ def local_contrast_norm(x, kernel_size=9, scale=1, lmbda=0, eps=1e-8):
 def imagenet_norm(x):
     r"""
     Normalizes the input image batch using the ImageNet image statistics
-    (i.e. mean and stardard deviation).
+    (i.e. mean and standard deviation).
 
     # Parameters
 
@@ -115,7 +115,7 @@ if __name__ == "__main__":
 
     image = Image.open(config.image).convert('RGB').resize((512, 256))
 
-    image = np.asarray(image).transpose(2, 0, 1)
+    image = np.asarray(image).transpose((2, 0, 1))
 
     image = torch.FloatTensor(image / 255)
 
@@ -129,6 +129,6 @@ if __name__ == "__main__":
     print('It took', time.time() - t, 'seconds to run...')
 
     for img in imgs:
-        image = (img * 255).clamp(min=0, max=255).numpy().transpose(1, 2, 0)
+        image = (img * 255).clamp(min=0, max=255).numpy().transpose((1, 2, 0))
 
         Image.fromarray(image.astype(np.uint8)).show()
