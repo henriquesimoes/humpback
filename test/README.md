@@ -13,7 +13,7 @@ class). Our inspection results are available on the [filter directory](./filter)
 dataset. It places all examples separated by classes, merging potential duplicate classes into the same directory. The
 script has an option that includes the original class in the file name to ease checking whether images are really from
 different classes or not. It uses [create_dirs_by_id.py](./filter/create_dirs_by_id.py), which does the real job.
-- [duplicate_imgs.csv](./filter/duplicate_imgs.csv) - This file cointains a list of pairs of images that are duplicated,
+- [duplicate_imgs.csv](./filter/duplicate_imgs.csv) - This file contains a list of pairs of images that are duplicated,
 i.e. the same photograph in two different files. The CSV columns indicate which image we have chosen to keep and which
 we have removed from our corrected dataset.
 - [hard.csv](./filter/hard.csv) - This file lists all image files we found where a _difficulty_ factor existed.
@@ -24,7 +24,7 @@ These factors include:
 - [mislabeled.csv](./filter/mislabeled.csv) - Mislabeled examples found and their corresponding correct class. In some
 cases, we found just one example which did not belong to the assigned class. In such situations, we listed the image
 correct label as `new_id`. In our corrected dataset, this label turned into `new_whale`. For more information about the
-dataset creation process, check the section [Splits](#splits).
+dataset creation process, check the [Splits](#splits) section.
 - [new_groups.csv](./filter/new_groups.csv) - This file contains a list of _new whale_ examples that are actually the same
 whale. We did not make use of this list, though. We decided to keep them all as _new whales_.
 - [not_new.csv](./filter/not_new.csv) - Potentially mislabeled _new whales_ and our conclusions about them.
