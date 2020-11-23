@@ -55,9 +55,9 @@ and do not necessarily reflect FAPESP's point of view.
 [2]: http://lattes.cnpq.br/1313385414995585
 
 [5]: https://www.kaggle.com/c/humpback-whale-identification
-[6]: https://fapesp.br
+[6]: https://fapesp.br/en/
 [7]: https://www.sae.unicamp.br
-[8]: https://ic.unicamp.br/
+[8]: https://ic.unicamp.br/en/
 
 [10]: https://arxiv.org/abs/1803.05407
 [11]: https://www.deeplearningbook.org/contents/applications.html
