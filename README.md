@@ -49,8 +49,16 @@ support under grant #2018/00031-7. Moreover, we also thank [SAE/Unicamp][7] for 
 Opinions, hypothesis and conclusions, or recommendations made in this material are responsibility of the authors,
 and not necessarily reflect FAPESP's point of view.
 
+## License
+
+The source codes except those in the [solutions folder](./solutions) are licenced under the
+[BSD 3-Clause License](./LICENSE), and the data resources of this project except those in the
+[solutions folder](./solutions) are licensed under the [CC0 1.0 Universal (CC0 1.0) Public Domain Dedication][3].
+
 [1]: http://lattes.cnpq.br/2364440352119569
 [2]: http://lattes.cnpq.br/1313385414995585
+
+[3]: https://creativecommons.org/publicdomain/zero/1.0/
 
 [5]: https://www.kaggle.com/c/humpback-whale-identification
 [6]: https://fapesp.br/en/
