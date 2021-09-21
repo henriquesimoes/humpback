@@ -1,5 +1,7 @@
 from collections import defaultdict, Counter
 from process.data_helper import *
+import argparse
+
 SIGFIGS = 6
 
 id_name_label, dict_label = load_CLASS_NAME()
@@ -96,6 +98,11 @@ def write_models(blend, file_name, is_top1 = False):
     return file_name + '.csv'
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--name', type=str, dest='model_name', required=True, help='model name')
+    parser.add_argument('--checkpoint', type=str, default='max_valid_model', help='use checkpoint prediction, default=max_valid_model')
+    parser.add_argument('--threshold', type=float, dest='thres', default=0.185, help='use threshold to new whales, default=0.185')
+    config = parser.parse_args()
 
     model_pred = {
         # r'./models/resnet101_test1_256_512/checkpoint/test_standard': 10,
@@ -117,9 +124,11 @@ if __name__ == '__main__':
         # r'./models/resnet101_fold0_pseudo_512_512/checkpoint/max_valid_model': 20,
         # r'./models/seresnet101_fold0_pseudo_512_512/checkpoint/max_valid_model': 20,
         # r'./models/seresnext101_fold0_pseudo_512_512/checkpoint/max_valid_model': 20,
+
+        os.path.join('models', config.model_name, 'checkpoint', config.checkpoint): 10,
     }
 
-    thres =  0.185
+    thres =  config.thres
     avg = read_models(model_pred, thres)
     # avg, missing_ids = clalibrate_distribution(blend=avg)
     csv_name = write_models(avg, 'result', is_top1=False)
