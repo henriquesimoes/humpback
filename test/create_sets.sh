@@ -1,3 +1,5 @@
+dest=sets
+mkdir $dest
 python3 ../util/sets/create_sets.py \
   --labels ../data/train.csv \
   --remove filter/not_valid.csv \
@@ -6,5 +8,7 @@ python3 ../util/sets/create_sets.py \
   --duplicate-classes filter/duplicates/duplicates.csv \
   --not-new filter/not_new.csv \
   --mislabeled filter/mislabeled.csv \
+  --test_percentage=0.2 \
   --tests=2 \
-  --test_percentage=0.2
+  --output=$dest \
+  > $dest/tests.stats.log
