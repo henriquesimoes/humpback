@@ -171,7 +171,7 @@ docker run -d -it \
 ```
 
 where `$CHECKPOINT_PATH` is an environment variable specifying the path in the
-computer filesystem to store the checkpoints. For doing so, you can use:
+host filesystem to store the checkpoints. For doing so, you can use:
 
 ```bash
 export CHECKPOINT_PATH=/path/to/disk/folder
@@ -418,6 +418,200 @@ an ensemble of several models (with different architectures) would be created.
 A final CSV file will be generated, named `result.csv`. This is what we will
 [later](#assessing-results) use to assess how the network has performed.
 
+## 3rd solution
+
+This solution was cloned from [this repository][3rd-repo]. Again, you should
+move to its corresponding branch, _i.e._ `3rd-solution` before continuing the
+following steps.
+
+### Setting up the labels
+
+This solution used CSV files to specify which labels to use for training. Thus,
+we place the corresponding file in the `data` folder with a name which will
+actually specify in a configuration file. We have followed the pattern
+`test<n>.{train,sample}.csv` for conventional test sets, and `hard.sample.csv`
+for the hard training set. Training file is pretty much the one we have
+[generated before](#creating-splits). Just copying it must do. Test image
+listing (`sample`) file should be like `sample_submission.csv` from Kaggle. But
+the solution code do not actually care about the content in `Id` column. So we
+can change it to something shorter than 5 classes. For instance, we can generate
+such file the following way.
+
+```bash
+  dest_file=solutions/3rd-place/data/test3.sample.csv
+  echo "Image,Id" > $dest_file
+  cat test/sets/test\#3/test.csv | \
+    grep -v Image | \
+    cut -d, -f 1 | \
+    xargs -i echo {},ids >> $dest_file
+```
+
+This first adds the `Image,Id` header to the file. Then, it gets each line from
+`test.csv` that does not contain the `Image` keyword (all but the header), cut
+it by the comma, takes the image name field (`-f 1`) and appends it (`>>`)
+followed by `,ids` to the destination file. We could simply copy the `test.csv`
+file as `test3.sample.csv` file. But we then would need to be more careful about
+data leakage. It turns out to be better to replace the labels to `ids`.
+
+As we have said before, these files we have created could have any naming. This
+is because we need to configure a YAML file with the parameters of the model. In
+this file, we will also specify both training and testing label files. For each
+different experiment, a configuration file should exist in `configs/`. In fact,
+the ones we have used are therein. To reproduce what we have done, copy one of
+them (_e.g._ `cp test1.yml test3.yml`) and update its first lines to match the
+label files. For example, it should look like this for our example for test #3.
+
+```yml
+data:
+  name: 'IdentificationDataset'
+  dir: 'data'
+  params:
+    train_csv: 'test3.train.csv'
+    sample_csv: 'test3.sample.csv'
+
+# and the file goes on unchanged from here...
+```
+
+We will update other option in this file in the next section. But this is all we
+have to do to configure the labels.
+
+Finally, to let the images listed in `test3.sample.csv` available during the
+inference process, we would need to place them in `data/test`. It turns out that
+the code will only load the images listed in the file. Thus, all we actually
+need to do is to symbolically link the `train` folder itself to `test`, such as
+in
+
+```bash
+  ln -s data/train data/test
+```
+
+Note this configuration conflicts with the one presented for the second
+solution. Thus, double check everything before continuing.
+
+### Training steps
+
+During training, information about checkpoints and statistics are created. These
+are placed in a directory specified in the config file as well. Thus, we will
+need to update its contents (from the previous section). Look for a `train:`
+property in the file, and update it accordingly. For instance, for our test #3
+example it could look like this
+
+```yml
+# ... other properties appear up here
+
+train:
+  dir: './train_logs/test3'
+  batch_size: 32
+  log_step: 200
+  save_checkpoint_epoch: 2
+  num_epochs: 300
+
+# and it continues below...
+```
+
+Note here we already specifying the batch size to be used, as well as the number
+of epochs. They should be kept this way for reproducing the pipeline we have
+followed. This batch size should be fine to run in single GPU with about 10GB of
+free memory.
+
+#### Building the container
+
+Here we take very close approach to [the one explained for the second
+solution](#creating-the-container).
+
+Since the path we specify in `train.dir` is used to store checkpoint files, it
+is interesting to have it mapped to a folder in a large storage disk. We will
+again assume the `$CHECKPOINT_PATH` environment variable points to an
+appropriate path in such disk.
+
+In addition, we will map the `data` directory a bit differently. This time, we
+will make it be inside the solution folder, since the YAML file specifies a
+relative path.
+
+The resulting command is
+
+```bash
+docker run -d -it \
+   --shm-size=8GB \
+   --runtime=nvidia --gpus all \
+   --name humpback_3rd \
+   -v $(pwd)/solutions/3rd-place:/solutions/3rd-place \
+   -v $CHECKPOINT_PATH/3rd-place/train_logs:/solutions/3rd-place/train_logs \
+   -v $(pwd)/data:/solutions/3rd-place/data \
+   ufoym/deepo:all-py36-cu101
+```
+
+This step need to be done just once (as long as the container still exists).
+
+#### Start training procedure
+
+As we have done before, we will need once again to use `screen` to run the
+training procedure. So launch it inside the container and change to directory
+`solutions/3rd-place`. After that, we can start training by simply issuing
+
+```bash
+  export CUDA_VISIBLE_DEVICES=0
+  python3 train.py --config=configs/test3.yml
+```
+
+to start training with the configuration specified by `test3.yml`. This might
+take around 4 days using a single GPU (10GB free memory).
+
+After this process, several checkpoints are created. For the next steps, we are
+going to assume `$CUDA_VISIBLE_DEVICES` is set accordingly. We still need a few
+steps before generating the classification.
+
+#### Stochastic Weight Averaging
+
+This solution uses the strategy proposed by [Izmailov and colleagues
+(2018)][swa-paper], which basically consists in averaging the network (internal)
+weights of epochs close to the convergence point. Thus, we will use `swa.py`
+script to perform this averaging in the parameters saved in disk during the
+training procedure.
+
+To do so, we can simply use
+
+```bash
+  python3 swa.py --config=configs/test3.yml
+```
+
+#### Computing similarities
+
+Now that the averaged model is available, we can compute the simililarities
+among training and test images. For doing so, we will need to execute the
+following script:
+
+```bash
+  mkdir -p similarities
+  python inference_similarity.py \
+    --config=configs/test3.yml \
+    --tta_landmark=0 \
+    --checkpoint_name=swa.pth \
+    --output_path=similarities/test3.csv
+```
+
+Note we are setting it not to perform test-time augmentation for the different
+landmarks the author has created, and thus simplifying the inference process.
+
+#### Generating predictions
+
+Finally, to generate the classification, all we need to do is select the most
+similiar whale classes based on the precomputed simililarities. To do so, we
+will now use the following command:
+
+```bash
+  python3 make_submission.py \
+    --threshold=0.385 \
+    --input_path=similarities/test3.csv \
+    --sample_path=data/test3.sample.csv  \
+    --output_path=results/test3.csv
+```
+
+Threshold value have been defined by the solution author and thus should be
+kept. It basically decides which similiarity score is low enough to classify a
+whale as new. As the other solutions, this generates a CSV file containing the
+predictions, which is `test3.csv` in this case.
+
 ## Assessing the results
 
 After solution CSV prediction files had been generated, the authors would submit
@@ -468,11 +662,13 @@ output file, as reports follow its specification (and are nicely rendered in
 GitHub).
 
 [2nd-repo]: https://github.com/SeuTao/Kaggle_Whale2019_2nd_palce_solution
+[3rd-repo]: https://github.com/pudae/kaggle-humpback
 
 [competition]: https://www.kaggle.com/c/humpback-whale-identification
 
 [docker]: https://www.docker.com
 [docker-volumes]: https://docs.docker.com/storage/volumes/
 
+[swa-paper]: https://arxiv.org/abs/1803.05407
 [deepo]: http://ufoym.com/deepo/
 [nvidia-docker#1257]: https://github.com/NVIDIA/nvidia-docker/issues/1257
