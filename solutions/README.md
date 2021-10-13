@@ -104,7 +104,7 @@ test{n}.{valid|train}.txt
 ```
 
 where `{n}` is the test number (so far, 1 and 2 exist) and `{valid|train}` is
-either `valid` for validation set and `train` for training set. These files can
+either `valid` for validation set or `train` for training set. These files can
 be generated for new test sets using the `create_validation.py` script inside
 the `image_list` folder. To use it for generating validation splits for test #3,
 for instance, you can run
