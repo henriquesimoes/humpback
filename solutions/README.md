@@ -83,7 +83,7 @@ python3 ../util/sets/create_sets.py \
   > $dest/tests.stats.log
 ```
 
-substituing the `<n>` with the number of tests you are willing to create and the
+substituting the `<n>` with the number of tests you are willing to create and the
 `<dest>` to the destination folder (it should be different from `sets` if you do
 not want to overwrite the current sets in the repository). The above command
 redirects the output to the `tests.stats.log` file inside the set folder, so
@@ -136,7 +136,7 @@ approach here. First, we will create a container based on the `deepo` image with
 volumes and then execute the solution inside it. To do this, we will use the
 detach flag (`-d`) from `docker run`, which allows the container to run
 independently from the current bash process, and, as we launch it, we will
-already get into it using the interative flags (`-it`).
+already get into it using the interactive flags (`-it`).
 
 Since these solutions use a significant among of memory, we will have to extend
 the amount of shared memory for the container. To do so, we can use the
@@ -216,8 +216,8 @@ available by default in `deepo`. Thus, we must install it with
   sudo apt install screen
 ```
 
-Basically, this utilitary allows us to emulate a terminal. This makes possible
-to detach from bash and exit the container whenever we want without killing the
+Basically, this utility allows us to emulate a terminal. This makes possible to
+detach from bash and exit the container whenever we want without killing the
 process running in `screen`. We will show some steps on how to use it in later
 sections. For a detailed explanation on how it works, see its man page.
 
@@ -289,12 +289,12 @@ change the origin file to `../test/sets/hard.csv`. Make sure you have `test`
 directory empty before running the symbolic linkage, as all files from the
 folder will be part of the inference process in this solution. You can delete
 all previous symbolic links with `rm -r test`. That does not affect the files
-they are refering to.
+they are referring to.
 
 Recall that the `/dataset` folder inside the container is a volume that is
 mapped to the repository `data` folder. We could also do that inside the
 container. That is a matter of choice. Just bear in mind that all created files
-will belong to the root user this way, since Docker runs in previleged mode.
+will belong to the root user this way, since Docker runs in privileged mode.
 
 #### Running
 
@@ -373,7 +373,7 @@ if we are willing to run in the first GPU and in test split number one
 configuration is needed.
 
 If all configuration went just fine, this command should print out information
-about the network, and then continuouly printing some statistics about the
+about the network, and then continuously printing some statistics about the
 training steps. When that happens, we can detach by typing `<ctrl> + <a>`
 followed by `<d>`. And then securely `exit` the container.
 
@@ -394,7 +394,7 @@ training procedure: the maximum validation one. It is automatically saved during
 training, and is named `max_valid_model.pth`. Therefore, we will specify this
 name for the `--pretrained_model` argument when running inference. This
 essentially what changes from the command we have seen for triggering the
-training procedure. Of cource, we will also change `--mode` to `test`. Thus, the
+training procedure. Of course, we will also change `--mode` to `test`. Thus, the
 command will look like this
 
 ```bash
@@ -587,9 +587,9 @@ To do so, we can simply use
 
 #### Computing similarities
 
-Now that the averaged model is available, we can compute the simililarities
-among training and test images. For doing so, we will need to execute the
-following script:
+Now that the averaged model is available, we can compute the similarities among
+training and test images. For doing so, we will need to execute the following
+script:
 
 ```bash
   mkdir -p similarities
@@ -606,8 +606,8 @@ landmarks the author has created, and thus simplifying the inference process.
 #### Generating predictions
 
 Finally, to generate the classification, all we need to do is select the most
-similiar whale classes based on the precomputed simililarities. To do so, we
-will now use the following command:
+similar whale classes based on the precomputed similarities. To do so, we will
+now use the following command:
 
 ```bash
   python3 make_submission.py \
@@ -618,7 +618,7 @@ will now use the following command:
 ```
 
 Threshold value have been defined by the solution author and thus should be
-kept. It basically decides which similiarity score is low enough to classify a
+kept. It basically decides which similarity score is low enough to classify a
 whale as new. As the other solutions, this generates a CSV file containing the
 predictions, which is `test3.csv` in this case.
 
@@ -631,7 +631,7 @@ of images and labels Kaggle should use, we have implemented the metrics in our
 own for evaluating the classification. The implementation is available at
 [util/test](../util/test).
 
-To use this utilitary, we should give it at least four arguments:
+To use this utility, we should give it at least four arguments:
 
 - `--test`: path to test CSV file from the corresponding experiment (generated
   in [splits](#creating-splits)). It may be the `hard.csv` file as well;
