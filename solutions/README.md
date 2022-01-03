@@ -51,9 +51,19 @@ A Python script is available in the
 [`util/sets`](../util/sets) folder for doing this task. It is configured to
 receive several information from our data curation process, including which
 classes are duplicated, which images are wrongly classified as `new_whale` and
-so on (click [here](../test/README.md) for a complete list). To create the
-testing sets as we have done for the first two tests, you can use the following
-command:
+so on (click [here](../test/README.md) for a complete list).
+
+Before executing the command, we need to make sure all Python package
+dependencies are satisfied. For doing so, we recommend using [a virtual
+environment][venv], since it prevent from messing up other configurations in
+your development environment. Having it set up, all you have to do is run
+
+```bash
+  pip3 install -r util/sets/requirements.txt
+```
+
+Now, to create the testing sets as we have done for the first two tests, you can
+use the following command:
 
 ```bash
 cd test
@@ -666,6 +676,7 @@ GitHub).
 
 [competition]: https://www.kaggle.com/c/humpback-whale-identification
 
+[venv]: https://docs.python.org/3/library/venv.html
 [docker]: https://www.docker.com
 [docker-volumes]: https://docs.docker.com/storage/volumes/
 
