@@ -1,15 +1,14 @@
 # Solutions
 
-In this folder are the solutions' source codes cloned from their original
+In this folder we have the solutions' source codes cloned from their original
 repositories. Check out the corresponding `README.md` files to find the
-repository link or see the sections below.
+repository link or read the sections below.
 
-Since some changes have been made to allow the usage of the data we have
-filtered (see [test sets description](../test/README.md)), some changes were
-made to solution source codes in their corresponding branches. Thus, we will
+Due to our dataset correction procedure (see [test sets description](../test/README.md)), some changes were
+made in the solution branches. Thus, we will
 describe here how to run the adapted solutions using [Docker][docker]. In our
-experiments, we used [`ufoym/deepo:all-py36-cu101`][deepo] Docker image, as it
-is already configured with commonly used Deep Learning packages and to use
+experiments, we used the [`ufoym/deepo:all-py36-cu101`][deepo] Docker image, as it
+is already configured with commonly used Deep Learning packages, and knows how to use
 NVIDIA GPUs.
 
 An important note is that all solution codes are configured to always use GPUs.
