@@ -30,7 +30,7 @@ Since this dataset is part of a  Kaggle competition, you will need
 to have an account with Kaggle to be able to read (and accept) the data usage terms before
 downloading the data. Updated instructions to download the
 data can be found in the 'Data' tab of [this competition's page][competition] . After you have access to these files, place them in `data` folder in the
-root of the repository. Do not worry, the `.gitignore` is set to ignore it, in
+root of the repository. The `.gitignore` file is set to ignore them, in
 order to avoid potential issues when switching branches.
 
 Since the images are zipped, you must unzip them before continuing. To do so in
