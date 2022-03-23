@@ -11,23 +11,25 @@ experiments, we used the [`ufoym/deepo:all-py36-cu101`][deepo] Docker image, as 
 is already configured with commonly used Deep Learning packages, and knows how to use
 NVIDIA GPUs.
 
-An important note is that all solution codes are configured to always use GPUs.
+Note that all solution scripts are configured to always use GPUs.
 Therefore, you will not be able to run the code without them.
 
 ## Creating test sets
 
 First of all, we might want to create new data splits for training and testing
 the solutions. Thus far, we have created only two such split sets ([`test#1` and
-`test#2`](../test/sets/)). For doing so, we will need the labels from the
-competition, which are not in this repository. Thus, we will show both how to
-download the data and create splits like the ones aforementioned.
+`test#2`](../test/sets/)). For doing so,
+
+To create test sets we will need the labels from the
+competition, which are not in this repository. In the sequel, we will show how to
+download the necessary data and how to create splits.
 
 ### Downloading the data
 
-Since this dataset is part of a [Kaggle competition][competition], you will need
-to have an account to be able to read (and accept) the data usage terms and
-download the data. In this linked page are all updated steps to download the
-data. After you have access to these files, place them in `data` folder in the
+Since this dataset is part of a  Kaggle competition, you will need
+to have an account to be able to read (and accept) the data usage terms before
+downloading the data. Updated instructions to download the
+data can be found [Kaggle competition][competition] . After you have access to these files, place them in `data` folder in the
 root of the repository. Do not worry, the `.gitignore` is set to ignore it, in
 order to avoid potential issues when switching branches.
 
