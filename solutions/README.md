@@ -278,7 +278,7 @@ do so, you can use
 ```bash
   cd data
   mkdir -p test
-  cat ../test/sets/test\#1/test.csv | xargs -i ln -s train/{} test/{}
+  cat ../test/sets/test\#1/test.cs | grep -v "Image" | cut -d',' -f1 | xargs -i ln -s train/{} test/{}
 ```
 
 This command takes each line in `test.csv` and runs `ln -s` to link
