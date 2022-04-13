@@ -283,7 +283,7 @@ do so, you can use
 
 This command takes each line in `test.csv` and runs `ln -s` to link
 `test/<image>` to `train/<image>`. See `xargs` man page for more details on how
-to use it.
+to use it.  Before that, we remove the header with `grep` and remove the class with `cut`.
 
 If we wish to run the inference for the hard set instead, all we need to do is
 change the origin file to `../test/sets/hard.csv`. Make sure you have `test`
