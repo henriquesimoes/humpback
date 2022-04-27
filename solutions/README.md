@@ -54,15 +54,15 @@ From now on, we will assume the files are placed as described here.
 ### Creating splits
 
 A Python script is available in the
-[`util/sets`](../util/sets) folder for doing this task. It is configured to
-receive several information from our data curation process, including which
+[`util/sets`](../util/sets) folder for split creation. It accepts
+several parameters related to our data curation process, including which
 classes are duplicated, which images are wrongly classified as `new_whale` and
 so on (click [here](../test/README.md) for a complete list).
 
 Before executing the command, we need to make sure all Python package
 dependencies are satisfied. For doing so, we recommend using [a virtual
-environment][venv], since it prevent from messing up other configurations in
-your development environment. Having it set up, all you have to do is run
+environment][venv], since it avoids messing up other configurations in
+your development environment.  After configuring our virtualk env, run
 
 ```bash
   pip3 install -r util/sets/requirements.txt
