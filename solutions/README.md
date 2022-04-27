@@ -276,9 +276,9 @@ literally copying the files, we can use symbolic links, saving disk storage. To
 do so, you can use
 
 ```bash
-  cd data
+  cd baleias/humpback/data
   mkdir -p test
-  cat ../test/sets/test\#1/test.cs | grep -v "Image" | cut -d',' -f1 | xargs -i ln -s train/{} test/{}
+  cat ../test/sets/test\#1/test.csv | grep -v "Image" | cut -d',' -f1 | xargs -i ln -s ../train/{} test/{}
 ```
 
 This command takes each line in `test.csv` and runs `ln -s` to link
