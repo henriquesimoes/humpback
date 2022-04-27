@@ -45,19 +45,9 @@ cp -r /data/$USER1/hwic/competition-data/train $HUMP/data/
 cp /data/$USER1/hwic/competition-data/train.csv $HUMP/data/
 ```
 
+whwre `HUMP` is the directory you just created.
 The `.gitignore` file is set to ignore them, in
 order to avoid potential issues when switching branches.
-
-Since the images are zipped, you must unzip them before continuing. To do so in
-a Unix-like system, use
-
-```bash
-cd data/
-unzip train.zip -d train
-```
-
-We could also unzip `test.zip` file. However, as Kaggle did not publish the
-testing data labels after the competition was over, they were not curated by us.
 
 From now on, we will assume the files are placed as described here.
 
