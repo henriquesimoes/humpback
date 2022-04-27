@@ -18,7 +18,7 @@ Therefore, you will not be able to run the code without them.
 
 First of all, we might want to create new data splits for training and testing
 the solutions. Thus far, we have created only two such split sets ([`test#1` and
-`test#2`](../test/sets/)). For doing so,
+`test#2`](../test/sets/)).
 
 To create test sets we will need the labels from the
 competition, which are not in this repository. In the sequel, we will show how to
@@ -29,8 +29,23 @@ download the necessary data and how to create splits.
 Since this dataset is part of a  Kaggle competition, you will need
 to have an account with Kaggle to be able to read (and accept) the data usage terms before
 downloading the data. Updated instructions to download the
-data can be found in the 'Data' tab of [this competition's page][competition] . After you have access to these files, place them in `data` folder in the
-root of the repository. The `.gitignore` file is set to ignore them, in
+data can be found in the 'Data' tab of [this competition's page][competition] . 
+In our installation, we have already downloaded these data at:
+
+```txt
+/data/$USER1/hwic/competition-data/
+```
+
+where `USER1` is the first user in our group who dealt with the data.
+You may copy them to your homedir.  Create a new directory somewhere
+in your homedir and copy the image files and labels there:
+
+```bash
+cp -r /data/$USER1/hwic/competition-data/train $HUMP/data/
+cp /data/$USER1/hwic/competition-data/train.csv $HUMP/data/
+```
+
+The `.gitignore` file is set to ignore them, in
 order to avoid potential issues when switching branches.
 
 Since the images are zipped, you must unzip them before continuing. To do so in
