@@ -100,7 +100,14 @@ to the ones available in [`create_sets.sh`](../test/create_sets.sh).
 
 This solution was cloned from [this repository][2nd-repo]. The first step to execute
 the 2nd placed solution is to go to its corresponding branch, _i.e._
-`2nd-solution`. There, we can find the adapted code for running the solution
+`2nd-solution`.
+
+```bash
+git checkout 2nd-solution
+```
+
+
+There, we can find the adapted code for running the solution
 with [our generated test sets](#creating-test-sets).
 
 ### Creating validation sets
