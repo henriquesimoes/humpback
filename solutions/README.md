@@ -45,7 +45,7 @@ cp -r /data/$USER1/hwic/competition-data/train $HUMP/data/
 cp /data/$USER1/hwic/competition-data/train.csv $HUMP/data/
 ```
 
-whwre `HUMP` is the directory you just created.
+where `HUMP` is the directory you just created.
 The `.gitignore` file is set to ignore them, in
 order to avoid potential issues when switching branches.
 
