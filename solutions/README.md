@@ -168,6 +168,15 @@ the same for the source code and checkpoints created in training.
 Since the source code is mapped, you **should not** switch branches when the
 code is in fact running.
 
+Nest we need to configure a place for checkpoints.  Since they can be rather
+large (~7GB for experiment), an appropriate storage disk device must be employed. 
+You can use an environment variable to specify the path in the host filesystem
+to store the checkpoints:
+
+```bash
+export CHECKPOINT_PATH=/path/to/disk/folder
+```
+
 Putting all this together and assuming you execute the command at your repository
 root `HUMP`, the resulting command looks like this
 
@@ -182,21 +191,13 @@ docker run -d -it \
    -v $(pwd)/solutions/2nd-place:/solutions/2nd-place \
    ufoym/deepo:all-py36-cu101
 ```
-
-where `$CHECKPOINT_PATH` is an environment variable specifying the path in the
-host filesystem to store the checkpoints. For doing so, you can use:
-
-```bash
-export CHECKPOINT_PATH=/path/to/disk/folder
-```
-
-As checkpoints might be rather large (~7GB for experiment), a large storage disk
-device should be used. All path specified inside the container (after the colon
-`:` in the volume `-v` flags) should be kept as they are, since the source code
-is configured to look after them when executing.
+ 
+All path specified inside the container (after the colon `:` in the volume `-v` flags)
+should be names as indicated, since the source code
+is configured to look for them when executing.
 
 Note that we have given the `humpback_2nd` name for the container. It could be
-any name, but we will assume that is its name from now on.
+any name, but we will assume that this name was used from now on.
 
 After executing that command, we will get a `bash` prompt which is at the root
 directory of the container. There must be `solutions/2nd-place` and `/dataset`
