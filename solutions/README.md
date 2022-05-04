@@ -168,10 +168,11 @@ the same for the source code and checkpoints created in training.
 Since the source code is mapped, you **should not** switch branches when the
 code is in fact running.
 
-Putting all this together and assuming you execute the command at the repository
-root, the resulting command looks like this
+Putting all this together and assuming you execute the command at your repository
+root `HUMP`, the resulting command looks like this
 
 ```bash
+cd $HUMP
 docker run -d -it \
    --shm-size=8GB \
    --runtime=nvidia --gpus all \
