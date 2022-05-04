@@ -60,9 +60,9 @@ classes are duplicated, which images are wrongly classified as `new_whale` and
 so on (click [here](../test/README.md) for a complete list).
 
 Before executing the command, we need to make sure all Python package
-dependencies are satisfied. For doing so, we recommend using [a virtual
+dependencies are satisfied. For this, we recommend using [a virtual
 environment][venv], since it avoids messing up other configurations in
-your development environment.  After configuring our virtualk env, run
+your development environment.  After configuring our virtual env, run
 
 ```bash
   pip3 install -r util/sets/requirements.txt
@@ -89,30 +89,28 @@ python3 ../util/sets/create_sets.py \
   > $dest/tests.stats.log
 ```
 
-substituting the `<n>` with the number of tests you are willing to create and the
-`<dest>` to the destination folder (it should be different from `sets` if you do
+replacing `<n>` by the number of tests you want to create and
+`<dest>` by the destination folder (use something different from `sets` if you do
 not want to overwrite the current sets in the repository). The above command
-redirects the output to the `tests.stats.log` file inside the set folder, so
-that the information about each test is stored. Note these commands are similar
+redirects the output to the `tests.stats.log` file inside the `<dest>` folder,
+storing information about each test. Note that these commands are similar
 to the ones available in [`create_sets.sh`](../test/create_sets.sh).
 
 ## 2nd solution
 
-This solution was cloned from [this repository][2nd-repo]. First step to execute
-the 2nd placed solution is to move to its corresponding branch, _i.e._
+This solution was cloned from [this repository][2nd-repo]. The first step to execute
+the 2nd placed solution is to go to its corresponding branch, _i.e._
 `2nd-solution`. There, we can find the adapted code for running the solution
 with [our generated test sets](#creating-test-sets).
 
 ### Creating validation sets
 
-As common practice, this solution uses a small part of the training set for
+Following common practice, this solution uses a small part of the training set for
 validation. The information of which examples will be used for training and
 which will go for validation was included in text files by the author,
 considering the competition dataset. Therefore, they are invalid for our
-experiments. Thus, an adaption of the scripts that interact with those files
-have been changed. (Indeed, they introduce breaking changes with respect to the
-original dataset.) The adapted code now assumes there are files describing the
-files part of the training and validation sets with the following name format
+experiments. We adapted the scripts to assume that there are files describing
+the training and validation sets with the following name format
 inside the `image_list` folder:
 
 ```txt
@@ -122,8 +120,7 @@ test{n}.{valid|train}.txt
 where `{n}` is the test number (so far, 1 and 2 exist) and `{valid|train}` is
 either `valid` for validation set or `train` for training set. These files can
 be generated for new test sets using the `create_validation.py` script inside
-the `image_list` folder. To use it for generating validation splits for test #3,
-for instance, you can run
+the `image_list` folder. For test #3, for instance, you can run
 
 ```bash
 cd solutions/2nd-place/image_list
@@ -132,8 +129,7 @@ python3 create_validation.py \
     --test_number 3
 ```
 
-By default, it will use the percentage of validation images used in the
-validation sets created by the author of the solution.
+By default, it will use the same percentage split as the author of the solution.
 
 ### Creating the container
 
