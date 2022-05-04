@@ -142,20 +142,20 @@ already get into it using the interactive flags (`-it`).
 
 Since these solutions use a significant among of memory, we will have to extend
 the amount of shared memory for the container. To do so, we can use the
-`--shm-size=<amount>` flag. It is enough to give 8GB.
+`--shm-size=<amount>` flag. It is enough to give it 8GB.
 
 As stated before, we will need GPUs to run the solutions. To allow the container
 to access the hardware, we must specify both the runtime (`--runtime=nvidia`)
-and which GPUs to let visible to the container (through the `--gpus` flag). If
+and which GPUs the container will see (through the `--gpus` flag). If
 we want to let all GPUs available, we can use the `--gpus all`. If only a single
 GPU should be used, say the second one, we can pass `--gpus device=1` (note that
 GPU numbers start at 0). For two GPUs, say 2nd and 3rd GPUs, a more cumbersome
-value must be given: `--gpus device='"device=1,2"'`. Yes, there are two level of
+value must be given: `--gpus device='"device=1,2"'`. Yes, there are two levels of
 quotes in there. For more information, check out the discussion in the [NVIDIA
 Docker repository on that][nvidia-docker#1257].
 
 As we will see later, there is no problem in always specifying the `--gpus all`
-to the create the container, as the GPU visibility can still be configured for
+to create the container, as the GPU visibility can still be configured for
 processes using the `CUDA_VISIBLE_DEVICES` environment variable. It is indeed a
 better option if you are using a shared machine to run the experiments, as the
 available GPUs might change over time, and that would require recreating the
@@ -163,12 +163,12 @@ container every time that happens.
 
 Moreover, we will create [Docker volumes][docker-volumes] to map some
 directories inside the container to the machine filesystem. This is interesting
-to avoid copying too much data (~25K images) inside the container. We will do
-the same for the source code and checkpoints that will be create when training.
+to avoid copying too much data (~25K images) to the container. We will do
+the same for the source code and checkpoints created in training.
 Since the source code is mapped, you **should not** switch branches when the
 code is in fact running.
 
-Putting those altogether and assuming you execute the command at the repository
+Putting all this together and assuming you execute the command at the repository
 root, the resulting command looks like this
 
 ```bash
