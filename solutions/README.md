@@ -37,7 +37,7 @@ In our installation, we have already downloaded these data at:
 ```
 
 where `USER1` is the first user in our group who dealt with the data.
-You may copy them to your homedir.  Create a new directory somewhere
+You may copy them to your homedir.  Create a new directory `HUMP` somewhere
 in your homedir and copy the image files and labels there:
 
 ```bash
@@ -45,7 +45,6 @@ cp -r /data/$USER1/hwic/competition-data/train $HUMP/data/
 cp /data/$USER1/hwic/competition-data/train.csv $HUMP/data/
 ```
 
-where `HUMP` is the directory you just created.
 The `.gitignore` file is set to ignore them, in
 order to avoid potential issues when switching branches.
 
