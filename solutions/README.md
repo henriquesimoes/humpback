@@ -45,8 +45,8 @@ cp -r /data/$USER1/hwic/competition-data/train $HUMP/data/
 cp /data/$USER1/hwic/competition-data/train.csv $HUMP/data/
 ```
 
-The `.gitignore` file is set to ignore them, in
-order to avoid potential issues when switching branches.
+The `.gitignore` file is set to ignore everything under any `data`
+directory, in order to avoid potential issues when switching branches.
 
 From now on, we will assume the files are placed as described here.
 
