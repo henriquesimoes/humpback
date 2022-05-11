@@ -130,10 +130,11 @@ be generated for new test sets using the `create_validation.py` script inside
 the `image_list` folder. For test #3, for instance, you can run
 
 ```bash
+i=3
 cd solutions/2nd-place/image_list
 python3 create_validation.py \
-    --train ../../../test/sets/test\#3/train.csv \
-    --test_number 3
+    --train ../../../test/sets/test\#$i/train.csv \
+    --test_number $i
 ```
 
 By default, it will use the same percentage split as the author of the solution.
