@@ -73,6 +73,7 @@ use the following command:
 ```bash
 cd test
 dest=<dest>
+n=<n>
 mkdir $dest
 python3 ../util/sets/create_sets.py \
   --labels ../data/train.csv \
@@ -83,7 +84,7 @@ python3 ../util/sets/create_sets.py \
   --not-new filter/not_new.csv \
   --mislabeled filter/mislabeled.csv \
   --test_percentage=0.2 \
-  --tests=<n> \
+  --tests=$n \
   --output=$dest \
   > $dest/tests.stats.log
 ```
