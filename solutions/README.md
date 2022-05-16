@@ -133,7 +133,7 @@ the `image_list` folder. For test #3, for instance, you can run
 i=3
 cd solutions/2nd-place/image_list
 python3 create_validation.py \
-    --train ../../../test/sets/test\#$i/train.csv \
+    --train ../../../test/$dest/test\#$i/train.csv \
     --test_number $i
 ```
 
