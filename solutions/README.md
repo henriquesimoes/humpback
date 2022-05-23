@@ -73,7 +73,7 @@ Now, to create the testing sets as we have done for the first two tests, you can
 use the following command:
 
 ```bash
-cd test
+cd $HUMP/test
 dest=<dest>
 n=<n>
 mkdir $dest
@@ -133,7 +133,7 @@ the `image_list` folder. For test #3, for instance, you can run
 
 ```bash
 i=3
-cd ../solutions/2nd-place/image_list
+cd $HUMP/solutions/2nd-place/image_list
 python3 create_validation.py \
     --train ../../../test/$dest/test\#$i/train.csv \
     --test_number $i
