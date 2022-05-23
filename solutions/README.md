@@ -37,8 +37,9 @@ In our installation, we have already downloaded these data at:
 ```
 
 where `USER1` is the first user in our group who dealt with the data.
-You may copy them to your homedir.  Create a new directory `HUMP` somewhere
-in your homedir and copy the image files and labels there:
+You may copy them to your homedir.  Clone this repository from Git Hub in a new directory
+`HUMP` somewhere in your computer, preferably in an SSD directory for fast acess.
+Then copy the image files and labels there:
 
 ```bash
 cp -r /data/$USER1/hwic/competition-data/train $HUMP/data/
