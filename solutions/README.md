@@ -39,9 +39,10 @@ In our installation, we have already downloaded these data at:
 where `USER1` is the first user in our group who dealt with the data.
 You may copy them to your homedir.  Clone this repository from Git Hub in a new directory
 `HUMP` somewhere in your computer, preferably in an SSD directory for fast acess.
-Then copy the image files and labels there:
+Then create a subdirectory `data` and copy the image files and labels there:
 
 ```bash
+mkdir $HUMP/data
 cp -r /data/$USER1/hwic/competition-data/train $HUMP/data/
 cp /data/$USER1/hwic/competition-data/train.csv $HUMP/data/
 ```
