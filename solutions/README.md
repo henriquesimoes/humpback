@@ -219,7 +219,12 @@ can use the following command:
 
 ```bash
   docker exec -it humpback_2nd bash
+  pip install -r requirements.txt
 ```
+
+The second line only needs to be executed the first time around for
+each container.  If entering the same container again, it does not need
+to be done.
 
 When we run a longstanding command, such as when training the model, we would
 not be able to get outside the container. However, this is impractical. Thus,
