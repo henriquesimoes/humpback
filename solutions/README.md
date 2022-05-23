@@ -219,7 +219,7 @@ can use the following command:
 
 ```bash
   docker exec -it humpback_2nd bash
-  pip install -r requirements.txt
+  pip install -r /solutions/2nd-place/requirements.txt
 ```
 
 The second line only needs to be executed the first time around for
