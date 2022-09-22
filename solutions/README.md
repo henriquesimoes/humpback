@@ -300,7 +300,7 @@ do so, for instance, for test#1, you can use the following code:
   cat ../test/sets/test\#1/test.csv | grep -v "Image" | cut -d',' -f1 | xargs -i ln -s ../train/{} test/{}
 ```
 
-Of course, you should repalce text\#1 by the appropriate text\#n.
+Of course, you should replace text\#1 by the appropriate text\#n.
 
 This command takes each line in `test.csv` and runs `ln -s` to link
 `test/<image>` to `train/<image>`. See `xargs` man page for more details on how
