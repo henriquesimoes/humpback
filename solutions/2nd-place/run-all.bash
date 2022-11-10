@@ -83,7 +83,7 @@ docker run --rm \
 mv $HUMP/solutions/2nd-place/result.csv  $HUMP/solutions/2nd-place/result$FOLD.csv 
 
 ###########################################
-### ENSEMBLE
+### MAP
 read -r -d '' MAPCMD << EOM
 CUDA_VISIBLE_DEVICES=$DEV python3 util/test/test.py \
     --name "Test #$FOLD" \
