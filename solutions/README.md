@@ -61,7 +61,7 @@ everything will be computed and ready.
 First, build a suitable docker image:
 
 ```bash
-docker build -t humpback2 $HUMP/solutioins/2nd-place
+docker build -t humpback2 $HUMP/solutions/2nd-place
 ```
 
 Then, run the `run-all.bash` script with parameters as follows:
