@@ -52,27 +52,6 @@ directory, in order to avoid potential issues when switching branches.
 
 From now on, we will assume the files are placed as described here.
 
-## TL;DR Second Solution
-
-If you just want to run training, inference, ensemble, and compute MAP@5 for the second solution,
-and don't necessarily want to understand all the details involved, use the following recipe.  In about 3 days,
-everything will be computed and ready.
-
-First, build a suitable docker image:
-
-```bash
-docker build -t humpback2 $HUMP/solutions/2nd-place
-```
-
-Then, run the `run-all.bash` script with parameters as follows:
-
-```bash
-nohup solutions/2nd-place/run-all.bash $HUMP /data/$USER1/hwic/2nd-place/models 1 0 &
-```
-
-where the second parameter of `run-bash.all` is the directory where models will reside, the third is the set
-(1, 2, 3, 4, 5, etc.) and the fourth is the GPU to use (0, 1, or 2). 
-
 ### Creating splits
 
 A Python script is available in the
@@ -132,6 +111,28 @@ git checkout 2nd-solution
 
 There, we can find the adapted code for running the solution
 with [our generated test sets](#creating-test-sets).
+
+### TL;DR Second Solution
+
+If you just want to run training, inference, ensemble, and compute MAP@5 for the second solution,
+and don't necessarily want to understand all the details involved, use the following recipe.  In about 3 days,
+everything will be computed and ready.
+
+First, build a suitable docker image, using the Dockerfile in this directory:
+
+```bash
+docker build -t humpback2 $HUMP/solutions/2nd-place
+```
+
+Then, run the `run-all.bash` script with parameters as follows:
+
+```bash
+nohup solutions/2nd-place/run-all.bash $HUMP /data/$USER1/hwic/2nd-place/models 1 0 &
+```
+
+where the second parameter of `run-bash.all` is the directory where models will reside, the third is the set
+(1, 2, 3, 4, 5, etc.) and the fourth is the GPU to use (0, 1, or 2).  The nohup command will run the entire
+process in the background, so you can log out and wait for the results.  No need to remain logged in.
 
 ### Creating validation sets
 
