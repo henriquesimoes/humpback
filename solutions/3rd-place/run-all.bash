@@ -20,7 +20,7 @@ cat test/new-sets/test\#$FOLD/test.csv | grep -v "Image" | cut -d',' -f1 | xargs
 
 ##################################
 ### Configuration yml
-sed "s/test1/test$FOLD/" < solutions/3rd-place/config/template.yml > solutions/3rd-place/config/test$FOLD.yml
+sed "s/test1/test$FOLD/" < solutions/3rd-place/configs/template.yml > solutions/3rd-place/configs/test$FOLD.yml
 
 ##################################
 ### Symbolic links
@@ -29,23 +29,19 @@ ln -s data/train data/test
 ###########################################
 ### TRAIN
 read -r -d '' TRAINCMD << EOM
-CUDA_VISIBLE_DEVICES=0,1,2 python main.py \
-  --mode=train \
-  --model=resnet101 \
-  --image_h=256 --image_w=512 \
-  --fold_index=$FOLD \
-  --batch_size=64
+CUDA_VISIBLE_DEVICES=0,1,2 python3 train.py \
+   --config==configs/test$FOLD.yml
 EOM
 
 docker run --rm \
    --shm-size=8GB \
    --runtime=nvidia --gpus all \
-   --name humpback_2nd \
-   -v $(pwd)/data:/dataset \
-   -v $CHECKPOINT_PATH:/solutions/2nd-place/models \
-   -v $(pwd)/solutions/2nd-place:/solutions/2nd-place \
-   -w /solutions/2nd-place \
-   humpback2 bash -c "$TRAINCMD > train$FOLD.out"
+   --name humpback_3rd \
+   -v $(pwd)/data:/solutions/3rd-place/data \
+   -v $CHECKPOINT_PATH/3rd-place/train_logs:/solutions/3rd-place/train_logs \
+   -v $(pwd)/solutions/3rd-place:/solutions/3rd-place \
+   -w /solutions/3rd-place \
+   ufoym/deepo:all-py38-cu113 bash -c "$TRAINCMD > train$FOLD.out"
 
 ###########################################
 ### TEST
