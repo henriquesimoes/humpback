@@ -22,6 +22,10 @@ cat test/new-sets/test\#$FOLD/test.csv | grep -v "Image" | cut -d',' -f1 | xargs
 ### Configuration yml
 sed "s/test1/test$FOLD/" < solutions/3rd-place/config/template.yml > solutions/3rd-place/config/test$FOLD.yml
 
+##################################
+### Symbolic links
+ln -s data/train data/test
+ 
 ###########################################
 ### TRAIN
 read -r -d '' TRAINCMD << EOM
