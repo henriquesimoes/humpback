@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo 'Train, test, ensemle, and map model'
+echo 'Train, test, and map model'
 if [ "$#" != "4" ]; then
     echo "Usage: $0 HUMP CHKPT FOLD DEV"
     exit -1
@@ -17,6 +17,10 @@ cd $HUMP
 dest_file=solutions/3rd-place/data/test$FOLD.sample.csv
 echo "Image,Id" > $dest_file
 cat test/new-sets/test\#$FOLD/test.csv | grep -v "Image" | cut -d',' -f1 | xargs -i echo {},ids >> $dest_file
+
+##################################
+### Configuration yml
+sed "s/test1/test$FOLD/" < solutions/3rd-place/config/template.yml > solutions/3rd-place/config/test$FOLD.yml
 
 ###########################################
 ### TRAIN
