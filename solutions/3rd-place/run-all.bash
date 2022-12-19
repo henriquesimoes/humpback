@@ -30,7 +30,7 @@ ln -s data/train data/test
 ### TRAIN
 read -r -d '' TRAINCMD << EOM
 CUDA_VISIBLE_DEVICES=0,1,2 python3 train.py \
-   --config==configs/test$FOLD.yml
+   --config=configs/test$FOLD.yml
 EOM
 
 docker run --rm \
@@ -44,41 +44,62 @@ docker run --rm \
    ufoym/deepo:all-py38-cu113 bash -c "$TRAINCMD > train$FOLD.out"
 
 ###########################################
-### TEST
-read -r -d '' TESTCMD << EOM
-CUDA_VISIBLE_DEVICES=$DEV python main.py \
-  --mode=test \
-  --fold_index=$FOLD \
-  --batch_size=32 \
-  --pretrained_model=max_valid_model.pth
+### Stochastic Weight Averaging
+read -r -d '' SWACMD << EOM
+CUDA_VISIBLE_DEVICES=$DEV python3 swa.py \
+  --config=configs/test$FOLD.yml
 EOM
 
 docker run --rm \
    --shm-size=8GB \
    --runtime=nvidia --gpus all \
-   --name humpback_2nd \
-   -v $(pwd)/data:/dataset \
-   -v $CHECKPOINT_PATH:/solutions/2nd-place/models \
-   -v $(pwd)/solutions/2nd-place:/solutions/2nd-place \
-   -w /solutions/2nd-place \
-   humpback2 bash -c "$TESTCMD > test$FOLD.out"
+   --name humpback_3rd \
+   -v $(pwd)/data:/solutions/3rd-place/data \
+   -v $CHECKPOINT_PATH/3rd-place/train_logs:/solutions/3rd-place/train_logs \
+   -v $(pwd)/solutions/3rd-place:/solutions/3rd-place \
+   -w /solutions/3rd-place \
+   ufoym/deepo:all-py38-cu113 bash -c "$SWACMD > swa$FOLD.out"
 
 ###########################################
-### ENSEMBLE
-read -r -d '' ENSMLCMD << EOM
-CUDA_VISIBLE_DEVICES=$DEV python ensemble.py \
-  --name=resnet101_test${FOLD}_256_512
+###  Computing Similarities
+read -r -d '' SIMCMD << EOM
+mkdir -p similarities; \
+CUDA_VISIBLE_DEVICES=$DEV python3 inference_similarity.py \
+  --config=configs/test$FOLD.yml \
+  --tta_landmark=0 \
+  --checkpoint_name=swa.pth \
+  --output_path=similarities/test$FOLD.csv
 EOM
 
 docker run --rm \
    --shm-size=8GB \
    --runtime=nvidia --gpus all \
-   --name humpback_2nd \
-   -v $(pwd)/data:/dataset \
-   -v $CHECKPOINT_PATH:/solutions/2nd-place/models \
-   -v $(pwd)/solutions/2nd-place:/solutions/2nd-place \
-   -w /solutions/2nd-place \
-   humpback2 bash -c "$ENSMLCMD > ensml$FOLD.out"
+   --name humpback_3rd \
+   -v $(pwd)/data:/solutions/3rd-place/data \
+   -v $CHECKPOINT_PATH/3rd-place/train_logs:/solutions/3rd-place/train_logs \
+   -v $(pwd)/solutions/3rd-place:/solutions/3rd-place \
+   -w /solutions/3rd-place \
+   ufoym/deepo:all-py38-cu113 bash -c "$SIMCMD > sim$FOLD.out"
+
+###########################################
+### Generating Predictions
+read -r -d '' PREDCMD << EOM
+CUDA_VISIBLE_DEVICES=$DEV python3 make_submission.py \
+  --threshold=0.385 \
+  --input_path=similarities/test$FOLD.csv \
+  --sample_path=data/test$FOLD.sample.csv \
+  --output_path=results/test$FOLD.csv
+EOM
+
+docker run --rm \
+   --shm-size=8GB \
+   --runtime=nvidia --gpus all \
+   --name humpback_3rd \
+   -v $(pwd)/data:/solutions/3rd-place/data \
+   -v $CHECKPOINT_PATH/3rd-place/train_logs:/solutions/3rd-place/train_logs \
+   -v $(pwd)/solutions/3rd-place:/solutions/3rd-place \
+   -w /solutions/3rd-place \
+   ufoym/deepo:all-py38-cu113 bash -c "$PREDCMD > pred$FOLD.out"
 
 ### Change result name
 mv $HUMP/solutions/2nd-place/result.csv  $HUMP/solutions/2nd-place/result$FOLD.csv 
