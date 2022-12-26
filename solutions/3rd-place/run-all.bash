@@ -101,28 +101,25 @@ docker run --rm \
    -w /solutions/3rd-place \
    ufoym/deepo:all-py38-cu113 bash -c "$PREDCMD > pred$FOLD.out"
 
-### Change result name
-mv $HUMP/solutions/2nd-place/result.csv  $HUMP/solutions/2nd-place/result$FOLD.csv 
-
 ###########################################
 ### MAP
 read -r -d '' MAPCMD << EOM
 CUDA_VISIBLE_DEVICES=$DEV python3 util/test/test.py \
     --name "Test #$FOLD" \
-    --solution "2nd solution" \
-    --description "ResNet-101 (512x256) trained 100 epochs" \
+    --solution "3rd solution" \
+    --description "DenseNet-121 trained 300 epochs" \
     --classes test/sets/classes.csv \
     --test test/new-sets/test\#$FOLD/test.csv \
     --train test/new-sets/test\#$FOLD/train.csv \
-    --prediction solutions/2nd-place/result$FOLD.csv \
-    --report-output solutions/2nd-place/test$FOLD.md
+    --prediction solutions/3rd-place/results/test$FOLD.csv \
+    --report-output solutions/3rd-place/results/test$FOLD.md
 EOM
 
 docker run --rm \
    --shm-size=8GB \
    --runtime=nvidia --gpus all \
-   --name humpback_2nd \
-   -v $(pwd)/data:/dataset \
-   -v $(pwd):/solutions/2nd-place \
-   -w /solutions/2nd-place \
-   humpback2 bash -c "$MAPCMD > map$FOLD.out"
+   --name humpback_3rd \
+   -v $(pwd)/data:/solutions/3rd-place/data \
+   -v $(pwd)/solutions/3rd-place:/solutions/3rd-place \
+   -w /solutions/3rd-place \
+   ufoym/deepo:all-py38-cu113 bash -c "$MAPCMD > map$FOLD.out"
