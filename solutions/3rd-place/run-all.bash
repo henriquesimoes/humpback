@@ -1,5 +1,7 @@
 #!/bin/bash
 
+IMAGE=humpback3
+
 echo 'Train, test, and map model'
 if [ "$#" != "4" ]; then
     echo "Usage: $0 HUMP CHKPT FOLD DEV"
@@ -41,7 +43,7 @@ docker run --rm \
    -v $CHECKPOINT_PATH/3rd-place/train_logs:/solutions/3rd-place/train_logs \
    -v $(pwd)/solutions/3rd-place:/solutions/3rd-place \
    -w /solutions/3rd-place \
-   ufoym/deepo:all-py38-cu113 bash -c "$TRAINCMD > train$FOLD.out"
+   $IMAGE bash -c "$TRAINCMD > train$FOLD.out"
 
 ###########################################
 ### Stochastic Weight Averaging
@@ -58,7 +60,7 @@ docker run --rm \
    -v $CHECKPOINT_PATH/3rd-place/train_logs:/solutions/3rd-place/train_logs \
    -v $(pwd)/solutions/3rd-place:/solutions/3rd-place \
    -w /solutions/3rd-place \
-   ufoym/deepo:all-py38-cu113 bash -c "$SWACMD > swa$FOLD.out"
+   $IMAGE bash -c "$SWACMD > swa$FOLD.out"
 
 ###########################################
 ###  Computing Similarities
@@ -79,7 +81,7 @@ docker run --rm \
    -v $CHECKPOINT_PATH/3rd-place/train_logs:/solutions/3rd-place/train_logs \
    -v $(pwd)/solutions/3rd-place:/solutions/3rd-place \
    -w /solutions/3rd-place \
-   ufoym/deepo:all-py38-cu113 bash -c "$SIMCMD > sim$FOLD.out"
+   $IMAGE bash -c "$SIMCMD > sim$FOLD.out"
 
 ###########################################
 ### Generating Predictions
@@ -99,7 +101,7 @@ docker run --rm \
    -v $CHECKPOINT_PATH/3rd-place/train_logs:/solutions/3rd-place/train_logs \
    -v $(pwd)/solutions/3rd-place:/solutions/3rd-place \
    -w /solutions/3rd-place \
-   ufoym/deepo:all-py38-cu113 bash -c "$PREDCMD > pred$FOLD.out"
+   $IMAGE bash -c "$PREDCMD > pred$FOLD.out"
 
 ###########################################
 ### MAP
@@ -122,4 +124,4 @@ docker run --rm \
    -v $(pwd)/data:/solutions/3rd-place/data \
    -v $(pwd)/solutions/3rd-place:/solutions/3rd-place \
    -w /solutions/3rd-place \
-   ufoym/deepo:all-py38-cu113 bash -c "$MAPCMD > map$FOLD.out"
+   $IMAGE bash -c "$MAPCMD > map$FOLD.out"
