@@ -26,7 +26,7 @@ sed "s/test1/test$FOLD/" < solutions/3rd-place/configs/template.yml > solutions/
 
 ##################################
 ### Symbolic links
-ln -s data/train data/test
+ln -s train data/test
  
 ###########################################
 ### TRAIN
