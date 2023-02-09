@@ -5,7 +5,8 @@ from __future__ import print_function
 import torch.nn as nn
 import torch.nn.functional as F
 import pretrainedmodels
-
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
 
 def get_pretrainedmodels(model_name='resnet18', num_outputs=None, pretrained=True, **_):
     pretrained = 'imagenet' if pretrained else None
