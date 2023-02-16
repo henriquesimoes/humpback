@@ -85,7 +85,7 @@ def bn_update(loader, model):
     model.apply(lambda module: _get_momenta(module, momenta))
     n = 0
     for input_dict in tqdm.tqdm(loader):
-        input = input_dict['image'].cuda(async=True)
+        input = input_dict['image'].cuda(non_blocking=True)
         input_var = torch.autograd.Variable(input)
         b = input_var.data.size(0)
 
