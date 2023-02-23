@@ -39,7 +39,6 @@ docker run --rm \
    --shm-size=8GB \
    --runtime=nvidia --gpus all \
    --name humpback_3rd \
-   -v $(pwd)/data:/solutions/3rd-place/data \
    -v $CHECKPOINT_PATH/3rd-place/train_logs:/solutions/3rd-place/train_logs \
    -v $(pwd)/solutions/3rd-place:/solutions/3rd-place \
    -w /solutions/3rd-place \
